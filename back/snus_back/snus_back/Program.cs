@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using snus_back.data_access;
 using snus_back.Models;
 using System.Reflection;
@@ -6,6 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<SNUSDbContext>(options =>
+    {
+        options.UseLazyLoadingProxies().
+        UseSqlite("Data Source = SnusDB.db");
+    });
+
 
 var app = builder.Build();
 
@@ -29,10 +36,11 @@ app.MapRazorPages();
 app.Run();
 
 
-using (var db = new SNUSDbContext())
+/*using (var db = new SNUSDbContext())
 {
     Console.WriteLine("Adding some authors into database...");
     User author1 = new User { Name = "Roberto", LastName = "Bolano" };
     db.Users.Add(author1);
     db.SaveChanges();
-}
+}*/
+
