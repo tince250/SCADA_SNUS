@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using snus_back.data_access;
 using snus_back.Models;
+using snus_back.Repositories;
+using snus_back.Services;
+using snus_back.Services.ServiceInterfaces;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,14 @@ builder.Services.AddDbContext<SNUSDbContext>(options =>
         options.UseLazyLoadingProxies().
         UseSqlite("Data Source = SnusDB.db");
     });
+
+
+
+// Services
+builder.Services.AddTransient<IUserService, UserService>();
+
+// Repositories
+builder.Services.AddTransient<UserRepository>();
 
 
 var app = builder.Build();
@@ -28,6 +39,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.UseAuthorization();
 
