@@ -12,9 +12,9 @@ namespace snus_back.DTOs
 
         public string LastName { get; set; }
 
-        public UserRole Role { get; set; }
+        public string Role { get; set; }
 
-        public UserDTO(int id, string username, string name, string lastname, UserRole role)
+        public UserDTO(int id, string username, string name, string lastname, string role)
         {
             Id = id;
             Username = username;
