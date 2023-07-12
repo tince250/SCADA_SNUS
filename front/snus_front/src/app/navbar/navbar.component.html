@@ -1,0 +1,20 @@
+<nav #nav class="navbar back-white">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="#" class="dark-blue">SCADA Manager</a>
+            <button class="navbar-toggler" data-toggle="open-navbar1">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+            </button>
+        </div>  
+      <div class="navbar-menu" id="open-navbar1">
+        <div class="navbar-nav">
+            <a id="navbar-option" [routerLink]="['']">Trending</a>
+            <a id="navbar-option"  *ngIf="role === 'ADMIN'" [routerLink]="['']">Database Manager</a>  
+            <a id="navbar-option" *ngIf="role === 'ADMIN'" [routerLink]="['']">Report Manager</a>  
+            <a class="logout-option"  (click)="logout()">Log out</a>  
+        </div>
+      </div>
+    </div>
+  </nav>

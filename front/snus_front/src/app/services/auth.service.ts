@@ -58,6 +58,14 @@ export class AuthService {
     return null;
   }
 
+  getRole(): string|null {
+    if (this.isLoggedIn()) {
+      const storedUser: User|null = JSON.parse(localStorage.getItem('user')!);
+      return storedUser?.role!;
+    }
+    return null;
+  }
+
 }
 
 export interface CredentialsDTO {
