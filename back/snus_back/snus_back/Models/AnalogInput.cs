@@ -6,9 +6,9 @@
         public bool IsScanOn { get; set; }
         public double LowLimit { get; set; }
         public double HighLimit { get; set; }
-        public double Value { get; set; }
-        public string Units { get; set; }
-        public ICollection<Alarm> Alarms { get; set; } = new List<Alarm>();
+        public string Unit { get; set; }
+
+        public virtual ICollection<Alarm> Alarms { get; set; } = new List<Alarm>();
 
     }
 }

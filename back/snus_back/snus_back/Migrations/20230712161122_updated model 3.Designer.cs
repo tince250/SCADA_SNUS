@@ -10,8 +10,8 @@ using snus_back.data_access;
 namespace snus_back.Migrations
 {
     [DbContext(typeof(SNUSDbContext))]
-    [Migration("20230711215854_updated user class role")]
-    partial class updateduserclassrole
+    [Migration("20230712161122_updated model 3")]
+    partial class updatedmodel3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

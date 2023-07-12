@@ -7,11 +7,21 @@ namespace snus_back.Models
         MEDIUM,
         HIGH
     }
+
+    public enum AlarmType
+    {
+        LOWER,
+        HIGHER
+    }
+
     public class Alarm
     {
-        public string TagName { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         public double Value { get; set; }
+
+        public AlarmType Type { get; set; }
 
         public AlarmPriority Priority { get; set; }
 
