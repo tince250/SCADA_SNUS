@@ -12,12 +12,14 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ReportManagerComponent } from './report-manager/report-manager.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    ReportManagerComponent
   ],
   imports: [
     BrowserModule,

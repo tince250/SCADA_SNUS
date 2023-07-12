@@ -1,0 +1,26 @@
+<div id="main-container">    
+    <h1>Report Manager</h1>
+    <div id="filter-container" class="basic-container">
+        <div>
+            <h3>Criteria</h3>
+            <div class="dropdown">
+                <button class="dropbtn">{{selectedCriteria}}</button>
+                <div class="dropdown-content">
+                  <a (click)="changeCritera('Alarms')">Alarms</a>
+                  <a>Link 2</a>
+                  <a>Link 3</a>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3>Sort</h3>
+            <div class="dropdown">
+                <button class="dropbtn">{{selectedSort}}</button>
+                <div class="dropdown-content">
+                  <a (click)="changeSort('Time')">Time</a>
+                </div>
+            </div>
+        </div>
+        <button class="outline-btn">Generate report</button>
+    </div>
+</div>

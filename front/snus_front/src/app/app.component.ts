@@ -8,7 +8,7 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   title = 'SCADA manager';
-  loggedIn = false;
+  loggedIn = true;
 
   constructor(private authService: AuthService) {
     this.authService.recieveLoggedIn().subscribe({
