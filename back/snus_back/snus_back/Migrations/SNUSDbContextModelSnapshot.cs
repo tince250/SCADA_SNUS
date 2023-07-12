@@ -93,7 +93,7 @@ namespace snus_back.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Tag");
 
@@ -172,7 +172,7 @@ namespace snus_back.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.ToTable("Tag", t =>
+                    b.ToTable("Tags", t =>
                         {
                             t.Property("HighLimit")
                                 .HasColumnName("AnalogInput_HighLimit");

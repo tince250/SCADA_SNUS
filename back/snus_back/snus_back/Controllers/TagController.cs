@@ -33,7 +33,7 @@ namespace snus_back.Controllers
 
         [HttpGet]
         [Route("")]
-        public ActionResult GetAllTags(string address)
+        public ActionResult GetAllTags()
         {
             try
             {
