@@ -11,6 +11,7 @@ export class ReportManagerComponent {
   selectedCriteria: string = 'Select';
   selectedSort: string = 'Select';
   selectedAlarmPriority: string = 'Select'
+  selectedTagAddress: string = 'Select'
 
   dateForm = new FormGroup({
     start: new FormControl(''),
@@ -24,6 +25,14 @@ export class ReportManagerComponent {
 
   changeSort(s: string) {
     this.selectedSort = s;
+  }
+
+  changeSelectedAlarmPriority(p: string) {
+    this.selectedAlarmPriority = p;
+  }
+
+  changeSelectedTagAddress(a: string) {
+    this.selectedTagAddress = a;
   }
 
 }

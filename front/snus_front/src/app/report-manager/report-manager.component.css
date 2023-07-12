@@ -9,6 +9,7 @@
 h1 {
     margin-bottom: 5px;
     margin-left: 10px;
+    color: #1E4A5A;
 }
 
 #filter-container {
@@ -31,6 +32,10 @@ h1 {
 
 /* DROPDOWN */
 
+#sortDD {
+    margin-left: 30px !important;
+}
+
 .dropbtn {
     background-color: white;
     color: gray;
@@ -40,7 +45,7 @@ h1 {
     cursor: pointer;
     margin: auto;
     border-radius: 10px;
-    width: 150px;
+    width: 220px;
     height: 50px;
     align-self: center;
   }
@@ -79,11 +84,16 @@ h1 {
   
   /* Change the background color of the dropdown button when the dropdown content is shown */
   .dropdown:hover .dropbtn {
-    background-color: #6DAFC7;
+    background-color: #1e84a9;
   }
 
 
   button {
     margin-left: auto;
     margin-right: 15px;
+  }
+
+
+  #additional-filters {
+    margin-top: 20px;
   }
