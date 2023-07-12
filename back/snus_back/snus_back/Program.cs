@@ -16,7 +16,7 @@ builder.Services.AddDbContext<SNUSDbContext>(options =>
         UseSqlite("Data Source = SnusDB.db");
     });
 
-
+builder.Services.AddCors();
 
 // Services
 builder.Services.AddTransient<IUserService, UserService>();
@@ -35,20 +35,32 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
 app.UseHttpsRedirection();
+app.UseAuthorization();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
 
-app.UseAuthorization();
+
+
 
 app.MapRazorPages();
 
+
+
 app.Run();
+
 
 
 /*using (var db = new SNUSDbContext())

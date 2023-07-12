@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using snus_back.DTOs;
 using snus_back.Models;
 using snus_back.Services.ServiceInterfaces;
@@ -24,7 +25,7 @@ namespace snus_back.Controllers
             try
             {
                 User user = this.userService.Login(creds);
-                return Ok(new UserDTO(user.Id, user.Username, user.Name, user.LastName, user.Role));
+                return Ok(new UserDTO(user.Id, user.Username, user.Name, user.LastName, user.Role.ToString()));
             }
             catch (Exception e)
             {
