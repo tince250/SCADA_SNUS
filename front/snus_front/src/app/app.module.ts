@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReportManagerComponent } from './report-manager/report-manager.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -29,9 +30,6 @@ import { ReportManagerComponent } from './report-manager/report-manager.componen
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
   ],

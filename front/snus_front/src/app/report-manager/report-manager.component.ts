@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-report-manager',
@@ -9,6 +10,12 @@ export class ReportManagerComponent {
 
   selectedCriteria: string = 'Select';
   selectedSort: string = 'Select';
+  selectedAlarmPriority: string = 'Select'
+
+  dateForm = new FormGroup({
+    start: new FormControl(''),
+    end: new FormControl('')
+  }, [])
 
 
   changeCritera(c: string) {

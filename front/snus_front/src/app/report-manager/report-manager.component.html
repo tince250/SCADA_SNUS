@@ -7,7 +7,8 @@
                 <button class="dropbtn">{{selectedCriteria}}</button>
                 <div class="dropdown-content">
                   <a (click)="changeCritera('Alarms')">Alarms</a>
-                  <a>Link 2</a>
+                  <a (click)="changeCritera('Alarms by priority')">Alarms by priority</a>
+                  <a (click)="changeCritera('Tags')">Tags</a>
                   <a>Link 3</a>
                 </div>
             </div>
@@ -22,5 +23,34 @@
             </div>
         </div>
         <button class="outline-btn">Generate report</button>
+    </div>
+
+    <div class="basic-container" *ngIf="selectedCriteria!='Select'">
+        <div class="dropdown" *ngIf="selectedCriteria=='Alarms by priority'">
+            <button class="dropbtn">{{selectedAlarmPriority}}</button>
+            <div class="dropdown-content">
+              <a (click)="changeSort('Low')">Low</a>
+              <a (click)="changeSort('Medium')">Medium</a>
+              <a (click)="changeSort('Height')">High</a>
+            </div>
+        </div>
+        <!-- <form fxLayout="row">
+            <mat-form-field appearance="fill">
+                <mat-label>Start</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="start" >
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>End</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="end" >
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                
+              </mat-form-field>
+        </form> -->
     </div>
 </div>
