@@ -128,7 +128,11 @@ nav {
     background-color: rgb(172, 172, 172);
     color: white !important;
     border-radius: 15px;
-    padding: 18px;
+    padding: 0px 10px;
+}
+
+.logout-option a {
+    color: white !important;
 }
 
 /* SCREEN DIFFERENCE */
