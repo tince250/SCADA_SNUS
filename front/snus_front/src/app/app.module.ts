@@ -14,13 +14,15 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReportManagerComponent } from './report-manager/report-manager.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { DatabaseManagerComponent } from './database-manager/database-manager.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NavbarComponent,
-    ReportManagerComponent
+    ReportManagerComponent,
+    DatabaseManagerComponent
   ],
   imports: [
     BrowserModule,
