@@ -20,9 +20,11 @@ builder.Services.AddCors();
 
 // Services
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IIOEntryService, IOEntryService>();
 
 // Repositories
 builder.Services.AddTransient<UserRepository>();
+builder.Services.AddTransient<IOEntryRepository>();
 
 
 var app = builder.Build();
@@ -42,10 +44,10 @@ app.UseCors(x => x
             .AllowAnyHeader());
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
