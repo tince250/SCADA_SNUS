@@ -26,12 +26,12 @@ namespace snus_back.Repositories
 
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address)
         {
-            var  tagRecrods = dbContext.TagRecords
+            var  tagRecords = dbContext.TagRecords
                 .Where(tr => tr.Tag.IOAddress == address)
                 .ToList();
 
             ICollection<TagRecordDTO> ret = new List<TagRecordDTO>();
-            foreach (var tagRecord in dbContext.TagRecords)
+            foreach (var tagRecord in tagRecords)
             {
                 ret.Add(new TagRecordDTO(tagRecord));
             }

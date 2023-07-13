@@ -103,7 +103,7 @@ export class ReportManagerComponent {
   }
 
   getAllTagsByAddress() {
-
+    console.log(this.selectedTagAddress);
     if (this.selectedTagAddress != 'Select') {
       this.reportService.getAllTagsByAddress(this.selectedTagAddress).subscribe({
         next: (value) => {

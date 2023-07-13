@@ -22,7 +22,8 @@ namespace snus_back.Controllers
         {
             try
             {
-                ICollection<TagRecordDTO> ret = this.tagService.getAllTagByIOAddress(address);
+                System.Diagnostics.Debug.WriteLine(address);
+                ICollection <TagRecordDTO> ret = this.tagService.getAllTagByIOAddress(address);
                 return Ok(ret);
             }
             catch (Exception e)
