@@ -7,7 +7,7 @@ namespace snus_back.Services.ServiceInterfaces
     {
         public ICollection<TagRecordDTO> getAllTagRecords();
 
-        public ICollection<Tag> getAllTagByIOAddress(string address);
+        public ICollection<TagRecordDTO> getAllTagByIOAddress(string address);
 
 
     }

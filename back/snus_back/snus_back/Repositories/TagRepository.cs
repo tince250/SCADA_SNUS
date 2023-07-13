@@ -24,11 +24,19 @@ namespace snus_back.Repositories
             return ret;
         }
 
-        public ICollection<Tag> getAllTagByIOAddress(string address)
+        public ICollection<TagRecordDTO> getAllTagByIOAddress(string address)
         {
-            return dbContext.Tags
-                .Where(t => t.IOAddress == address)
+            var  tagRecrods = dbContext.TagRecords
+                .Where(tr => tr.Tag.IOAddress == address)
                 .ToList();
+
+            ICollection<TagRecordDTO> ret = new List<TagRecordDTO>();
+            foreach (var tagRecord in dbContext.TagRecords)
+            {
+                ret.Add(new TagRecordDTO(tagRecord));
+            }
+
+            return ret;
         }
     }
 }

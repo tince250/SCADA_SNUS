@@ -14,7 +14,7 @@ namespace snus_back.Services
             this.allTags = allTags;
         }
 
-        public ICollection<Tag> getAllTagByIOAddress(string address)
+        public ICollection<TagRecordDTO> getAllTagByIOAddress(string address)
         {
             return allTags.getAllTagByIOAddress(address);
         }

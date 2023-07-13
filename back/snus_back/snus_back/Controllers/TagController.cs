@@ -22,7 +22,7 @@ namespace snus_back.Controllers
         {
             try
             {
-                ICollection<Tag> ret = this.tagService.getAllTagByIOAddress(address);
+                ICollection<TagRecordDTO> ret = this.tagService.getAllTagByIOAddress(address);
                 return Ok(ret);
             }
             catch (Exception e)

@@ -17,7 +17,7 @@ namespace snus_back.Controllers
             this.alarmService = alarmService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("between/dates")]
         public ActionResult GetAllAlarmsBetweenDates(DateRangeDTO dto)
         {
@@ -34,7 +34,7 @@ namespace snus_back.Controllers
 
         [HttpGet]
         [Route("{priorityStr}")]
-        public ActionResult GetAllAlarmsByType(string priorityStr)
+        public ActionResult GetAllAlarmsByPriority(string priorityStr)
         {
             try
             {
