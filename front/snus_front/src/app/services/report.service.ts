@@ -19,6 +19,22 @@ import { environment } from "src/environments/environment";
           });
     }
 
+    getAllAITags(): Observable<any> {
+        return this.http.get<any>(environment.apiHost + "/tag/AI", {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+            })
+          });
+    }
+
+    getAllDITags(): Observable<any> {
+        return this.http.get<any>(environment.apiHost + "/tag/DI", {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+            })
+          });
+    }
+
     getAllTagsByAddress(address: string): Observable<any> {
         return this.http.get<any>(environment.apiHost + "/tag/" + address, {
             headers: new HttpHeaders({
@@ -56,5 +72,30 @@ import { environment } from "src/environments/environment";
     Value: number,
     Description: string,
     IOAddress: string
+  }
+
+  export interface ALarmDTO {
+    Id: number,
+    Timestamp: string,
+    Value: number,
+    Description: string,
+    IOAddress: string
+  }
+
+  export interface AnalogInputDTO {
+    Id: number,
+    Value: number,
+    Description: string,
+    IOAddress: string,
+    LowLimit: number,
+    HighLimit: number,  
+    Unit: string
+  }
+
+  export interface DigitalInputDTO {
+    Id: number,
+    Value: number,
+    Description: string,
+    IOAddress: string,
   }
   

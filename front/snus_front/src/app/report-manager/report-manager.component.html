@@ -27,7 +27,7 @@
         <button class="outline-btn" (click)="generate()">Generate report</button>
     </div>
 
-    <div id="additional-filters" class="basic-container" *ngIf="selectedCriteria!='Select' && selectedCriteria!='Tags'">
+    <div id="additional-filters" class="basic-container" *ngIf="selectedCriteria!='Select' && selectedCriteria!='Tags' && selectedCriteria!='AI Tags' && selectedCriteria!='DI Tags'">
         <div class="dropdown" *ngIf="selectedCriteria=='Alarms by priority'">
             <button class="dropbtn">{{selectedAlarmPriority}}</button>
             <div class="dropdown-content">

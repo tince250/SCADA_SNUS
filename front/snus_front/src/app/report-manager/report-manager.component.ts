@@ -55,10 +55,42 @@ export class ReportManagerComponent {
     else if (this.selectedCriteria == 'Tag by I/O address') {
       this.getAllTagsByAddress();
     }
+    else if (this.selectedCriteria == 'AI Tags') {
+      this.getAllAITags();
+    }
+    else if (this.selectedCriteria == 'DI Tags') {
+      this.getAllDITags();
+    }
   }
 
   getAllTags() {
     this.reportService.getAllTags().subscribe({
+      next: (value) => {
+        console.log("succ\n" + JSON.stringify(value));
+      },
+      error: (err) => {
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-server-error']
+       });
+      }
+    })
+  }
+
+  getAllAITags() {
+    this.reportService.getAllAITags().subscribe({
+      next: (value) => {
+        console.log("succ\n" + JSON.stringify(value));
+      },
+      error: (err) => {
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-server-error']
+       });
+      }
+    })
+  }
+
+  getAllDITags() {
+    this.reportService.getAllDITags().subscribe({
       next: (value) => {
         console.log("succ\n" + JSON.stringify(value));
       },
