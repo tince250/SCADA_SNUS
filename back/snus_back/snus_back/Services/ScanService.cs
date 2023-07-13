@@ -67,7 +67,7 @@ namespace snus_back.Services
             {
                 if (activeAnalogInputs[address].IsScanOn)
                 {
-                    currentValue = ioEntryRepository.entries[address];
+                    currentValue = IOEntryRepository.entries[address];
                     lock (_lock)
                     {
                         try
@@ -119,7 +119,7 @@ namespace snus_back.Services
             {
                 if (activeDigitalInputs[address].IsScanOn)
                 {
-                    currentValue = ioEntryRepository.entries[address];
+                    currentValue = IOEntryRepository.entries[address];
                     lock (_lock)
                     {
                         try

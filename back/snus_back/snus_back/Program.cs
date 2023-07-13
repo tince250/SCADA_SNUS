@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using snus_back;
 using snus_back.data_access;
 using snus_back.Models;
 using snus_back.Repositories;
@@ -21,10 +22,13 @@ builder.Services.AddCors();
 // Services
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IIOEntryService, IOEntryService>();
+builder.Services.AddTransient<SimulationDriver>();
+builder.Services.AddTransient<ScanService>();
 
 // Repositories
 builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<IOEntryRepository>();
+builder.Services.AddTransient<TagRepository>();
 
 
 var app = builder.Build();
@@ -59,17 +63,10 @@ app.UseEndpoints(endpoints =>
 
 app.MapRazorPages();
 
-
+using var scope = app.Services.CreateScope();
+scope.ServiceProvider.GetRequiredService<ScanService>().Run();
 
 app.Run();
 
 
-
-/*using (var db = new SNUSDbContext())
-{
-    Console.WriteLine("Adding some authors into database...");
-    User author1 = new User { Name = "Roberto", LastName = "Bolano" };
-    db.Users.Add(author1);
-    db.SaveChanges();
-}*/
 
