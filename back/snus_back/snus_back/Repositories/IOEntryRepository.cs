@@ -7,7 +7,7 @@ namespace snus_back.Repositories
     public class IOEntryRepository
     {
         private const int ENTRIES_NUMBER = 20;
-        Dictionary<string, double> entries = new Dictionary<string, double>();
+        public Dictionary<string, double> entries = new Dictionary<string, double>();
         private SNUSDbContext dbContext;
 
         public IOEntryRepository(SNUSDbContext dbContext)
