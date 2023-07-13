@@ -45,5 +45,35 @@ namespace snus_back.Controllers
                 return BadRequest(new { Message = e.Message });
             }
         }
+
+        [HttpGet]
+        [Route("AI")]
+        public ActionResult GetAllAITags()
+        {
+            try
+            {
+                ICollection<AnalogInputDTO> ret = this.tagService.getAllAITags();
+                return Ok(ret);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("DI")]
+        public ActionResult GetAllDITags()
+        {
+            try
+            {
+                ICollection<DigitalInputDTO> ret = this.tagService.getAllDITags();
+                return Ok(ret);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
     }
 }

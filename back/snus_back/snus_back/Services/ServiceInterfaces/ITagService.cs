@@ -6,9 +6,8 @@ namespace snus_back.Services.ServiceInterfaces
     public interface ITagService
     {
         public ICollection<TagRecordDTO> getAllTagRecords();
-
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address);
-
-
+        public ICollection<AnalogInputDTO> getAllAITags();
+        public ICollection<DigitalInputDTO> getAllDITags();
     }
 }
