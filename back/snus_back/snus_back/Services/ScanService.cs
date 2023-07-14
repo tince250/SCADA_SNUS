@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using snus_back.Models;
 using snus_back.Repositories;
+using snus_back.WebSockets;
 using System;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -21,15 +22,17 @@ namespace snus_back.Services
         private TagRepository tagRepository;
         private AlarmRepository alarmRepository;
         private IOEntryRepository ioEntryRepository;
-
+        private UpdateAlarmHandler udateAlarmHandler;
+        private UpdateInputHandler updateInputHandler;
         private readonly object _lock = new object();
 
-        public ScanService(TagRepository tagRepository, IOEntryRepository iOEntryRepository, AlarmRepository alarmRepository)
+        public ScanService(TagRepository tagRepository, IOEntryRepository iOEntryRepository, AlarmRepository alarmRepository, UpdateAlarmHandler updateAlarmHandler, UpdateInputHandler updateInputHandler)
         {
             this.tagRepository = tagRepository;
             this.alarmRepository = alarmRepository;
             this.ioEntryRepository = iOEntryRepository;
-
+            this.udateAlarmHandler = updateAlarmHandler;
+            this.updateInputHandler = updateInputHandler;
         }
 
         public void Run()
@@ -144,6 +147,10 @@ namespace snus_back.Services
 
                     if (currentAlarm != null)
                     {
+                        lock(_lock)
+                        {
+                            udateAlarmHandler.SendDataToClient("alarm", currentAlarm);
+                        }
                         AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
                         lock (_lock)
                         {
@@ -156,6 +163,10 @@ namespace snus_back.Services
                     lock(_lock)
                     {
                         tagRecords.Add(tagRecord);
+                    }
+                    lock (_lock)
+                    {
+                        updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }
                 Thread.Sleep(scanTime);

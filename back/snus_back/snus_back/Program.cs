@@ -5,6 +5,7 @@ using snus_back.Models;
 using snus_back.Repositories;
 using snus_back.Services;
 using snus_back.Services.ServiceInterfaces;
+using snus_back.WebSockets;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,11 @@ builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<IOEntryRepository>();
 builder.Services.AddTransient<TagRepository>();
 builder.Services.AddTransient<AlarmRepository>();
+
+builder.Services.AddSingleton<UpdateInputHandler>();
+builder.Services.AddSingleton<UpdateAlarmHandler>();
+builder.Services.AddSingleton<WebSocketConnectionManager>();
+
 
 
 var app = builder.Build();
