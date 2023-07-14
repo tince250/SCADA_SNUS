@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TableOutputTag } from '../database-manager/database-manager.component';
 import { tagValueRegexValidator } from '../validators/tag-value-validator';
+import { TagService } from '../services/tag.service';
 
 @Component({
   selector: 'app-change-tag-value',
@@ -16,6 +17,7 @@ export class ChangeTagValueComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ChangeTagValueComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private tagService: TagService,
     private snackBar: MatSnackBar) { }
 
   tagValueForm = new FormGroup({
@@ -28,7 +30,43 @@ export class ChangeTagValueComponent implements OnInit {
 
   changeTagValue(){
     if (this.tagValueForm.valid){
-      console.log(this.tagValueForm.value.value)
+      // console.log(this.tagValueForm.value.value)
+      if (this.tag.type == "DIGITAL"){
+        this.tagService.updateDigitalOutputValue(this.tag.id, this.tagValueForm.value.value).subscribe({
+          next: (value) => {
+            this.snackBar.open("Successfully updated value of tag with id: " + this.tag.id, "", {
+              duration: 2700, panelClass: ['snack-bar-success']
+           });
+           this.dialogRef.close();
+          },
+          error: (err) => {
+            this.snackBar.open(err.error, "", {
+              duration: 2700, panelClass: ['snack-bar-server-error']
+           });
+           console.log(err);
+          }
+        })
+      } else {
+        if (this.tagValueForm.value.value != "0" && this.tagValueForm.value.value != "1"){
+          this.snackBar.open("Digital output can only have 0 and 1 values!", "", {
+            duration: 2700, panelClass: ['snack-bar-front-error']
+         });
+        }
+        this.tagService.updateAnalogOutputValue(this.tag.id, this.tagValueForm.value.value).subscribe({
+          next: (value) => {
+            this.snackBar.open("Successfully updated value of tag with id: " + this.tag.id, "", {
+              duration: 2700, panelClass: ['snack-bar-success']
+           });
+           this.dialogRef.close();
+          },
+          error: (err) => {
+            this.snackBar.open(err.error, "", {
+              duration: 2700, panelClass: ['snack-bar-server-error']
+           });
+           console.log(err);
+          }
+        })
+      }
     } else {
       this.snackBar.open("Check your inputs again!", "", {
         duration: 2700, panelClass: ['snack-bar-front-error']
