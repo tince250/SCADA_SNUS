@@ -45,5 +45,35 @@ namespace snus_back.Controllers
                 return BadRequest(new { Message = e.Message });
             }
         }
+
+        [HttpDelete]
+        [Route("digital/{id}")]
+        public ActionResult DeleteDigitalTag(int id)
+        {
+            try
+            {
+                this.tagService.DeleteDigitalTag(id);
+                return Ok("Successfully deleted tag with id: " + id);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("analog/{id}")]
+        public ActionResult DeleteAnalogTag(int id)
+        {
+            try
+            {
+                this.tagService.DeleteAnalogTag(id);
+                return Ok("Successfully deleted tag with id: " + id);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
     }
 }

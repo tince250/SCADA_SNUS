@@ -9,6 +9,8 @@ namespace snus_back.Services.ServiceInterfaces
 
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address);
 
+        public void DeleteDigitalTag(int id);
 
+        public void DeleteAnalogTag(int id);
     }
 }

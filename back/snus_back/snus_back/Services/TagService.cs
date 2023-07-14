@@ -23,5 +23,15 @@ namespace snus_back.Services
         {
             return allTags.getAllTagRecords();
         }
+
+        public void DeleteDigitalTag(int id)
+        {
+            allTags.DeleteDigitalTag(id);
+        }
+
+        public void DeleteAnalogTag(int id)
+        {
+            allTags.DeleteAnalogTag(id);
+        }
     }
 }

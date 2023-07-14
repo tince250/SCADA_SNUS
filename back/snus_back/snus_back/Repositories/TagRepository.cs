@@ -38,5 +38,19 @@ namespace snus_back.Repositories
 
             return ret;
         }
+
+        public void DeleteAnalogTag(int id)
+        {
+            AnalogOutput analogTag = dbContext.AnalogOutputs.Find(id);
+            dbContext.AnalogOutputs.Remove(analogTag);
+            dbContext.SaveChanges();
+        }
+
+        public void DeleteDigitalTag(int id)
+        {
+            DigitalOutput digitalTag = dbContext.DigitalOutputs.Find(id);
+            dbContext.DigitalOutputs.Remove(digitalTag);
+            dbContext.SaveChanges();
+        }
     }
 }

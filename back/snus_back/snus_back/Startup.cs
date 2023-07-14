@@ -11,7 +11,6 @@
 
         private void RunOnApplicationStart()
         {
-
         }
     }
 
