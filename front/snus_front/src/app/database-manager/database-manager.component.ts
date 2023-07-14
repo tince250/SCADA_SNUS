@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ChangeTagValueComponent } from '../change-tag-value/change-tag-value.component';
 
 @Component({
   selector: 'app-database-manager',
@@ -10,7 +12,8 @@ export class DatabaseManagerComponent implements OnInit {
   outputTags: TableOutputTag[] = [];
   displayedColumns = ['name', 'type', 'description', 'value', 'actions'];
 
-  constructor(){}
+  constructor(private dialog: MatDialog){}
+
   ngOnInit(): void {
     // throw new Error('Method not implemented.');
     let tag : TableOutputTag = {
@@ -23,8 +26,10 @@ export class DatabaseManagerComponent implements OnInit {
     this.outputTags.push(tag);
   }
 
-  handleButtonClick(tag: any){
-    
+  changeTagValue(tag: TableOutputTag){
+    this.dialog.open(ChangeTagValueComponent, {
+      data: {}
+    });
   }
 
 

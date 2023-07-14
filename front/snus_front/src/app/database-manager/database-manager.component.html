@@ -57,7 +57,7 @@
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let tag">
-                    <button mat-mini-fab class="dark-blue-back" aria-label="Example icon button with a home icon">
+                    <button mat-mini-fab class="dark-blue-back" (click)="changeTagValue(tag)" aria-label="Example icon button with a hhs icon">
                         <mat-icon>edit</mat-icon>
                       </button>
                 </td>

@@ -15,6 +15,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ReportManagerComponent } from './report-manager/report-manager.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DatabaseManagerComponent } from './database-manager/database-manager.component';
+import { ChangeTagValueComponent } from './change-tag-value/change-tag-value.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DatabaseManagerComponent } from './database-manager/database-manager.co
     LoginComponent,
     NavbarComponent,
     ReportManagerComponent,
-    DatabaseManagerComponent
+    DatabaseManagerComponent,
+    ChangeTagValueComponent
   ],
   imports: [
     BrowserModule,
