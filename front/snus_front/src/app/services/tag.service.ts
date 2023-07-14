@@ -13,10 +13,26 @@ import { TableOutputTag } from "../database-manager/database-manager.component";
     constructor(private http: HttpClient) { }
 
     getAllOutputTagsDBManager(): Observable<TableOutputTag[]> {
-    return this.http.get<any>(environment.apiHost + "/tag/output-dbm", {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-        })
+        return this.http.get<any>(environment.apiHost + "/tag/output-dbm", {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
+        });
+    }
+
+    deleteDigitalOutput(id: number): Observable<any> {
+        return this.http.delete<any>(environment.apiHost + "/tag/digital/" + id, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
+        });
+    }
+
+    deleteAnalogOutput(id: number): Observable<any> {
+        return this.http.delete<any>(environment.apiHost + "/tag/analog/" + id, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
         });
     }
 }

@@ -42,7 +42,35 @@ export class DatabaseManagerComponent implements OnInit {
   }
 
   deleteTag(tag: TableOutputTag){
-
+    if (tag.type == "DIGITAL"){
+      this.tagService.deleteDigitalOutput(tag.id).subscribe({
+        next: (value) => {
+          this.snackBar.open(value, "", {
+            duration: 2700, panelClass: ['snack-bar-success']
+         });
+        },
+        error: (err) => {
+          this.snackBar.open(err.error, "", {
+            duration: 2700, panelClass: ['snack-bar-server-error']
+         });
+         console.log(err);
+        }
+      })
+    } else {
+      this.tagService.deleteAnalogOutput(tag.id).subscribe({
+        next: (value) => {
+          this.snackBar.open(value, "", {
+            duration: 2700, panelClass: ['snack-bar-success']
+         });
+        },
+        error: (err) => {
+          this.snackBar.open(err.error, "", {
+            duration: 2700, panelClass: ['snack-bar-server-error']
+         });
+         console.log(err);
+        }
+      })
+    }
   }
 
   onInputTagsClicked(){
