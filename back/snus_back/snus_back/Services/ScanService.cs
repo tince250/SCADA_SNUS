@@ -66,7 +66,7 @@ namespace snus_back.Services
                 tagRepository.UpdateAnalogInputs(activeAnalogInputs);
                 tagRepository.AddTagRecords(new List<TagRecord>(tagRecords));
                 tagRecords.Clear();
-                //alarmRepository.AddAlarmRecords(new List<AlarmRecord>(alarmRecords));
+                alarmRepository.AddAlarmRecords(new List<AlarmRecord>(alarmRecords));
                 alarmRecords.Clear();
             }
         }
@@ -129,15 +129,6 @@ namespace snus_back.Services
                         }
                     }
 
-                    if (currentAlarm != null)
-                    {
-                        AlarmRecord alarmRecord = new AlarmRecord { Alarm = currentAlarm, AlarmId = currentAlarm.Id, Tag = activeAnalogInputs[address], TagId = activeAnalogInputs[address].Id, Timestamp = DateTime.Now };
-                        lock(_lock)
-                        {
-                            alarmRecords.Add(alarmRecord);
-                        }
-                    }
-
                     // update AnalogInput's value in db
                     lock (_lock)
                     {
@@ -148,6 +139,15 @@ namespace snus_back.Services
                         catch (Exception e)
                         {
                             // something
+                        }
+                    }
+
+                    if (currentAlarm != null)
+                    {
+                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now };
+                        lock (_lock)
+                        {
+                            alarmRecords.Add(alarmRecord);
                         }
                     }
 

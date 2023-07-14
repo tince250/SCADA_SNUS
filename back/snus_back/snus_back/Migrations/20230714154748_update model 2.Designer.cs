@@ -11,8 +11,8 @@ using snus_back.data_access;
 namespace snus_back.Migrations
 {
     [DbContext(typeof(SNUSDbContext))]
-    [Migration("20230714105644_updated model")]
-    partial class updatedmodel
+    [Migration("20230714154748_update model 2")]
+    partial class updatemodel2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,22 +58,12 @@ namespace snus_back.Migrations
                     b.Property<int>("AlarmId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AnalogInputId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AlarmId");
-
-                    b.HasIndex("AnalogInputId");
-
-                    b.HasIndex("TagId");
 
                     b.ToTable("AlarmRecords");
                 });
@@ -271,19 +261,7 @@ namespace snus_back.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("snus_back.Models.AnalogInput", null)
-                        .WithMany("AlarmRecords")
-                        .HasForeignKey("AnalogInputId");
-
-                    b.HasOne("snus_back.Models.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Alarm");
-
-                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("snus_back.Models.TagRecord", b =>
@@ -299,8 +277,6 @@ namespace snus_back.Migrations
 
             modelBuilder.Entity("snus_back.Models.AnalogInput", b =>
                 {
-                    b.Navigation("AlarmRecords");
-
                     b.Navigation("Alarms");
                 });
 #pragma warning restore 612, 618
