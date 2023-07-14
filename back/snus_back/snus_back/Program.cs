@@ -20,11 +20,13 @@ builder.Services.AddCors();
 
 // Services
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IIOEntryService, IOEntryService>();
 
 // Repositories
 builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<IOEntryRepository>();
+builder.Services.AddTransient<TagRepository>();
 
 
 var app = builder.Build();
