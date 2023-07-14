@@ -9,6 +9,8 @@ import { ChangeTagValueComponent } from '../change-tag-value/change-tag-value.co
 })
 export class DatabaseManagerComponent implements OnInit {
  
+  isInputTagsClicked: boolean = false;
+  isOutputTagsClicked: boolean = false;
   outputTags: TableOutputTag[] = [];
   displayedColumns = ['name', 'type', 'description', 'value', 'actions'];
 
@@ -34,6 +36,17 @@ export class DatabaseManagerComponent implements OnInit {
   }
 
   deleteTag(tag: TableOutputTag){
+
+  }
+
+  onInputTagsClicked(){
+    this.isInputTagsClicked = true;
+    this.isOutputTagsClicked = false;
+  }
+
+  onOutputTagsClicked(){
+    this.isOutputTagsClicked = true;  
+    this.isInputTagsClicked = false;
 
   }
 

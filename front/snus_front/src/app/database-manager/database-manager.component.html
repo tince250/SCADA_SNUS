@@ -1,31 +1,20 @@
 <div id="main-container">    
     <h1>Database manager</h1>
     <div id="filter-container" class="basic-container">
-        <div class="input-tag-header-div">
-            <h2>Input tags</h2>
+        <div class="input-tag-header-div" (click)="onInputTagsClicked()">
+            <h2 [ngClass]="{'dark-blue': isInputTagsClicked}">Input tags</h2>
             
         </div>
-        <div class="output-tag-header-div">
-            <h2>Output tags</h2>
-            <!-- <div class="dropdown">
-                <button class="dropbtn">{{selectedSort}}</button>
-                <div class="dropdown-content">
-                  <a (click)="changeSort('Time')">Time</a>
-                </div>
-            </div> -->
+        <div class="output-tag-header-div" (click)="onOutputTagsClicked()">
+            <h2 [ngClass]="{'dark-blue': isOutputTagsClicked}">Output tags</h2>
         </div>
-        <div class="add-tag-div">
+        <div class="add-tag-div" *ngIf="isOutputTagsClicked || isInputTagsClicked">
             <mat-icon class="add-button dark-blue" >add_circle_outline</mat-icon>
             <h2 style="scale: 0.9;" class="dark-blue">Add new tag</h2>
         </div>
-        <!-- <button class="outline-btn" (click)="generate()">Generate report</button> -->
     </div>
         <table [dataSource]="outputTags" mat-table class="mat-elevation-z8">
 
-            <!--- Note that these columns can be defined in any order.
-                  The actual rendered columns are set as a property on the row definition" -->
-          
-            <!-- Position Column -->
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef> Name </th>
               <td mat-cell *matCellDef="let tag"> {{tag.id}} </td>
@@ -36,19 +25,16 @@
                 <td mat-cell *matCellDef="let tag"> {{tag.type}} </td>
               </ng-container>
           
-            <!-- Name Column -->
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef> Description </th>
               <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
             </ng-container>
           
-            <!-- Weight Column -->
             <ng-container matColumnDef="value">
               <th mat-header-cell *matHeaderCellDef> Current value </th>
               <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
             </ng-container>
           
-            <!-- Symbol Column -->
             <ng-container matColumnDef="unit">
               <th mat-header-cell *matHeaderCellDef> Unit </th>
               <td mat-cell *matCellDef="let tag"> {{tag.unit}} </td>
