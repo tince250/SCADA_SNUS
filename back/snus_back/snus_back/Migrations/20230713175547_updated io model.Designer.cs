@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using snus_back.data_access;
 
@@ -10,9 +11,11 @@ using snus_back.data_access;
 namespace snus_back.Migrations
 {
     [DbContext(typeof(SNUSDbContext))]
-    partial class SNUSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230713175547_updated io model")]
+    partial class updatediomodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +114,7 @@ namespace snus_back.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tag");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Tag");
 
@@ -190,7 +193,7 @@ namespace snus_back.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.ToTable("Tags", t =>
+                    b.ToTable("Tag", t =>
                         {
                             t.Property("HighLimit")
                                 .HasColumnName("AnalogInput_HighLimit");

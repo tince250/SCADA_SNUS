@@ -15,8 +15,7 @@ namespace snus_back.data_access
         public DbSet<DigitalOutput> DigitalOutputs { get;set; }
         public DbSet<DigitalInput> DigitalInputs { get;set; }
         public DbSet<TagRecord> TagRecords { get;set; }
-        public DbSet<Tag> Tags { get; set; }
-
+        public DbSet<IOEntry> IOEntries { get;set; }
 
     }
 }
