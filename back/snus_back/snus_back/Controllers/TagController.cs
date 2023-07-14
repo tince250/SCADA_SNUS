@@ -90,5 +90,20 @@ namespace snus_back.Controllers
                 return BadRequest(new { Message = e.Message });
             }
         }
+
+        [HttpPost]
+        public ActionResult AddTag(AddTagDTO dto)
+        {
+            try
+            {
+                Console.WriteLine(dto);
+                //this.tagService.AddTag(dto);
+                return Ok("Tag added successfully");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
     }
 }

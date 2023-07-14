@@ -38,5 +38,49 @@ namespace snus_back.Services
         {
             return allTags.GetAllOutputTagsDBManager();
         }
+
+        public void AddTag(AddTagDTO dto)
+        {
+            switch (dto.Type)
+            {
+                case "Analog Input":
+                    this.addAnalogInputTag(dto);
+                    break;
+                case "Analog Output":
+                    this.addAnalogOutputTag(dto);
+                    break;
+                case "Digital Input":
+                    this.addDigitalInputTag(dto);
+                    break;
+                case "Digital Output":
+                    this.addDigitalOutputTag(dto);
+                    break;
+                default:
+                    throw new Exception("Tag type provided is not supported.");
+            }
+        }
+
+        private void addDigitalOutputTag(AddTagDTO dto)
+        {
+            //this.allTags.AddDigitalOutput();
+        }
+
+        private void addDigitalInputTag(AddTagDTO dto)
+        {
+            //this.allTags.AddDigitalInput();
+
+        }
+
+        private void addAnalogOutputTag(AddTagDTO dto)
+        {
+            //this.allTags.AddAnalogOutput();
+
+        }
+
+        private void addAnalogInputTag(AddTagDTO dto)
+        {
+            //this.allTags.AddAnalogInput();
+
+        }
     }
 }

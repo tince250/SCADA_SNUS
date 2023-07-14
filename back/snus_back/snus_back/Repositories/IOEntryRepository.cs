@@ -8,6 +8,7 @@ namespace snus_back.Repositories
     {
         private const int ENTRIES_NUMBER = 20;
         Dictionary<string, double> entries = new Dictionary<string, double>();
+        Dictionary<string, double> entriesOutput = new Dictionary<string, double>();
         private SNUSDbContext dbContext;
 
         public IOEntryRepository(SNUSDbContext dbContext)
@@ -25,6 +26,7 @@ namespace snus_back.Repositories
                 for (int i = 0; i < ENTRIES_NUMBER; i++)
                 {
                     this.entries.Add(i.ToString(), -1);
+                    this.entriesOutput.Add(i.ToString(), -1);
                 }
                 this.BatchUpdateDb();
             }
@@ -33,8 +35,19 @@ namespace snus_back.Repositories
                 for (int i = 0; i < ENTRIES_NUMBER; i++)
                 {
                     this.entries.Add(entities[i].IOAddress, entities[i].Value);
+                    this.entriesOutput.Add(i.ToString(), -1);
                 }
             }
+        }
+
+        public Dictionary<string, double> GetEntries()
+        {
+            return this.entries;
+        }
+
+        public Dictionary<string, double> GetOutputEntries()
+        {
+            return this.entriesOutput;
         }
 
         public void BatchUpdate(List<IOEntryDTO> newEntries)
@@ -67,5 +80,6 @@ namespace snus_back.Repositories
             
             dbContext.SaveChanges();
         }
+
     }
 }
