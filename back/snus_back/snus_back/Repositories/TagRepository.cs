@@ -67,6 +67,20 @@ namespace snus_back.Repositories
             return ret;
         }
 
+        public void UpdateAnalogOutputValue(int id, double value)
+        {
+            AnalogOutput analogOutput = dbContext.AnalogOutputs.Find(id);
+            analogOutput.Value = value;
+            dbContext.SaveChanges();
+        }
+
+        public void UpdateDigitalOutputValue(int id, double value)
+        {
+            DigitalOutput digitalOutput = dbContext.DigitalOutputs.Find(id);
+            digitalOutput.Value = value;
+            dbContext.SaveChanges();
+        }
+
         public void DeleteAnalogOutput(int id)
         {
             AnalogOutput analogOutput = dbContext.AnalogOutputs.Find(id);
