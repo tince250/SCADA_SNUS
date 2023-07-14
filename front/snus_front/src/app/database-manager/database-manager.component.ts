@@ -24,12 +24,17 @@ export class DatabaseManagerComponent implements OnInit {
       type: "5"
     }
     this.outputTags.push(tag);
+    this.outputTags.push(tag);
   }
 
   changeTagValue(tag: TableOutputTag){
     this.dialog.open(ChangeTagValueComponent, {
       data: {}
     });
+  }
+
+  deleteTag(tag: TableOutputTag){
+
   }
 
 

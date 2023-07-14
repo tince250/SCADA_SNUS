@@ -28,10 +28,6 @@ h1 {
     border-right: 2px solid gray;
 }
 
-.output-tag-header-div {
-
-}
-
 #filter-container > div {
     display: flex;
     flex-direction: row;
@@ -76,6 +72,15 @@ th.mat-header-cell, .mat-cell {
     font-size: 20px;
     color: #b9b9b9;
     font-weight: bold;
+    height: 60px;
+}
+
+button.mat-mini-fab {
+  transition: transform 0.3s ease;
+}
+
+button.mat-mini-fab:hover {
+  transform: translateY(-5px); /* Adjust the desired vertical displacement */
 }
 
 
