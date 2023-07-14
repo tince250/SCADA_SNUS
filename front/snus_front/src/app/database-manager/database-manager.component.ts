@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangeTagValueComponent } from '../change-tag-value/change-tag-value.component';
+import { TagService } from '../services/tag.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-database-manager',
@@ -14,19 +16,23 @@ export class DatabaseManagerComponent implements OnInit {
   outputTags: TableOutputTag[] = [];
   displayedColumns = ['name', 'type', 'description', 'value', 'actions'];
 
-  constructor(private dialog: MatDialog){}
+  constructor(private dialog: MatDialog,
+    private tagService: TagService,
+    private snackBar: MatSnackBar){}
 
   ngOnInit(): void {
-    // throw new Error('Method not implemented.');
-    let tag : TableOutputTag = {
-      id: 1,
-      description: "2",
-      value: "3",
-      unit: "4",
-      type: "5"
-    }
-    this.outputTags.push(tag);
-    this.outputTags.push(tag);
+    this.tagService.getAllOutputTagsDBManager().subscribe({
+      next: (value) => {
+        console.log("succ\n" + JSON.stringify(value));
+        this.outputTags = value;
+      },
+      error: (err) => {
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-server-error']
+       });
+       console.log(err);
+      }
+    })
   }
 
   changeTagValue(tag: TableOutputTag){
@@ -49,8 +55,6 @@ export class DatabaseManagerComponent implements OnInit {
     this.isInputTagsClicked = false;
 
   }
-
-
 }
 
 
