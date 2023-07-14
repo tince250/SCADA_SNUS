@@ -15,7 +15,7 @@ builder.Services.AddDbContext<SNUSDbContext>(options =>
     {
         options.UseLazyLoadingProxies().
         UseSqlite("Data Source = SnusDB.db");
-    });
+    }, ServiceLifetime.Transient);
 
 builder.Services.AddCors();
 
@@ -29,6 +29,7 @@ builder.Services.AddTransient<ScanService>();
 builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<IOEntryRepository>();
 builder.Services.AddTransient<TagRepository>();
+builder.Services.AddTransient<AlarmRepository>();
 
 
 var app = builder.Build();

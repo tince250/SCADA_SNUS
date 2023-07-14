@@ -23,32 +23,49 @@ namespace snus_back.Repositories
             return dbContext.DigitalInputs.ToList();
         }
 
-        public void UpdateAnalogInput(string address, double value)
+        public void UpdateAnalogInputs(Dictionary<string, AnalogInput> activeAnalogInputs)
         {
-            AnalogInput analogInput = dbContext.AnalogInputs.FirstOrDefault(input => input.IOAddress == address);
-            if (analogInput == null)
+            foreach (string address in activeAnalogInputs.Keys)
             {
-                throw new Exception("AnalogInput not found.");
-            }
-            else
-            {
-                analogInput.Value = value;
+                AnalogInput analogInput = dbContext.AnalogInputs.FirstOrDefault(input => input.IOAddress == address);
+                if (analogInput == null)
+                {
+                    throw new Exception("AnalogInput not found.");
+                }
+                else
+                {
+                    analogInput.Value = activeAnalogInputs[address].Value;
+                }
             }
             dbContext.SaveChanges();
         }
 
-        public void UpdateDigitalInput(string address, double value)
+        public void UpdateDigitalInputs(Dictionary<string, DigitalInput> activeDigitalInputs)
         {
-            DigitalInput digitalInput = dbContext.DigitalInputs.FirstOrDefault(input => input.IOAddress == address);
-            if (digitalInput == null)
-            {
-                throw new Exception("DigitalInput not found.");
-            }
-            else
-            {
-                digitalInput.Value = value;
+            foreach (string address in activeDigitalInputs.Keys) { 
+
+                DigitalInput digitalInput = dbContext.DigitalInputs.FirstOrDefault(input => input.IOAddress == address);
+                if (digitalInput == null)
+                {
+                    throw new Exception("DigitalInput not found.");
+                }
+                else
+                {
+                    digitalInput.Value = activeDigitalInputs[address].Value;
+                }
             }
             dbContext.SaveChanges();
         }
+
+        public void AddTagRecords(ICollection<TagRecord> tagRecords)
+        {
+            foreach (TagRecord tagRecord in tagRecords)
+            {
+                dbContext.TagRecords.Add(tagRecord);
+            }
+            dbContext.SaveChanges();
+        }
+
+
     }
 }

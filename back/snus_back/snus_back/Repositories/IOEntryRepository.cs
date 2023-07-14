@@ -66,11 +66,11 @@ namespace snus_back.Repositories
                 for (int i = 0; i < entities.Count; i++)
                 {
                     entities[i].Value = entries[entities[i].IOAddress];
-                    Tag tag =  dbContext.AnalogInputs.FirstOrDefault(input => input.IOAddress == entities[i].IOAddress);
+                    /*Tag tag =  dbContext.AnalogInputs.FirstOrDefault(input => input.IOAddress == entities[i].IOAddress);
                     if (tag == null) 
                         tag = dbContext.DigitalInputs.FirstOrDefault(input => input.IOAddress == entities[i].IOAddress);
                     if (tag != null)
-                        dbContext.TagRecords.Add(new TagRecord { Tag = tag, TagId = tag.Id, Timestamp = DateTime.Now, Value = entries[entities[i].IOAddress] });
+                        dbContext.TagRecords.Add(new TagRecord { Tag = tag, TagId = tag.Id, Timestamp = DateTime.Now, Value = entries[entities[i].IOAddress] });*/
                 }
             }
             

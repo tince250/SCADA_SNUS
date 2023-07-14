@@ -55,6 +55,9 @@ namespace snus_back.Migrations
                     b.Property<int>("AlarmId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("AnalogInputId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("TagId")
                         .HasColumnType("INTEGER");
 
@@ -64,6 +67,8 @@ namespace snus_back.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AlarmId");
+
+                    b.HasIndex("AnalogInputId");
 
                     b.HasIndex("TagId");
 
@@ -263,6 +268,10 @@ namespace snus_back.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("snus_back.Models.AnalogInput", null)
+                        .WithMany("AlarmRecords")
+                        .HasForeignKey("AnalogInputId");
+
                     b.HasOne("snus_back.Models.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
@@ -287,6 +296,8 @@ namespace snus_back.Migrations
 
             modelBuilder.Entity("snus_back.Models.AnalogInput", b =>
                 {
+                    b.Navigation("AlarmRecords");
+
                     b.Navigation("Alarms");
                 });
 #pragma warning restore 612, 618

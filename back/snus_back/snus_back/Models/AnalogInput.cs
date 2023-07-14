@@ -10,5 +10,8 @@
 
         public virtual ICollection<Alarm> Alarms { get; set; } = new List<Alarm>();
 
+        public virtual ICollection<AlarmRecord> AlarmRecords { get; set; } = new List<AlarmRecord>();
+
+
     }
 }

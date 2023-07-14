@@ -11,7 +11,7 @@ using snus_back.data_access;
 namespace snus_back.Migrations
 {
     [DbContext(typeof(SNUSDbContext))]
-    [Migration("20230712161433_updated model")]
+    [Migration("20230714105644_updated model")]
     partial class updatedmodel
     {
         /// <inheritdoc />
@@ -58,6 +58,9 @@ namespace snus_back.Migrations
                     b.Property<int>("AlarmId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("AnalogInputId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("TagId")
                         .HasColumnType("INTEGER");
 
@@ -68,9 +71,29 @@ namespace snus_back.Migrations
 
                     b.HasIndex("AlarmId");
 
+                    b.HasIndex("AnalogInputId");
+
                     b.HasIndex("TagId");
 
                     b.ToTable("AlarmRecords");
+                });
+
+            modelBuilder.Entity("snus_back.Models.IOEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("IOAddress")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IOEntries");
                 });
 
             modelBuilder.Entity("snus_back.Models.Tag", b =>
@@ -248,6 +271,10 @@ namespace snus_back.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("snus_back.Models.AnalogInput", null)
+                        .WithMany("AlarmRecords")
+                        .HasForeignKey("AnalogInputId");
+
                     b.HasOne("snus_back.Models.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
@@ -272,6 +299,8 @@ namespace snus_back.Migrations
 
             modelBuilder.Entity("snus_back.Models.AnalogInput", b =>
                 {
+                    b.Navigation("AlarmRecords");
+
                     b.Navigation("Alarms");
                 });
 #pragma warning restore 612, 618
