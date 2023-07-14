@@ -1,0 +1,84 @@
+<div id="main-container">    
+    <h1>Add a new Tag</h1>
+    <div id="filter-container" class="basic-container">
+        <p>Choose tag type:</p>
+        <mat-radio-group
+            class="type-radio-group"
+            [(ngModel)]="chosenTagType"
+            (ngModelChange)="onChosenTagTypeChange($event)">
+            <mat-radio-button class="type-rb" *ngFor="let type of tagTypes" [value]="type">{{ type }}</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <div id="add-tag-form" class="basic-container" *ngIf="showForm">
+        <form [formGroup]="addTagForm" (ngSubmit)="addTag()">
+            <div class="horizontal-form-elem" >
+                <p>Name:</p>
+                <mat-form-field>
+                    <input matInput type="text" name="name" formControlName="name" />
+                </mat-form-field>
+            </div>
+            <div class="horizontal-form-elem" >
+                <p>IO-Address:</p>
+                <mat-form-field>
+                    <mat-select formControlName="ioAddress">
+                        <mat-option>
+                    
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="horizontal-form-elem" >
+                <p>Description:</p>
+                <mat-form-field>
+                    <input matInput type="text" name="description" formControlName="description" />
+                </mat-form-field>
+            </div>
+            <div class="horizontal-form-elem" *ngIf="chosenTagType.includes('Analog')">
+                <p>Unit:</p>
+                <mat-form-field>
+                    <input matInput type="text" name="units" formControlName="units" />
+                </mat-form-field>
+            </div>
+            <div class="horizontal-form-elem" *ngIf="chosenTagType.includes('Analog')">
+                <p>Low limit:</p>
+                <mat-form-field>
+                    <input matInput type="number" name="lowLimit" formControlName="lowLimit" />
+                </mat-form-field>
+                <p class="high-limit-p">High limit:</p>
+                <mat-form-field>
+                    <input matInput type="number" name="highLimit" formControlName="highLimit" />
+                </mat-form-field>
+            </div>
+            <div class="horizontal-form-elem" *ngIf="chosenTagType.includes('Output')">
+                <p>Initial value:</p>
+                <mat-form-field>
+                    <input matInput type="number" name="initValue" formControlName="initValue" />
+                </mat-form-field>
+            </div>
+            <div class="horizontal-form-elem" *ngIf="chosenTagType.includes('Input')">
+                <p>Driver type:</p>
+                <mat-radio-group
+                    formControlName="driverType"
+                    class="driver-radio-group">
+                    <mat-radio-button class="type-rb" *ngFor="let driver of driverTypes" [value]="driver">{{ driver }}</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="horizontal-form-elem" *ngIf="chosenTagType.includes('Input')">
+                <p>Scan:</p>
+                <mat-radio-group
+                    formControlName="scanActivity"
+                    class="driver-radio-group">
+                    <mat-radio-button class="type-rb" value="on">ON</mat-radio-button>
+                    <mat-radio-button class="type-rb" value="of">OFF</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="horizontal-form-elem" *ngIf="chosenTagType.includes('Input')">
+                <p>Scan time:</p>
+                <mat-form-field>
+                    <input matInput type="number" name="scanTime" formControlName="scanTime" />
+                </mat-form-field>
+            </div>
+            <button type="submit" class="conf-button back-blue" mat-raised-button>Add tag</button>
+        </form>
+    </div>
+</div>
