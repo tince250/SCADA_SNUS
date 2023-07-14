@@ -46,13 +46,28 @@ namespace snus_back.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("digital/{id}")]
-        public ActionResult DeleteDigitalTag(int id)
+        [HttpGet]
+        [Route("output-dbm")]
+        public ActionResult GetAllOutputTagsDBManager()
         {
             try
             {
-                this.tagService.DeleteDigitalTag(id);
+                ICollection<OutputTagDBManagerDTO> ret = this.tagService.GetAllOutputTagsDBManager();
+                return Ok(ret);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("digital/{id}")]
+        public ActionResult DeleteDigitalOutput(int id)
+        {
+            try
+            {
+                this.tagService.DeleteDigitalOutput(id);
                 return Ok("Successfully deleted tag with id: " + id);
             }
             catch (Exception e)
@@ -63,11 +78,11 @@ namespace snus_back.Controllers
 
         [HttpDelete]
         [Route("analog/{id}")]
-        public ActionResult DeleteAnalogTag(int id)
+        public ActionResult DeleteAnalogOutput(int id)
         {
             try
             {
-                this.tagService.DeleteAnalogTag(id);
+                this.tagService.DeleteAnalogOutput(id);
                 return Ok("Successfully deleted tag with id: " + id);
             }
             catch (Exception e)

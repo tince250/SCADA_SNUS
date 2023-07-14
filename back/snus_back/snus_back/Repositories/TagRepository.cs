@@ -39,17 +39,36 @@ namespace snus_back.Repositories
             return ret;
         }
 
-        public void DeleteAnalogTag(int id)
+        public ICollection<OutputTagDBManagerDTO> GetAllOutputTagsDBManager()
         {
-            AnalogOutput analogTag = dbContext.AnalogOutputs.Find(id);
-            dbContext.AnalogOutputs.Remove(analogTag);
+            var digitalOutputs = dbContext.DigitalOutputs.ToList();
+            var analogOutputs = dbContext.AnalogOutputs.ToList();
+            ICollection<OutputTagDBManagerDTO> ret = new List<OutputTagDBManagerDTO>();
+
+            foreach (var digitalOutput in digitalOutputs)
+            {
+                ret.Add(new OutputTagDBManagerDTO(digitalOutput));
+            }
+
+            foreach (var analogOutput in analogOutputs)
+            {
+                ret.Add(new OutputTagDBManagerDTO(analogOutput));
+            }
+
+            return ret;
+        }
+
+        public void DeleteAnalogOutput(int id)
+        {
+            AnalogOutput analogOutput = dbContext.AnalogOutputs.Find(id);
+            dbContext.AnalogOutputs.Remove(analogOutput);
             dbContext.SaveChanges();
         }
 
-        public void DeleteDigitalTag(int id)
+        public void DeleteDigitalOutput(int id)
         {
-            DigitalOutput digitalTag = dbContext.DigitalOutputs.Find(id);
-            dbContext.DigitalOutputs.Remove(digitalTag);
+            DigitalOutput digitalOutput = dbContext.DigitalOutputs.Find(id);
+            dbContext.DigitalOutputs.Remove(digitalOutput);
             dbContext.SaveChanges();
         }
     }

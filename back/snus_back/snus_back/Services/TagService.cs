@@ -24,14 +24,19 @@ namespace snus_back.Services
             return allTags.getAllTagRecords();
         }
 
-        public void DeleteDigitalTag(int id)
+        public void DeleteDigitalOutput(int id)
         {
-            allTags.DeleteDigitalTag(id);
+            allTags.DeleteDigitalOutput(id);
         }
 
-        public void DeleteAnalogTag(int id)
+        public void DeleteAnalogOutput(int id)
         {
-            allTags.DeleteAnalogTag(id);
+            allTags.DeleteAnalogOutput(id);
+        }
+
+        public ICollection<OutputTagDBManagerDTO> GetAllOutputTagsDBManager()
+        {
+            return allTags.GetAllOutputTagsDBManager();
         }
     }
 }

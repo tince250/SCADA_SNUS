@@ -2,7 +2,7 @@ using snus_back.Models;
 
 namespace snus_back.DTOs
 {
-    public class OutputTableTagDTO
+    public class OutputTagDBManagerDTO
     {
         public int Id { get; set; }
         public string Description { get; set; }
@@ -15,7 +15,7 @@ namespace snus_back.DTOs
             DIGITAL, ANALOG
         }
 
-        public OutputTableTagDTO(Tag tag)
+        public OutputTagDBManagerDTO(Tag tag)
         {
             Id = tag.Id;
             Description = tag.Description;
@@ -30,7 +30,7 @@ namespace snus_back.DTOs
             
         }
 
-        public OutputTableTagDTO(int id, string description, double value, OutputType type, string unit)
+        public OutputTagDBManagerDTO(int id, string description, double value, OutputType type, string unit)
         {
             Id = id;
             Description = description;

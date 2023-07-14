@@ -19,7 +19,7 @@ export class DatabaseManagerComponent implements OnInit {
   ngOnInit(): void {
     // throw new Error('Method not implemented.');
     let tag : TableOutputTag = {
-      id: "1",
+      id: 1,
       description: "2",
       value: "3",
       unit: "4",
@@ -55,7 +55,7 @@ export class DatabaseManagerComponent implements OnInit {
 
 
 export interface TableOutputTag {
-  id: string,
+  id: number,
   description: string,
   value: string,
   unit: string,
