@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using snus_back.data_access;
 
@@ -10,9 +11,11 @@ using snus_back.data_access;
 namespace snus_back.Migrations
 {
     [DbContext(typeof(SNUSDbContext))]
-    partial class SNUSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230714155518_updated io model 1")]
+    partial class updatediomodel1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

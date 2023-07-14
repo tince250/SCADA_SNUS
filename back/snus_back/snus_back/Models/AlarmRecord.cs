@@ -12,5 +12,8 @@ namespace snus_back.Models
 
         public int AlarmId { get; set; }
         public virtual Alarm Alarm { get; set; }
+
+        public int TagId { get; set; }
+        public virtual Tag Tag { get; set; }
     }
 }

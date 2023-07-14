@@ -144,7 +144,7 @@ namespace snus_back.Services
 
                     if (currentAlarm != null)
                     {
-                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now };
+                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
                         lock (_lock)
                         {
                             alarmRecords.Add(alarmRecord);
