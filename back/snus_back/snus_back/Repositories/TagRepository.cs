@@ -41,7 +41,7 @@ namespace snus_back.Repositories
 
         public ICollection<OutputTagDBManagerDTO> GetAllOutputTagsDBManager()
         {
-            AnalogOutput ao = new AnalogOutput
+            /*AnalogOutput ao = new AnalogOutput
             {
                 Unit = "km",
                 IOAddress = "s",
@@ -49,7 +49,7 @@ namespace snus_back.Repositories
                 Description = "najlepsi na svijet"
             };
             dbContext.AnalogOutputs.Add(ao);
-            dbContext.SaveChanges();
+            dbContext.SaveChanges();*/
             var digitalOutputs = dbContext.DigitalOutputs.ToList();
             var analogOutputs = dbContext.AnalogOutputs.ToList();
             ICollection<OutputTagDBManagerDTO> ret = new List<OutputTagDBManagerDTO>();
