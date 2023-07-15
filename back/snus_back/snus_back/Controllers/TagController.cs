@@ -159,5 +159,20 @@ namespace snus_back.Controllers
                 return BadRequest(new { Message = e.Message });
             }
         }
+
+        [HttpPut]
+        [Route("scan")]
+        public ActionResult UpdateTagScan(UpdateTagScanDTO dto)
+        {
+            try
+            {
+                this.tagService.UpdateTagScan(dto);
+                return Ok(new { Message = "Tag scan updated successfully" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
     }
 }

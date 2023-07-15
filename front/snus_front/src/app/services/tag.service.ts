@@ -10,6 +10,7 @@ import { TableInputTag, TableOutputTag } from "../database-manager/database-mana
   })
   export class TagService {
     
+    
     constructor(private http: HttpClient) { }
 
     getAllOutputTagsDBManager(): Observable<TableOutputTag[]> {
@@ -83,8 +84,22 @@ import { TableInputTag, TableOutputTag } from "../database-manager/database-mana
             })
         });
     }
+
+    updateTagIsScanOn(dto: UpdateTagScanDTO): Observable<any> {
+        return this.http.put<any>(environment.apiHost + "/tag/scan", dto, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
+        });
+    }
   
 }
+
+export interface UpdateTagScanDTO {
+    id: number,
+    isScanOn: boolean,
+    type: string
+  }
 
 export interface CreateTagDTO {
     name: string,

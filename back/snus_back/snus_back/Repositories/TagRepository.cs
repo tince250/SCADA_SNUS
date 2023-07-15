@@ -218,6 +218,39 @@ namespace snus_back.Repositories
             dbContext.SaveChanges();
         }
 
+        public AnalogInput UpdateAnalogInputScan(int id, Boolean value)
+        {
+            AnalogInput analogInput = dbContext.AnalogInputs.Find(id);
+            if (analogInput != null)
+            {
+                analogInput.IsScanOn = value;
+                dbContext.SaveChanges();
+                return analogInput;
+            }
+            else
+            {
+                throw new Exception("No analog input with given id exists.");
+            }
+
+            return null;
+        }
+
+        public DigitalInput UpdateDigitalInputScan(int id, Boolean value)
+        {
+            DigitalInput digitalInput = dbContext.DigitalInputs.Find(id);
+            if (digitalInput != null)
+            {
+                digitalInput.IsScanOn = value;
+                dbContext.SaveChanges();
+                return digitalInput;
+            }
+            else
+            {
+                throw new Exception("No digital input with given id exists.");
+            }
+
+            return null;
+        }
 
     }
 }

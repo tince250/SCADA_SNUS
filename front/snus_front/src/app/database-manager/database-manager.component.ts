@@ -137,6 +137,30 @@ export class DatabaseManagerComponent implements OnInit {
   openManageAlarms(tag: any) {
 
   }
+
+  onScanToggleChange(tag: TableInputTag) {
+    this.tagService.updateTagIsScanOn({
+      id: tag.id,
+      isScanOn: tag.isScanOn,
+      type: tag.type
+    }).subscribe({
+      next: (value) => {
+        this.snackBar.open(value.message, "", {
+          duration: 2700, panelClass: ['snack-bar-success']
+       });
+      },
+      error: (err) => {
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-server-error']
+       });
+       console.log(err);
+      },
+    });
+  }
+
+  printTags() {
+    console.log(this.inputTags);
+  }
 }
 
 

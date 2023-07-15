@@ -57,6 +57,16 @@ namespace snus_back.Services
             t.Start(tag.IOAddress);
         }
 
+        public void UpdateScan(AnalogInput tag)
+        {
+            this.activeAnalogInputs[tag.IOAddress].IsScanOn = tag.IsScanOn;
+        }
+
+        public void UpdateScan(DigitalInput tag)
+        {
+            this.activeDigitalInputs[tag.IOAddress].IsScanOn = tag.IsScanOn;
+        }
+
         public void Run()
         {
             InitDictionary();

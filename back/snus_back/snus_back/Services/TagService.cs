@@ -141,5 +141,19 @@ namespace snus_back.Services
             this.scanService.AddNewTagThread(addedTag);
 
         }
+
+        public void UpdateTagScan(UpdateTagScanDTO dto)
+        {
+            if (dto.Type == "DIGITAL")
+            {
+                DigitalInput tag = this.allTags.UpdateDigitalInputScan(dto.Id, dto.IsScanOn);
+                this.scanService.UpdateScan(tag);
+            } 
+            else if (dto.Type == "ANALOG")
+            {
+                AnalogInput tag = this.allTags.UpdateAnalogInputScan(dto.Id, dto.IsScanOn);
+                this.scanService.UpdateScan(tag);
+            } 
+        }
     }
 }
