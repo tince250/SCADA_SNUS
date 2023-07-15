@@ -39,9 +39,6 @@ builder.Services.AddSingleton<UpdateAlarmHandler>();
 builder.Services.AddSingleton<WebSocketConnectionManager>();
 
 
->>>>>>> b8cd01647b044a4a9b071e8b95688939e90431c2
-
-
 var app = builder.Build();
 
 app.UseCors(x => x
