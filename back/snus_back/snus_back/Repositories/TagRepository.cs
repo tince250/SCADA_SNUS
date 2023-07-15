@@ -57,15 +57,18 @@ namespace snus_back.Repositories
 
         public ICollection<InputTagDBManagerDTO> GetAllInputTagsDBManager()
         {
-            /*AnalogOutput ao = new AnalogOutput
+            AnalogInput ao = new AnalogInput
             {
                 Unit = "km",
                 IOAddress = "s",
                 Value = 10,
-                Description = "najlepsi na svijet"
+                Description = "najlepsi na svijet",
+                ScanTime = 500,
+                Name = "neca",
+                IsScanOn = true,
             };
-            dbContext.AnalogOutputs.Add(ao);
-            dbContext.SaveChanges();*/
+            dbContext.AnalogInputs.Add(ao);
+            dbContext.SaveChanges();
             var digitalInputs = dbContext.DigitalInputs.ToList();
             var analogInputs = dbContext.AnalogInputs.ToList();
             ICollection<InputTagDBManagerDTO> ret = new List<InputTagDBManagerDTO>();
