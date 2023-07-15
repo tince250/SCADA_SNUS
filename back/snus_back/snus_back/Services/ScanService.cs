@@ -213,6 +213,16 @@ namespace snus_back.Services
             }
         }
 
+        public void DeleteDigitalInput(string ioAddress)
+        {
+            Console.WriteLine(this.activeDigitalInputs.Remove(ioAddress));
+        }
+
+        public void DeleteAnaloglInput(string ioAddress)
+        {
+            this.activeAnalogInputs.Remove(ioAddress);
+        }
+
         public void ScanSimulationAnalog(object param)
         {
             string address = (string)param;

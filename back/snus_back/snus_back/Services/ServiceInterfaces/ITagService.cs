@@ -20,5 +20,8 @@ namespace snus_back.Services.ServiceInterfaces
         public void DeleteAnalogOutput(int id);
         public void AddTag(AddTagDTO dto);
         void UpdateTagScan(UpdateTagScanDTO dto);
+        public void DeleteDigitalInput(int id);
+
+        public void DeleteAnalogInput(int id);
     }
 }

@@ -252,5 +252,25 @@ namespace snus_back.Repositories
             return null;
         }
 
+        public string DeleteAnalogInput(int id)
+        {
+            AnalogInput analogInput = dbContext.AnalogInputs.Find(id);
+            string ioAddress = analogInput.IOAddress;
+            dbContext.AnalogInputs.Remove(analogInput);
+            dbContext.SaveChanges();
+
+            return ioAddress;
+        }
+
+        public string DeleteDigitalInput(int id)
+        {
+            DigitalInput digitalInput = dbContext.DigitalInputs.Find(id);
+            string ioAddress = digitalInput.IOAddress;
+            dbContext.DigitalInputs.Remove(digitalInput);
+            dbContext.SaveChanges();
+
+            return ioAddress;
+        }
+
     }
 }

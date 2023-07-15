@@ -92,6 +92,22 @@ import { TableInputTag, TableOutputTag } from "../database-manager/database-mana
             })
         });
     }
+
+    deleteDigitalInput(id: number): Observable<any> {
+        return this.http.delete<any>(environment.apiHost + "/tag/digital-input/" + id, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
+        });
+    }
+
+    deleteAnalogInput(id: number): Observable<any> {
+        return this.http.delete<any>(environment.apiHost + "/tag/analog-input/" + id, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
+        });
+    }
   
 }
 

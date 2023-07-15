@@ -116,6 +116,40 @@ export class DatabaseManagerComponent implements OnInit {
     }
   }
 
+  deleteInputTag(tag: TableInputTag) {
+    if (tag.type == "DIGITAL"){
+      this.tagService.deleteDigitalInput(tag.id).subscribe({
+        next: (value) => {
+          this.snackBar.open("Successfully deleted tag with id: " + tag.id, "", {
+            duration: 2700, panelClass: ['snack-bar-success']
+         });
+         window.location.reload();
+        },
+        error: (err) => {
+          this.snackBar.open(err.error, "", {
+            duration: 2700, panelClass: ['snack-bar-server-error']
+         });
+         console.log(err);
+        }
+      })
+    } else {
+      this.tagService.deleteAnalogInput(tag.id).subscribe({
+        next: (value) => {
+          this.snackBar.open("Successfully deleted tag with id: " + tag.id, "", {
+            duration: 2700, panelClass: ['snack-bar-success']
+         });
+        },
+        error: (err) => {
+          this.snackBar.open(err.error, "", {
+            duration: 2700, panelClass: ['snack-bar-server-error']
+         });
+         console.log(err);
+        }
+      })
+    }
+    this.inputTags = this.inputTags.filter(elem => elem.id !== tag.id)
+  }
+
   onInputTagsClicked(){
     this.isInputTagsClicked = true;
     this.isOutputTagsClicked = false;

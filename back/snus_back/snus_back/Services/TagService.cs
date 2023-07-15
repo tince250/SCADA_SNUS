@@ -155,5 +155,16 @@ namespace snus_back.Services
                 this.scanService.UpdateScan(tag);
             } 
         }
+
+        public void DeleteDigitalInput(int id)
+        {
+            string ioAddress = allTags.DeleteDigitalInput(id);
+            this.scanService.DeleteDigitalInput(ioAddress);
+        }
+
+        public void DeleteAnalogInput(int id)
+        {
+            allTags.DeleteAnalogInput(id);
+        }
     }
 }

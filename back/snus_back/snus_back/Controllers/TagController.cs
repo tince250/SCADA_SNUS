@@ -174,5 +174,35 @@ namespace snus_back.Controllers
                 return BadRequest(new { Message = e.Message });
             }
         }
+
+        [HttpDelete]
+        [Route("digital-input/{id}")]
+        public ActionResult DeleteDigitalInput(int id)
+        {
+            try
+            {
+                this.tagService.DeleteDigitalInput(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("analog-input/{id}")]
+        public ActionResult DeleteAnalogInput(int id)
+        {
+            try
+            {
+                this.tagService.DeleteAnalogInput(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
     }
 }
