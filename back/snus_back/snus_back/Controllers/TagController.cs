@@ -2,6 +2,7 @@
 using snus_back.DTOs;
 using snus_back.Models;
 using snus_back.Services.ServiceInterfaces;
+using System.Text.Json;
 
 namespace snus_back.Controllers
 {
@@ -118,6 +119,23 @@ namespace snus_back.Controllers
             {
                 this.tagService.DeleteAnalogOutput(id);
                 return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("")]
+
+        public ActionResult AddTag(AddTagDTO dto)
+        {
+            try
+            {
+                Console.WriteLine(JsonSerializer.Serialize(dto));
+                this.tagService.AddTag(dto);
+                return Ok( new {Message = "Tag added successfully" });
             }
             catch (Exception e)
             {

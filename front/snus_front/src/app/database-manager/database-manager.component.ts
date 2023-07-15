@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangeTagValueComponent } from '../change-tag-value/change-tag-value.component';
@@ -18,7 +19,8 @@ export class DatabaseManagerComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
     private tagService: TagService,
-    private snackBar: MatSnackBar){}
+    private snackBar: MatSnackBar,
+    private router: Router){}
 
   ngOnInit(): void {
     
@@ -96,6 +98,10 @@ export class DatabaseManagerComponent implements OnInit {
     this.isInputTagsClicked = false;
     this.getAllOutputTags();
 
+  }
+
+  navigateToAddTag() {
+    this.router.navigate(["add-tag"]);
   }
 }
 

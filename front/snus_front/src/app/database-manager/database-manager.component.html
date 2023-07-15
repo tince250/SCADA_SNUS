@@ -8,9 +8,10 @@
         <div class="output-tag-header-div" (click)="onOutputTagsClicked()">
             <h2 [ngClass]="{'dark-blue': isOutputTagsClicked}">Output tags</h2>
         </div>
-        <div class="add-tag-div" *ngIf="isOutputTagsClicked || isInputTagsClicked">
+        <!-- <div class="add-tag-div" *ngIf="isOutputTagsClicked || isInputTagsClicked"> -->
+        <div class="add-tag-div">
             <mat-icon class="add-button dark-blue" >add_circle_outline</mat-icon>
-            <h2 style="scale: 0.9;" class="dark-blue">Add new tag</h2>
+            <h2 style="scale: 0.9;" class="dark-blue" (click)="navigateToAddTag()">Add new tag</h2>
         </div>
     </div>
         <table [dataSource]="outputTags" mat-table class="mat-elevation-z8" *ngIf="isOutputTagsClicked">

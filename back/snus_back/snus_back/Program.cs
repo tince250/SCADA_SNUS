@@ -32,13 +32,12 @@ builder.Services.AddTransient<ScanService>();
 builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<IOEntryRepository>();
 builder.Services.AddTransient<TagRepository>();
-<<<<<<< HEAD
-=======
 builder.Services.AddTransient<AlarmRepository>();
 
 builder.Services.AddSingleton<UpdateInputHandler>();
 builder.Services.AddSingleton<UpdateAlarmHandler>();
 builder.Services.AddSingleton<WebSocketConnectionManager>();
+
 
 >>>>>>> b8cd01647b044a4a9b071e8b95688939e90431c2
 
