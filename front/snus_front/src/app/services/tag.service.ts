@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { TableOutputTag } from "../database-manager/database-manager.component";
+import { TableInputTag, TableOutputTag } from "../database-manager/database-manager.component";
 
 
 @Injectable({
@@ -14,6 +14,14 @@ import { TableOutputTag } from "../database-manager/database-manager.component";
 
     getAllOutputTagsDBManager(): Observable<TableOutputTag[]> {
         return this.http.get<any>(environment.apiHost + "/tag/output-dbm", {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
+        });
+    }
+
+    getAllInputTags(): Observable<TableInputTag[]> {
+        return this.http.get<any>(environment.apiHost + "/tag/input-dbm", {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
             })
