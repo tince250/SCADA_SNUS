@@ -147,6 +147,13 @@ namespace snus_back.Services
 
                     if (currentAlarm != null)
                     {
+                        if (currentAlarm.Type == AlarmType.HIGHER)
+                        {
+                            currentValue = activeAnalogInputs[address].HighLimit;
+                        } else
+                        {
+                            currentValue = activeAnalogInputs[address].LowLimit;
+                        }
                         lock(_lock)
                         {
                             udateAlarmHandler.SendDataToClient("alarm", currentAlarm);
@@ -202,6 +209,10 @@ namespace snus_back.Services
                     {
                         tagRecords.Add(tagRecord);
                     }
+                    lock (_lock)
+                    {
+                        updateInputHandler.SendDataToClient("input", tagRecord);
+                    }
                 }
                 Thread.Sleep(scanTime);
             }
@@ -236,6 +247,10 @@ namespace snus_back.Services
                     {
                         tagRecords.Add(tagRecord);
                     }
+                    lock (_lock)
+                    {
+                        updateInputHandler.SendDataToClient("input", tagRecord);
+                    }
                 }
                 Thread.Sleep(scanTime);
             }
@@ -269,6 +284,10 @@ namespace snus_back.Services
                     lock (_lock)
                     {
                         tagRecords.Add(tagRecord);
+                    }
+                    lock (_lock)
+                    {
+                        updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }
                 Thread.Sleep(scanTime);
