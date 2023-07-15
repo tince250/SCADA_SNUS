@@ -55,6 +55,34 @@ namespace snus_back.Repositories
             return ret;
         }
 
+        public ICollection<InputTagDBManagerDTO> GetAllInputTagsDBManager()
+        {
+            /*AnalogOutput ao = new AnalogOutput
+            {
+                Unit = "km",
+                IOAddress = "s",
+                Value = 10,
+                Description = "najlepsi na svijet"
+            };
+            dbContext.AnalogOutputs.Add(ao);
+            dbContext.SaveChanges();*/
+            var digitalInputs = dbContext.DigitalInputs.ToList();
+            var analogInputs = dbContext.AnalogInputs.ToList();
+            ICollection<InputTagDBManagerDTO> ret = new List<InputTagDBManagerDTO>();
+
+            foreach (var digitalInput in digitalInputs)
+            {
+                ret.Add(new InputTagDBManagerDTO(digitalInput));
+            }
+
+            foreach (var analogInput in analogInputs)
+            {
+                ret.Add(new InputTagDBManagerDTO(analogInput));
+            }
+
+            return ret;
+        }
+
         public ICollection<OutputTagDBManagerDTO> GetAllOutputTagsDBManager()
         {
             /*AnalogOutput ao = new AnalogOutput

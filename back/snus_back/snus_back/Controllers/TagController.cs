@@ -47,6 +47,23 @@ namespace snus_back.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("input-dbm")]
+        public ActionResult GetAllInputTagsDBManager()
+        {
+            try
+            {
+                ICollection<InputTagDBManagerDTO> ret = this.tagService.GetAllInputTagsDBManager();
+                return Ok(ret);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+
         [HttpGet]
         [Route("output-dbm")]
         public ActionResult GetAllOutputTagsDBManager()

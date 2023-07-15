@@ -46,6 +46,11 @@ namespace snus_back.Services
             allTags.DeleteAnalogOutput(id);
         }
 
+        public ICollection<InputTagDBManagerDTO> GetAllInputTagsDBManager()
+        {
+            return allTags.GetAllInputTagsDBManager();
+        }
+
         public ICollection<OutputTagDBManagerDTO> GetAllOutputTagsDBManager()
         {
             return allTags.GetAllOutputTagsDBManager();
