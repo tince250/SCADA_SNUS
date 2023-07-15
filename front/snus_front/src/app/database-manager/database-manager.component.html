@@ -35,6 +35,16 @@
               <th mat-header-cell *matHeaderCellDef> Current value </th>
               <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
             </ng-container>
+
+            <ng-container matColumnDef="scan">
+              <th mat-header-cell *matHeaderCellDef> Scan </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.isScanOn}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="scanTime">
+              <th mat-header-cell *matHeaderCellDef> Scan time </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.scanTime}} </td>
+            </ng-container>
           
             <ng-container matColumnDef="unit">
               <th mat-header-cell *matHeaderCellDef> Unit </th>
@@ -44,8 +54,12 @@
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let tag">
-                    <button mat-mini-fab class="back-dark-blue" (click)="changeTagValue(tag)" aria-label="Example icon button with a hhs icon">
+                      <button mat-mini-fab class="back-dark-blue" (click)="changeTagValue(tag)" aria-label="Example icon button with a hhs icon">
                         <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-mini-fab class="back-orange" (click)="openManageAlarms(tag)" aria-label="Example icon button with a hhs icon">
+                        <mat-icon>alarm</mat-icon>
+                        Manage alarms
                       </button>
                       <button mat-mini-fab class="back-red" (click)="deleteTag(tag)" aria-label="Example icon button with a hhs icon">
                         <mat-icon>delete</mat-icon>
@@ -54,10 +68,57 @@
                 
               </ng-container>
           
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsOutput"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsOutput;"></tr>
           </table>
+          <table [dataSource]="inputTags" mat-table class="mat-elevation-z8" *ngIf="isInputTagsClicked">
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let tag"> Tag no. {{tag.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef> Tag type </th>
+                <td mat-cell *matCellDef="let tag"> {{tag.type}} </td>
+              </ng-container>
           
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef> Description </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="scan">
+              <th mat-header-cell *matHeaderCellDef> Scan </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.isScanOn}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="scanTime">
+              <th mat-header-cell *matHeaderCellDef> Scan time </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.scanTime}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="unit">
+              <th mat-header-cell *matHeaderCellDef> Unit </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.unit}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let tag">
+                      <button mat-mini-fab class="back-dark-blue" (click)="changeTagValue(tag)" aria-label="Example icon button with a hhs icon">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-mini-fab matTooltip="Manage alarms" class="back-orange" (click)="openManageAlarms(tag)" aria-label="Example icon button with a hhs icon">
+                        <mat-icon>alarm</mat-icon>
+                      </button>
+                </td>
+                
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsInput"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsInput;"></tr>
+          </table>
           
         <!-- <div class="dropdown" *ngIf="selectedCriteria=='Alarms by priority'">
             <button class="dropbtn">{{selectedAlarmPriority}}</button>
