@@ -62,14 +62,33 @@ namespace snus_back.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("digital/{id}")]
-        public ActionResult DeleteDigitalOutput(int id)
+        [HttpPut]
+        [Route("digital-output-value/{id}")]
+        public ActionResult UpdateDigitalOutput(int id, [FromQuery] string value)
         {
             try
             {
-                this.tagService.DeleteDigitalOutput(id);
-                return Ok("Successfully deleted tag with id: " + id);
+                double doubleValue;
+                Double.TryParse(value, out doubleValue);
+                this.tagService.UpdateDigitalOutputValue(id, doubleValue);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("analog-output-value/{id}")]
+        public ActionResult UpdateAnalogOutput(int id, [FromQuery] string value)
+        {
+            try
+            {
+                double doubleValue;
+                Double.TryParse(value, out doubleValue);
+                this.tagService.UpdateAnalogOutputValue(id, doubleValue);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -78,13 +97,28 @@ namespace snus_back.Controllers
         }
 
         [HttpDelete]
-        [Route("analog/{id}")]
+        [Route("digital-output/{id}")]
+        public ActionResult DeleteDigitalOutput(int id)
+        {
+            try
+            {
+                this.tagService.DeleteDigitalOutput(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("analog-output/{id}")]
         public ActionResult DeleteAnalogOutput(int id)
         {
             try
             {
                 this.tagService.DeleteAnalogOutput(id);
-                return Ok("Successfully deleted tag with id: " + id);
+                return Ok();
             }
             catch (Exception e)
             {

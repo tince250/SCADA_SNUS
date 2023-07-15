@@ -22,6 +22,7 @@ builder.Services.AddCors();
 
 // Services
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IIOEntryService, IOEntryService>();
 builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<SimulationDriver>();
@@ -36,7 +37,6 @@ builder.Services.AddTransient<AlarmRepository>();
 builder.Services.AddSingleton<UpdateInputHandler>();
 builder.Services.AddSingleton<UpdateAlarmHandler>();
 builder.Services.AddSingleton<WebSocketConnectionManager>();
-
 
 
 var app = builder.Build();

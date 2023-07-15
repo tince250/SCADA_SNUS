@@ -21,7 +21,7 @@ import { TableOutputTag } from "../database-manager/database-manager.component";
     }
 
     deleteDigitalOutput(id: number): Observable<any> {
-        return this.http.delete<any>(environment.apiHost + "/tag/digital/" + id, {
+        return this.http.delete<any>(environment.apiHost + "/tag/digital-output/" + id, {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
             })
@@ -29,7 +29,23 @@ import { TableOutputTag } from "../database-manager/database-manager.component";
     }
 
     deleteAnalogOutput(id: number): Observable<any> {
-        return this.http.delete<any>(environment.apiHost + "/tag/analog/" + id, {
+        return this.http.delete<any>(environment.apiHost + "/tag/analog-output/" + id, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
+        });
+    }
+
+    updateDigitalOutputValue(id: number, value: any): Observable<any> {
+        return this.http.put<any>(environment.apiHost + "/tag/digital-output-value/" + id + "?value=" + value, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
+        });
+    }
+
+    updateAnalogOutputValue(id: number, value: any): Observable<any> {
+        return this.http.put<any>(environment.apiHost + "/tag/analog-output-value/" + id + "?value=" + value, {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
             })

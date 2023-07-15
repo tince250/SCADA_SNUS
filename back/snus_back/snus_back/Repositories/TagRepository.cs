@@ -57,6 +57,15 @@ namespace snus_back.Repositories
 
         public ICollection<OutputTagDBManagerDTO> GetAllOutputTagsDBManager()
         {
+            /*AnalogOutput ao = new AnalogOutput
+            {
+                Unit = "km",
+                IOAddress = "s",
+                Value = 10,
+                Description = "najlepsi na svijet"
+            };
+            dbContext.AnalogOutputs.Add(ao);
+            dbContext.SaveChanges();*/
             var digitalOutputs = dbContext.DigitalOutputs.ToList();
             var analogOutputs = dbContext.AnalogOutputs.ToList();
             ICollection<OutputTagDBManagerDTO> ret = new List<OutputTagDBManagerDTO>();
@@ -72,6 +81,20 @@ namespace snus_back.Repositories
             }
 
             return ret;
+        }
+
+        public void UpdateAnalogOutputValue(int id, double value)
+        {
+            AnalogOutput analogOutput = dbContext.AnalogOutputs.Find(id);
+            analogOutput.Value = value;
+            dbContext.SaveChanges();
+        }
+
+        public void UpdateDigitalOutputValue(int id, double value)
+        {
+            DigitalOutput digitalOutput = dbContext.DigitalOutputs.Find(id);
+            digitalOutput.Value = value;
+            dbContext.SaveChanges();
         }
 
         public void DeleteAnalogOutput(int id)

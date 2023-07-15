@@ -23,10 +23,21 @@ export class DatabaseManagerComponent implements OnInit {
     private router: Router){}
 
   ngOnInit(): void {
+    
+  }
+
+  getAllOutputTags(){
     this.tagService.getAllOutputTagsDBManager().subscribe({
       next: (value) => {
+        this.outputTags = []
         console.log("succ\n" + JSON.stringify(value));
         this.outputTags = value;
+        for (let tag of this.outputTags) {
+          if (tag.type == 0)
+            tag.type = "DIGITAL"
+          else 
+            tag.type = "ANALOG"
+        }
       },
       error: (err) => {
         this.snackBar.open(err.error, "", {
@@ -39,17 +50,19 @@ export class DatabaseManagerComponent implements OnInit {
 
   changeTagValue(tag: TableOutputTag){
     this.dialog.open(ChangeTagValueComponent, {
-      data: {}
+      data: {tag: tag}
     });
+    window.location.reload();
   }
 
   deleteTag(tag: TableOutputTag){
     if (tag.type == "DIGITAL"){
       this.tagService.deleteDigitalOutput(tag.id).subscribe({
         next: (value) => {
-          this.snackBar.open(value, "", {
+          this.snackBar.open("Successfully deleted tag with id: " + tag.id, "", {
             duration: 2700, panelClass: ['snack-bar-success']
          });
+         window.location.reload();
         },
         error: (err) => {
           this.snackBar.open(err.error, "", {
@@ -61,7 +74,7 @@ export class DatabaseManagerComponent implements OnInit {
     } else {
       this.tagService.deleteAnalogOutput(tag.id).subscribe({
         next: (value) => {
-          this.snackBar.open(value, "", {
+          this.snackBar.open("Successfully deleted tag with id: " + tag.id, "", {
             duration: 2700, panelClass: ['snack-bar-success']
          });
         },
@@ -83,6 +96,7 @@ export class DatabaseManagerComponent implements OnInit {
   onOutputTagsClicked(){
     this.isOutputTagsClicked = true;  
     this.isInputTagsClicked = false;
+    this.getAllOutputTags();
 
   }
 
@@ -97,5 +111,5 @@ export interface TableOutputTag {
   description: string,
   value: string,
   unit: string,
-  type: string
+  type: any
 }

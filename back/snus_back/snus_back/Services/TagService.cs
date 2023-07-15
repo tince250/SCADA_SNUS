@@ -26,6 +26,16 @@ namespace snus_back.Services
             return allTags.getAllTagRecords();
         }
 
+        public void UpdateAnalogOutputValue(int id, double value)
+        {
+            allTags.UpdateAnalogOutputValue(id, value);
+        }
+
+        public void UpdateDigitalOutputValue(int id, double value)
+        {
+            allTags.UpdateDigitalOutputValue(id, value);
+        }
+
         public void DeleteDigitalOutput(int id)
         {
             allTags.DeleteDigitalOutput(id);

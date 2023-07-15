@@ -10,6 +10,10 @@ namespace snus_back.Services.ServiceInterfaces
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address);
 
         public ICollection<OutputTagDBManagerDTO> GetAllOutputTagsDBManager();
+
+        public void UpdateAnalogOutputValue(int id, double value);
+        public void UpdateDigitalOutputValue(int id, double value);
+
         public void DeleteDigitalOutput(int id);
 
         public void DeleteAnalogOutput(int id);
