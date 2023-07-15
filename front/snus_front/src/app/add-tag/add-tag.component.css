@@ -1,0 +1,74 @@
+#main-container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+}
+
+h1 {
+    margin-bottom: 5px;
+    margin-left: 10px;
+    color: #1E4A5A;
+}
+
+#filter-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.1em;
+    align-items: center;
+    padding: 5px 15px;
+}
+
+.type-rb {
+    margin-left: 17px;
+    color: #1E4A5A;
+}
+
+p {
+    color: gray;
+}
+
+.mat-form-field {
+    margin: auto;
+}
+
+#add-tag-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.1em;
+    padding: 5px 15px 15px 15px;
+    justify-content: left;
+    margin-top: 20px;
+}
+
+.horizontal-form-elem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 55%;
+    margin-top: 10px;
+}
+
+.horizontal-form-elem p {
+    width: 130px;
+}
+
+.desc {
+    width: 60%;
+}
+
+.high-limit-p {
+    margin-left: 25px;
+}
+
+button {
+    font-size: 1em;
+    margin-top: 25px;
+}

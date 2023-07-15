@@ -1,0 +1,54 @@
+.share-with-others-container {
+    height: fit-content;
+    width: 350px;
+    background-color: white;
+    text-align: center;
+    padding-bottom: 25px;
+}
+
+h3, h4 {
+    margin: 0;
+}
+
+#share-title {
+    margin-top: 20px;
+    padding: 0 3px;
+    font-size: 22px !important;
+}
+
+
+h4 {
+    margin-top: 30px;
+    font-size: 18px;
+}
+
+.display {
+    display: block !important;
+}
+
+form {
+    margin-bottom: 30px;
+}
+
+.share-btns {
+    padding: 7px 12px 7px 12px !important;
+    font-size: 18px !important;
+    font-weight: bold;
+    width: fit-content;
+    font-family: 'Poppins', sans-serif;
+    margin: 0 auto;
+    color: white;
+    border: none;
+    margin-right: 10px;
+    box-shadow: 0 1px 2px 0 rgba(43, 43, 43, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 15px;
+}
+
+
+
+.email-input-cont {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+}

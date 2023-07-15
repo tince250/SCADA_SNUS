@@ -11,7 +11,7 @@ using snus_back.data_access;
 namespace snus_back.Migrations
 {
     [DbContext(typeof(SNUSDbContext))]
-    [Migration("20230712161433_updated model")]
+    [Migration("20230715163946_updated model")]
     partial class updatedmodel
     {
         /// <inheritdoc />
@@ -73,6 +73,24 @@ namespace snus_back.Migrations
                     b.ToTable("AlarmRecords");
                 });
 
+            modelBuilder.Entity("snus_back.Models.IOEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("IOAddress")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IOEntries");
+                });
+
             modelBuilder.Entity("snus_back.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -88,6 +106,10 @@ namespace snus_back.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("IOAddress")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

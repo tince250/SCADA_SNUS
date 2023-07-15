@@ -1,0 +1,67 @@
+<div id="main-container">    
+    <h1>Report Manager</h1>
+    <div id="filter-container" class="basic-container">
+        <div>
+            <h3>Criteria</h3>
+            <div class="dropdown">
+                <button class="dropbtn">{{selectedCriteria}}</button>
+                <div class="dropdown-content">
+                  <a (click)="changeCritera('Alarms')">Alarms</a>
+                  <a (click)="changeCritera('Alarms by priority')">Alarms by priority</a>
+                  <a (click)="changeCritera('Tags')">Tags</a>
+                  <a (click)="changeCritera('AI Tags')">AI Tags</a>
+                  <a (click)="changeCritera('DI Tags')">DI Tags</a>
+                  <a (click)="changeCritera('Tag by I/O address')">Tag by I/O address</a>
+                </div>
+            </div>
+        </div>
+        <div id="sortDD">
+            <h3>Sort</h3>
+            <div class="dropdown">
+                <button class="dropbtn">{{selectedSort}}</button>
+                <div class="dropdown-content">
+                  <a (click)="changeSort('Time')">Time</a>
+                </div>
+            </div>
+        </div>
+        <button class="outline-btn" (click)="generate()">Generate report</button>
+    </div>
+
+    <div id="additional-filters" class="basic-container" *ngIf="selectedCriteria!='Select' && selectedCriteria!='Tags'">
+        <div class="dropdown" *ngIf="selectedCriteria=='Alarms by priority'">
+            <button class="dropbtn">{{selectedAlarmPriority}}</button>
+            <div class="dropdown-content">
+              <a (click)="changeSelectedAlarmPriority('Low')">Low</a>
+              <a (click)="changeSelectedAlarmPriority('Medium')">Medium</a>
+              <a (click)="changeSelectedAlarmPriority('Height')">High</a>
+            </div>
+        </div>
+
+        <div class="dropdown" *ngIf="selectedCriteria=='Tag by I/O address'">
+            <button class="dropbtn">{{selectedTagAddress}}</button>
+            <div class="dropdown-content">
+              <a (click)="changeSelectedTagAddress('1')">1</a>
+              <a (click)="changeSelectedTagAddress('2')">2</a>
+              <a (click)="changeSelectedTagAddress('3')">3</a>
+            </div>
+        </div>
+        <!-- <form fxLayout="row">
+            <mat-form-field appearance="fill">
+                <mat-label>Start</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="start" >
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>End</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="end" >
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                
+              </mat-form-field>
+        </form> -->
+    </div>
+</div>

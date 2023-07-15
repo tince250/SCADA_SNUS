@@ -12,12 +12,21 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ReportManagerComponent } from './report-manager/report-manager.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { DatabaseManagerComponent } from './database-manager/database-manager.component';
+import { ChangeTagValueComponent } from './change-tag-value/change-tag-value.component';
+import { AddTagComponent } from './add-tag/add-tag.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    ReportManagerComponent,
+    DatabaseManagerComponent,
+    ChangeTagValueComponent,
+    AddTagComponent
   ],
   imports: [
     BrowserModule,
@@ -27,9 +36,6 @@ import { NavbarComponent } from './navbar/navbar.component';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
   ],
