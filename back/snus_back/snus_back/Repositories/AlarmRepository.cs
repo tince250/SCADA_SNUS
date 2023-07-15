@@ -40,5 +40,14 @@ namespace snus_back.Repositories
 
             return ret;
         }
+
+        public void AddAlarmRecords(ICollection<AlarmRecord> alarmRecords)
+        {
+            foreach (AlarmRecord alarmRecord in alarmRecords)
+            {
+                dbContext.AlarmRecords.Add(alarmRecord);
+            }
+            dbContext.SaveChanges();
+        }
     }
 }

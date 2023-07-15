@@ -11,8 +11,8 @@ using snus_back.data_access;
 namespace snus_back.Migrations
 {
     [DbContext(typeof(SNUSDbContext))]
-    [Migration("20230715090806_updated io model 2")]
-    partial class updatediomodel2
+    [Migration("20230715163946_updated model")]
+    partial class updatedmodel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -8,10 +8,12 @@ namespace snus_back.Services
     public class TagService : ITagService
     {
         private TagRepository allTags;
+        private ScanService scanService;
 
-        public TagService(TagRepository allTags) 
+        public TagService(TagRepository allTags, ScanService scanService) 
         {
             this.allTags = allTags;
+            this.scanService = scanService;
         }
 
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address)
@@ -83,7 +85,9 @@ namespace snus_back.Services
                 ScanTime = (int)dto.ScanTime,
                 IsScanOn = (bool)dto.IsScanOn
             };
-            this.allTags.AddDigitalInput(newTag);
+            DigitalInput addedTag = this.allTags.AddDigitalInput(newTag);
+            Console.WriteLine(addedTag.Id);
+            this.scanService.AddNewTagThread(addedTag);
         }
 
         private void addAnalogOutputTag(AddTagDTO dto)
@@ -99,8 +103,7 @@ namespace snus_back.Services
                 Unit = dto.Unit
 
             };
-            this.allTags.AddAnalogOutput(newTag);
-
+             this.allTags.AddAnalogOutput(newTag);
         }
 
         private void addAnalogInputTag(AddTagDTO dto)
@@ -118,7 +121,9 @@ namespace snus_back.Services
                 IsScanOn = (bool)dto.IsScanOn
 
             };
-            this.allTags.AddAnalogInput(newTag);
+            AnalogInput addedTag = this.allTags.AddAnalogInput(newTag);
+            Console.WriteLine(addedTag.Id);
+            this.scanService.AddNewTagThread(addedTag);
 
         }
     }
