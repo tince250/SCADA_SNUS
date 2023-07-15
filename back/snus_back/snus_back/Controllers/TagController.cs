@@ -70,7 +70,7 @@ namespace snus_back.Controllers
                 double doubleValue;
                 Double.TryParse(value, out doubleValue);
                 this.tagService.UpdateDigitalOutputValue(id, doubleValue);
-                return Ok("Successfully updated tag with id: " + id);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -87,7 +87,7 @@ namespace snus_back.Controllers
                 double doubleValue;
                 Double.TryParse(value, out doubleValue);
                 this.tagService.UpdateAnalogOutputValue(id, doubleValue);
-                return Ok("Successfully updated tag with id: " + id);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -102,7 +102,7 @@ namespace snus_back.Controllers
             try
             {
                 this.tagService.DeleteDigitalOutput(id);
-                return Ok("Successfully deleted tag with id: " + id);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -117,7 +117,7 @@ namespace snus_back.Controllers
             try
             {
                 this.tagService.DeleteAnalogOutput(id);
-                return Ok("Successfully deleted tag with id: " + id);
+                return Ok();
             }
             catch (Exception e)
             {

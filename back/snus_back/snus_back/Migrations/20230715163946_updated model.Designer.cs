@@ -11,8 +11,8 @@ using snus_back.data_access;
 namespace snus_back.Migrations
 {
     [DbContext(typeof(SNUSDbContext))]
-    [Migration("20230714013649_dbmanager1")]
-    partial class dbmanager1
+    [Migration("20230715163946_updated model")]
+    partial class updatedmodel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,6 +106,10 @@ namespace snus_back.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("IOAddress")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

@@ -32,5 +32,33 @@ namespace snus_back.Controllers
                 return BadRequest(new { Message = e.Message });
             }
         }
+
+        [HttpGet]
+        [Route("free")]
+        public ActionResult GetFreeAddresses()
+        {
+            try
+            {
+                return Ok(this.IOEntryService.GetFreeAdresses());
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("free/output")]
+        public ActionResult GetFreeOutputAddresses()
+        {
+            try
+            {
+                return Ok(this.IOEntryService.GetFreeOutputAdresses());
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
     }
 }

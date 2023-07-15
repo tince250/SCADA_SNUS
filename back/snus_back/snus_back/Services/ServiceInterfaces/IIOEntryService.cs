@@ -6,5 +6,8 @@ namespace snus_back.Services.ServiceInterfaces
     public interface IIOEntryService
     {
         public void BatchUpdate(List<IOEntryDTO> entries);
+        public List<string> GetFreeAdresses();
+        public List<string> GetFreeOutputAdresses();
     }
+
 }

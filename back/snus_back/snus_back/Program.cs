@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using snus_back;
 using snus_back.data_access;
 using snus_back.Models;
 using snus_back.Repositories;
 using snus_back.Services;
 using snus_back.Services.ServiceInterfaces;
+using snus_back.WebSockets;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +16,7 @@ builder.Services.AddDbContext<SNUSDbContext>(options =>
     {
         options.UseLazyLoadingProxies().
         UseSqlite("Data Source = SnusDB.db");
-    });
+    }, ServiceLifetime.Transient);
 
 builder.Services.AddCors();
 
@@ -22,14 +24,31 @@ builder.Services.AddCors();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IIOEntryService, IOEntryService>();
+builder.Services.AddTransient<ITagService, TagService>();
+builder.Services.AddTransient<SimulationDriver>();
+builder.Services.AddTransient<ScanService>();
 
 // Repositories
 builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<IOEntryRepository>();
 builder.Services.AddTransient<TagRepository>();
+<<<<<<< HEAD
+=======
+builder.Services.AddTransient<AlarmRepository>();
+
+builder.Services.AddSingleton<UpdateInputHandler>();
+builder.Services.AddSingleton<UpdateAlarmHandler>();
+builder.Services.AddSingleton<WebSocketConnectionManager>();
+
+>>>>>>> b8cd01647b044a4a9b071e8b95688939e90431c2
 
 
 var app = builder.Build();
+
+app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -40,12 +59,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
 
-app.UseHttpsRedirection();
+
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -61,7 +77,8 @@ app.UseEndpoints(endpoints =>
 
 app.MapRazorPages();
 
-
+//using var scope = app.Services.CreateScope();
+//scope.ServiceProvider.GetRequiredService<ScanService>().Run();
 
 app.Run();
 
