@@ -39,8 +39,12 @@ export class AddTagComponent {
   }
 
   onChosenTagTypeChange(newValue: string) {
-    this.addTagForm.reset();
     this.showForm = true;
+    this.resetForm();
+    this.fetchFreeAddresses(newValue);
+  }
+
+  fetchFreeAddresses(newValue: string) {
     if (newValue.includes("Input")) {
       this.tagService.getFreeAdresses().subscribe({
         next: (value) => {
@@ -70,6 +74,7 @@ export class AddTagComponent {
 
   addTag() {
     console.log(this.addTagForm.value);
+    console.log(this.addTagForm.valid);
     if (this.addTagForm.valid) {
 
       let initialValue;
@@ -90,18 +95,34 @@ export class AddTagComponent {
         scanTime: this.addTagForm.value.scanTime,
         isScanOn: this.addTagForm.value.scanActivity,
         type: this.chosenTagType!,
-        initValue: initialValue
+        initialValue: initialValue
       }
 
       this.tagService.addTag(dto).subscribe({
         next: (value) => {
           console.log(value);
+          this.snackBar.open(value.message, "", {
+            duration: 2700, panelClass: ['snack-bar-success']
+          });
+          this.fetchFreeAddresses(this.chosenTagType);
+          this.resetForm();
         },
         error: (err) => {
           console.log(err);
+          this.snackBar.open(err.error, "", {
+            duration: 2700, panelClass: ['snack-bar-server-error']
+         });
         },
       });
     }
+  }
+  resetForm() {
+    this.addTagForm.reset();
+    Object.keys(this.addTagForm.controls).forEach(key => {
+      const control = this.addTagForm.get(key) as FormControl;
+      control.setErrors(null);
+    });
+    this.addTagForm.updateValueAndValidity();
   }
 
   onDriverTypeChange(event: any) {

@@ -70,7 +70,7 @@ export interface CreateTagDTO {
     unit?: string|null,
     lowLimit?: string|null,
     highLimit?: string|null,
-    initValue?: number|null,
+    initialValue?: number|null,
     isScanOn?: boolean|null,
     scanTime?: number|null
 }

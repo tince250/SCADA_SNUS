@@ -2,6 +2,7 @@
 using snus_back.DTOs;
 using snus_back.Models;
 using snus_back.Services.ServiceInterfaces;
+using System.Text.Json;
 
 namespace snus_back.Controllers
 {
@@ -92,13 +93,15 @@ namespace snus_back.Controllers
         }
 
         [HttpPost]
+        [Route("")]
+
         public ActionResult AddTag(AddTagDTO dto)
         {
             try
             {
-                Console.WriteLine(dto);
-                //this.tagService.AddTag(dto);
-                return Ok("Tag added successfully");
+                Console.WriteLine(JsonSerializer.Serialize(dto));
+                this.tagService.AddTag(dto);
+                return Ok( new {Message = "Tag added successfully" });
             }
             catch (Exception e)
             {

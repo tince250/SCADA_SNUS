@@ -61,8 +61,8 @@
                 <mat-radio-group
                     formControlName="scanActivity"
                     class="driver-radio-group">
-                    <mat-radio-button class="type-rb" value="on">ON</mat-radio-button>
-                    <mat-radio-button class="type-rb" value="off">OFF</mat-radio-button>
+                    <mat-radio-button class="type-rb" [value]="true">ON</mat-radio-button>
+                    <mat-radio-button class="type-rb" [value]="false">OFF</mat-radio-button>
                 </mat-radio-group>
             </div>
             <div class="horizontal-form-elem" *ngIf="chosenTagType.includes('Input')">
@@ -80,7 +80,7 @@
                     <mat-radio-button class="type-rb" *ngFor="let driver of driverTypes" [value]="driver">{{ driver }}</mat-radio-button>
                 </mat-radio-group>
             </div>
-            <div class="horizontal-form-elem" *ngIf="selectedDriver=='rt' || chosenTagType.includes('Digital')">
+            <div class="horizontal-form-elem" *ngIf="selectedDriver=='rt' || chosenTagType.includes('Digital') || chosenTagType=='Analog Output'">
                 <p>IO-Address:</p>
                 <mat-form-field>
                     <mat-select formControlName="ioAddress">

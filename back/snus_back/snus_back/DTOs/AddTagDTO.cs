@@ -5,7 +5,7 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public string IOAddress { get; set; }
-        public double? InitalValue { get; set; }
+        public double? InitialValue { get; set; }
         public int? ScanTime { get; set; }
         public bool? IsScanOn { get; set; }
         public double? LowLimit { get; set; }

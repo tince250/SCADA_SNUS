@@ -62,24 +62,63 @@ namespace snus_back.Services
 
         private void addDigitalOutputTag(AddTagDTO dto)
         {
-            //this.allTags.AddDigitalOutput();
+            DigitalOutput newTag = new DigitalOutput
+            {
+                IOAddress = dto.IOAddress,
+                Description = dto.Description,
+                Value = (double)dto.InitialValue,
+                Name = dto.Name
+            };
+            this.allTags.AddDigitalOutput(newTag);
         }
 
         private void addDigitalInputTag(AddTagDTO dto)
         {
-            //this.allTags.AddDigitalInput();
-
+            DigitalInput newTag = new DigitalInput
+            {
+                IOAddress = dto.IOAddress,
+                Description = dto.Description,
+                Name = dto.Name,
+                Value = -1,
+                ScanTime = (int)dto.ScanTime,
+                IsScanOn = (bool)dto.IsScanOn
+            };
+            this.allTags.AddDigitalInput(newTag);
         }
 
         private void addAnalogOutputTag(AddTagDTO dto)
         {
-            //this.allTags.AddAnalogOutput();
+            AnalogOutput newTag = new AnalogOutput
+            {
+                IOAddress = dto.IOAddress,
+                Description = dto.Description,
+                Name = dto.Name,
+                Value = (double)dto.InitialValue,
+                HighLimit = (double)dto.HighLimit,
+                LowLimit = (double)dto.LowLimit,
+                Unit = dto.Unit
+
+            };
+            this.allTags.AddAnalogOutput(newTag);
 
         }
 
         private void addAnalogInputTag(AddTagDTO dto)
         {
-            //this.allTags.AddAnalogInput();
+            AnalogInput newTag = new AnalogInput
+            {
+                IOAddress = dto.IOAddress,
+                Description = dto.Description,
+                Name = dto.Name,
+                Value = -1,
+                HighLimit = (double)dto.HighLimit,
+                LowLimit = (double)dto.LowLimit,
+                Unit = dto.Unit,
+                ScanTime = (int)dto.ScanTime,
+                IsScanOn = (bool)dto.IsScanOn
+
+            };
+            this.allTags.AddAnalogInput(newTag);
 
         }
     }
