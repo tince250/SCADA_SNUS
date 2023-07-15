@@ -113,3 +113,13 @@ export interface TableOutputTag {
   unit: string,
   type: any
 }
+
+export interface TableInputTag {
+  id: number,
+  description: string,
+  unit: string,
+  type: any,
+  isScanOn: boolean,
+  scanTime: number,
+  value: string
+}
