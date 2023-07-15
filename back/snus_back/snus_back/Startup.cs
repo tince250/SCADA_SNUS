@@ -44,7 +44,7 @@ namespace snus_back
                 }
             });
 
-        
+
             RunOnApplicationStart();
             scanService.Run();
         }

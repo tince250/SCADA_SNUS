@@ -73,8 +73,8 @@ app.UseEndpoints(endpoints =>
 
 app.MapRazorPages();
 
-using var scope = app.Services.CreateScope();
-scope.ServiceProvider.GetRequiredService<ScanService>().Run();
+//using var scope = app.Services.CreateScope();
+//scope.ServiceProvider.GetRequiredService<ScanService>().Run();
 
 app.Run();
 
