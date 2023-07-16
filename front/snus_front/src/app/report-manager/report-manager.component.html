@@ -40,12 +40,29 @@
               <a (click)="changeSelectedTagAddress('1')">1</a>
               <a (click)="changeSelectedTagAddress('2')">2</a>
               <a (click)="changeSelectedTagAddress('3')">3</a>
+              <a (click)="changeSelectedTagAddress('4')">4</a>
+              <a (click)="changeSelectedTagAddress('5')">5</a>
+              <a (click)="changeSelectedTagAddress('6')">6</a>
+              <a (click)="changeSelectedTagAddress('7')">7</a>
+              <a (click)="changeSelectedTagAddress('8')">8</a>
+              <a (click)="changeSelectedTagAddress('9')">9</a>
+              <a (click)="changeSelectedTagAddress('10')">10</a>
+              <a (click)="changeSelectedTagAddress('11')">11</a>
+              <a (click)="changeSelectedTagAddress('12')">12</a>
+              <a (click)="changeSelectedTagAddress('13')">13</a>
+              <a (click)="changeSelectedTagAddress('14')">14</a>
+              <a (click)="changeSelectedTagAddress('15')">15</a>
+              <a (click)="changeSelectedTagAddress('16')">16</a>
+              <a (click)="changeSelectedTagAddress('17')">17</a>
+              <a (click)="changeSelectedTagAddress('18')">18</a>
+              <a (click)="changeSelectedTagAddress('19')">19</a>
+              <a (click)="changeSelectedTagAddress('20')">20</a>
             </div>
         </div>
       </div>
       <div style="display: flex; align-items: center;">
         <h2 style="display: inline-block; margin-right: 10px;">Date range</h2>
-        <form fxLayout="row">
+        <form fxLayout="row" [formGroup]="dateForm">
             <mat-form-field appearance="fill">
                 <mat-label>Start</mat-label>
                 <input matInput [matDatepicker]="picker" formControlName="start" >
@@ -67,17 +84,17 @@
 
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef> Current value </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.Value}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
       </ng-container>
     
       <ng-container matColumnDef="ioAddress">
         <th mat-header-cell *matHeaderCellDef> I/O Address </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.IOAddress}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.ioAddress}} </td>
       </ng-container>
     
       <ng-container matColumnDef="timestamp">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.Timestamp}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.timestamp}} </td>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="allTagsDisplayedColumns"></tr>
@@ -88,17 +105,17 @@
 
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef> Current value </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.Value}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
       </ng-container>
     
       <ng-container matColumnDef="ioAddress">
         <th mat-header-cell *matHeaderCellDef> I/O Address </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.IOAddress}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.ioAddress}} </td>
       </ng-container>
     
-      <ng-container matColumnDef="timestamp">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.Timestamp}} </td>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>>
+        <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="allAITagsDisplayedColumns"></tr>
@@ -109,17 +126,17 @@
 
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef> Current value </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.Value}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
       </ng-container>
     
       <ng-container matColumnDef="ioAddress">
         <th mat-header-cell *matHeaderCellDef> I/O Address </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.IOAddress}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.ioAddress}} </td>
       </ng-container>
     
-      <ng-container matColumnDef="timestamp">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.Timestamp}} </td>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="allDITagsDisplayedColumns"></tr>
@@ -130,17 +147,17 @@
 
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Current value </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.Value}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
       </ng-container>
     
       <ng-container matColumnDef="ioAddress">
         <th mat-header-cell *matHeaderCellDef> I/O Address </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.IOAddress}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.ioAddress}} </td>
       </ng-container>
     
       <ng-container matColumnDef="timestamp">
         <th mat-header-cell *matHeaderCellDef> Timestamp </th>
-        <td mat-cell *matCellDef="let tag"> {{tag.Timestamp}} </td>
+        <td mat-cell *matCellDef="let tag"> {{tag.timestamp.split('T')[1].split('.')[0] + '|' + tag.timestamp.split('T')[0]}} </td>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="allTagsDisplayedColumns"></tr>
@@ -151,18 +168,25 @@
 
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef> Current value </th>
-        <td mat-cell *matCellDef="let alarm"> {{alarm.Value}} </td>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.value}} </td>
       </ng-container>
     
       <ng-container matColumnDef="priority">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority </th>
-        <td mat-cell *matCellDef="let alarm"> {{alarm.Priority}} </td>
+        <td mat-cell *matCellDef="let alarm"> {{ alarm.priority == 0 ? 'LOW' : alarm.priority == 1 ? 'MEDIUM' : alarm.priority == 2 ? 'HIGH' : '?' }} </td>
       </ng-container>
     
       <ng-container matColumnDef="timestamp">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
-        <td mat-cell *matCellDef="let alarm"> {{alarm.Timestamp}} </td>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.timestamp.split('T')[1].split('.')[0] + '|' + alarm.timestamp.split('T')[0]}} </td>
       </ng-container>
+
+      <ng-container matColumnDef="ioAddress">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> IOAddress </th>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.ioAddress}} </td>
+      </ng-container>
+
+      
     
       <tr mat-header-row *matHeaderRowDef="alarmDisplayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: alarmDisplayedColumns;"></tr>
@@ -172,17 +196,22 @@
 
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef> Current value </th>
-        <td mat-cell *matCellDef="let alarm"> {{alarm.Value}} </td>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.value}} </td>
       </ng-container>
     
       <ng-container matColumnDef="priority">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority </th>
-        <td mat-cell *matCellDef="let alarm"> {{alarm.Priority}} </td>
+        <td mat-cell *matCellDef="let alarm"> {{ alarm.priority == 0 ? 'LOW' : alarm.priority == 1 ? 'MEDIUM' : alarm.priority == 2 ? 'HIGH' : '?' }} </td>
       </ng-container>
     
       <ng-container matColumnDef="timestamp">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
-        <td mat-cell *matCellDef="let alarm"> {{alarm.Timestamp}} </td>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.timestamp.split('T')[1].split('.')[0] + '|' + alarm.timestamp.split('T')[0]}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ioAddress">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> IOAddress </th>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.ioAddress}} </td>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="alarmDisplayedColumns"></tr>

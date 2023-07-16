@@ -11,14 +11,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ReportManagerComponent {
 
   allTags : TagRecordDTO[] = [];
-  allTagsDisplayedColumns = ['timestamp, value, ioAddress']
+  allTagsDisplayedColumns = ['timestamp', 'value', 'ioAddress']
 
   allAITags: AnalogInputDTO[] = [];
-  allAITagsDisplayedColumns = ['timestamp, value, ioAddress']
+  allAITagsDisplayedColumns = ['description', 'value', 'ioAddress']
 
   allDITags: DigitalInputDTO[] = [];
-  allDITagsDisplayedColumns = ['timestamp, value, ioAddress']
-  alarmDisplayedColumns = ['timestamp, value, priority']
+  allDITagsDisplayedColumns = ['description', 'value', 'ioAddress']
+  alarmDisplayedColumns = ['timestamp', 'value', 'priority', 'ioAddress']
 
   allTagsByAddress: TagRecordDTO[] = [];
   allAlarmsByPriority: ALarmDTO[] = [];
@@ -142,7 +142,8 @@ export class ReportManagerComponent {
   }
 
   getAllAlarmsBetweenDates() {
-
+    console.log(this.dateForm.value.end);
+    console.log(this.dateForm.value.start);
     if (this.dateForm.value.start != '' && this.dateForm.value.end != '' &&
     this.dateForm.value.start != null && this.dateForm.value.end != null) {
       this.reportService.getAlarmsBetweenDates(this.dateForm.value.start, this.dateForm.value.end).subscribe({
