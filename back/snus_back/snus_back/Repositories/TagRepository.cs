@@ -1,6 +1,7 @@
 ﻿using snus_back.data_access;
 using snus_back.DTOs;
 using snus_back.Models;
+using snus_back.Services;
 using System.Net;
 
 namespace snus_back.Repositories
@@ -65,15 +66,6 @@ namespace snus_back.Repositories
 
         public ICollection<InputTagDBManagerDTO> GetAllInputTagsDBManager()
         {
-            /*AnalogOutput ao = new AnalogOutput
-            {
-                Unit = "km",
-                IOAddress = "s",
-                Value = 10,
-                Description = "najlepsi na svijet"
-            };
-            dbContext.AnalogOutputs.Add(ao);
-            dbContext.SaveChanges();*/
             var digitalInputs = dbContext.DigitalInputs.ToList();
             var analogInputs = dbContext.AnalogInputs.ToList();
             ICollection<InputTagDBManagerDTO> ret = new List<InputTagDBManagerDTO>();
@@ -183,35 +175,35 @@ namespace snus_back.Repositories
             return dbContext.DigitalInputs.ToList();
         }
 
-        public void UpdateAnalogInputs(Dictionary<string, AnalogInput> activeAnalogInputs)
+        public void UpdateAnalogInputs()
         {
-            foreach (string address in activeAnalogInputs.Keys)
+            foreach (int id in ScanService.activeAnalogInputs.Keys)
             {
-                AnalogInput analogInput = dbContext.AnalogInputs.FirstOrDefault(input => input.IOAddress == address);
+                AnalogInput analogInput = dbContext.AnalogInputs.FirstOrDefault(input => input.Id == id);
                 if (analogInput == null)
                 {
                     throw new Exception("AnalogInput not found.");
                 }
                 else
                 {
-                    analogInput.Value = activeAnalogInputs[address].Value;
+                    analogInput.Value = ScanService.activeAnalogInputs[id].Value;
                 }
             }
             dbContext.SaveChanges();
         }
 
-        public void UpdateDigitalInputs(Dictionary<string, DigitalInput> activeDigitalInputs)
+        public void UpdateDigitalInputs()
         {
-            foreach (string address in activeDigitalInputs.Keys) { 
+            foreach (int id in ScanService.activeDigitalInputs.Keys) { 
 
-                DigitalInput digitalInput = dbContext.DigitalInputs.FirstOrDefault(input => input.IOAddress == address);
+                DigitalInput digitalInput = dbContext.DigitalInputs.FirstOrDefault(input => input.Id == id);
                 if (digitalInput == null)
                 {
-                    throw new Exception("DigitalInput not found.");
+                    continue;
                 }
                 else
                 {
-                    digitalInput.Value = activeDigitalInputs[address].Value;
+                    digitalInput.Value = ScanService.activeDigitalInputs[id].Value;
                 }
             }
             dbContext.SaveChanges();
@@ -270,14 +262,12 @@ namespace snus_back.Repositories
             return ioAddress;
         }
 
-        public string DeleteDigitalInput(int id)
+        public void DeleteDigitalInput(int id)
         {
             DigitalInput digitalInput = dbContext.DigitalInputs.Find(id);
-            string ioAddress = digitalInput.IOAddress;
             dbContext.DigitalInputs.Remove(digitalInput);
             dbContext.SaveChanges();
 
-            return ioAddress;
         }
 
         public AnalogInput GetAnalogInputById(int id)

@@ -38,7 +38,7 @@ namespace snus_back.Services
             this.allTags.AddAlarmToTag(ret, tag.Id);
 
             //TODO: oktomentarisi kad spojis
-            //this.scanService.AddNewAlarm(ret, tag.IOAddress);
+            this.scanService.AddNewAlarm(ret, tag.Id);
 
             return new AlarmReturnedDTO
             {
@@ -61,7 +61,7 @@ namespace snus_back.Services
             this.allAlarms.DeleteAlarm(alarm);
 
             //TODO: oktomentarisi kad spojis
-            //this.scanService.DeleteAlarm(alarm, tag.IOAddress);
+            this.scanService.DeleteAlarm(alarm, tag.Id);
         }
 
         public ICollection<AlarmDTO> GetAlarmsBetweenDates(DateTime startDate, DateTime endDate)

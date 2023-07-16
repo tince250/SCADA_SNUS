@@ -1,39 +1,50 @@
 <div id="main-container">    
-    <h1>Database manager</h1>
+    <h1>Trending</h1>
+          
     <table [dataSource]="inputTags" mat-table class="mat-elevation-z8">
 
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let tag"> Tag no. {{tag.id}} </td>
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let tag"> Tag no. {{tag.id}} </td>
         </ng-container>
 
         <ng-container matColumnDef="type">
             <th mat-header-cell *matHeaderCellDef> Tag type </th>
             <td mat-cell *matCellDef="let tag"> {{tag.type}} </td>
-            </ng-container>
-        
+          </ng-container>
+      
         <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef> Description </th>
-            <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="scanTime">
-            <th mat-header-cell *matHeaderCellDef> Scan time </th>
-            <td mat-cell *matCellDef="let tag"> {{tag.scanTime}} </td>
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
         </ng-container>
 
         <ng-container matColumnDef="isScanOn">
-            <th mat-header-cell *matHeaderCellDef> Is scan on </th>
-            <td mat-cell *matCellDef="let tag"> {{tag.isScanOn}} </td>
-        </ng-container>
-        
-        <ng-container matColumnDef="value">
-            <th mat-header-cell *matHeaderCellDef> Current value </th>
-            <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
+          <th mat-header-cell *matHeaderCellDef> Scan </th>
+          <td mat-cell *matCellDef="let tag"> {{tag.isScanOn}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="scanTime">
+          <th mat-header-cell *matHeaderCellDef> Scan time </th>
+          <td mat-cell *matCellDef="let tag"> {{tag.scanTime}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="value">
+            <th mat-header-cell *matHeaderCellDef> Current value </th>
+            <td mat-cell *matCellDef="let tag"> {{ tag.value.toFixed(2) }} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="unit">
+          <th mat-header-cell *matHeaderCellDef> Unit </th>
+          <td mat-cell *matCellDef="let tag"> {{tag.unit}} </td>
+        </ng-container>       
+        
+        <ng-container matColumnDef="alarmInfo">
+          <th mat-header-cell *matHeaderCellDef> Alarm info </th>
+          <td mat-cell *matCellDef="let tag; let rowIndex = index">
+            {{ this.alarmColors[rowIndex] === -1 ? 'EMPTY' : tag.alarmType + ' than ' + tag.alarmValue }}
+          </td>
+        </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-          
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngStyle]="getRowColor(alarmColors[row.id])"></tr>
+      </table>
 </div>

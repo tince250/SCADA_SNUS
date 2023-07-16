@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.SignalR;
+using snus_back.DTOs;
+using snus_back.Hubs;
 using snus_back.Models;
 using snus_back.Repositories;
 using snus_back.WebSockets;
@@ -9,10 +11,10 @@ namespace snus_back.Services
 {
     public class ScanService
     {
-        private Dictionary<string, AnalogInput> activeAnalogInputs= new Dictionary<string, AnalogInput>();
-        private Dictionary<string, DigitalInput> activeDigitalInputs = new Dictionary<string, DigitalInput>();
-        private ICollection<TagRecord> tagRecords = new List<TagRecord>();
-        private ICollection<AlarmRecord> alarmRecords = new List<AlarmRecord>();
+        public static Dictionary<int, AnalogInput> activeAnalogInputs= new Dictionary<int, AnalogInput>();
+        public static Dictionary<int, DigitalInput> activeDigitalInputs = new Dictionary<int, DigitalInput>();
+        private static ICollection<TagRecord> tagRecords = new List<TagRecord>();
+        private static ICollection<AlarmRecord> alarmRecords = new List<AlarmRecord>();
 
 
         private readonly ThreadLocal<TagRepository> _tagRepository;
@@ -24,57 +26,62 @@ namespace snus_back.Services
         private IOEntryRepository ioEntryRepository;
         private UpdateAlarmHandler udateAlarmHandler;
         private UpdateInputHandler updateInputHandler;
+        private readonly IHubContext<UpdateInputHub> inputHub;
+        private readonly IHubContext<UpdateAlarmHub> alarmHub;
         private readonly object _lock = new object();
 
-        public ScanService(TagRepository tagRepository, IOEntryRepository iOEntryRepository, AlarmRepository alarmRepository, UpdateAlarmHandler updateAlarmHandler, UpdateInputHandler updateInputHandler)
+        public ScanService(TagRepository tagRepository, IOEntryRepository iOEntryRepository, AlarmRepository alarmRepository, UpdateAlarmHandler updateAlarmHandler, UpdateInputHandler updateInputHandler,
+            IHubContext<UpdateInputHub> inputHub, IHubContext<UpdateAlarmHub> alarmHub)
         {
             this.tagRepository = tagRepository;
             this.alarmRepository = alarmRepository;
             this.ioEntryRepository = iOEntryRepository;
             this.udateAlarmHandler = updateAlarmHandler;
             this.updateInputHandler = updateInputHandler;
+            this.inputHub = inputHub;
+            this.alarmHub = alarmHub;
         }
 
-        public void AddNewAlarm(Alarm ret, string iOAddress)
+        public void AddNewAlarm(Alarm ret, int id)
         {
-            this.activeAnalogInputs[iOAddress].Alarms.Add(ret);
+            activeAnalogInputs[id].Alarms.Add(ret);
         }
 
-        public void DeleteAlarm(Alarm ret, string iOAddress)
+        public void DeleteAlarm(Alarm ret, int id)
         {
-            this.activeAnalogInputs[iOAddress].Alarms.Remove(ret);
+            activeAnalogInputs[id].Alarms.Remove(ret);
         }
 
         public void AddNewTagThread(AnalogInput tag)
         {
-            activeAnalogInputs.Add(tag.IOAddress, tag);
+            activeAnalogInputs.Add(tag.Id, tag);
             Thread t;
             if ("SCR".Contains(tag.IOAddress))
                 t = new Thread(ScanSimulationAnalog);
             else
                 t = new Thread(ScanRTUAnalog);
-            t.Start(tag.IOAddress);
+            t.Start(tag.Id);
         }
 
         public void AddNewTagThread(DigitalInput tag)
         {
-            activeDigitalInputs.Add(tag.IOAddress, tag);
+            activeDigitalInputs.Add(tag.Id, tag);
             Thread t;
             if ("SCR".Contains(tag.IOAddress))
                 t = new Thread(ScanSimulationDigital);
             else
                 t = new Thread(ScanRTUDigital);
-            t.Start(tag.IOAddress);
+            t.Start(tag.Id);
         }
 
         public void UpdateScan(AnalogInput tag)
         {
-            this.activeAnalogInputs[tag.IOAddress].IsScanOn = tag.IsScanOn;
+            activeAnalogInputs[tag.Id].IsScanOn = tag.IsScanOn;
         }
 
         public void UpdateScan(DigitalInput tag)
         {
-            this.activeDigitalInputs[tag.IOAddress].IsScanOn = tag.IsScanOn;
+            activeDigitalInputs[tag.Id].IsScanOn = tag.IsScanOn;
         }
 
         public void Run()
@@ -83,33 +90,38 @@ namespace snus_back.Services
             var threads = new List<Thread>();
 
             // OVO ZA ADD TAG
-            foreach (string add in activeAnalogInputs.Keys)
+            foreach (int id in activeAnalogInputs.Keys)
             {
                 Thread t;
-                if ("SCR".Contains(add))
+                if ("SCR".Contains(activeAnalogInputs[id].IOAddress))
                     t = new Thread(ScanSimulationAnalog);
                 else
                     t = new Thread(ScanRTUAnalog);
-                t.Start(add);
+                t.Start(id);
             }
 
-            foreach (string add in activeDigitalInputs.Keys)
+            foreach (int id in activeDigitalInputs.Keys)
             {
                 Thread t;
-                if ("SCR".Contains(add))
+                if ("SCR".Contains(activeDigitalInputs[id].IOAddress))
                     t = new Thread(ScanSimulationDigital);
                 else
                     t = new Thread(ScanRTUDigital);
-                t.Start(add);
+                t.Start(id);
             }
 
 
+            Thread tBatch = new Thread(batchDBUpdate);
+            tBatch.Start();
+        }
 
+        private void batchDBUpdate()
+        {
             while (true)
             {
                 Thread.Sleep(3000);
-                tagRepository.UpdateDigitalInputs(activeDigitalInputs);
-                tagRepository.UpdateAnalogInputs(activeAnalogInputs);
+                tagRepository.UpdateDigitalInputs();
+                tagRepository.UpdateAnalogInputs();
                 tagRepository.AddTagRecords(new List<TagRecord>(tagRecords));
                 tagRecords.Clear();
                 alarmRepository.AddAlarmRecords(new List<AlarmRecord>(alarmRecords));
@@ -120,24 +132,29 @@ namespace snus_back.Services
         {
             foreach (AnalogInput input in tagRepository.getAllAnalogInputs())
             {
-                activeAnalogInputs.Add(input.IOAddress, input);
+                activeAnalogInputs.Add(input.Id, input);
             }
             foreach (DigitalInput input in tagRepository.getAllDigitalInputs())
             {
-                activeDigitalInputs.Add(input.IOAddress, input);
+                activeDigitalInputs.Add(input.Id, input);
             }
         }
 
         public void ScanRTUAnalog(object param)
         {
-            string address = (string)param;
+            int id = (int)param;
             double currentValue = -10000;
-            int scanTime = activeAnalogInputs[address].ScanTime;
+            int scanTime = activeAnalogInputs[id].ScanTime;
+            string address = activeAnalogInputs[id].IOAddress;
             List<Alarm> alarms;
             Alarm currentAlarm;
             while (true)
             {
-                if (activeAnalogInputs[address].IsScanOn)
+                if (!activeAnalogInputs.Keys.Contains(id))
+                {
+                    break;
+                }
+                if (activeAnalogInputs[id].IsScanOn)
                 {
                     // read new scanned value from dictionary
                     currentValue = IOEntryRepository.entries[address];
@@ -146,10 +163,10 @@ namespace snus_back.Services
                     // alarms are loaded every time because of posibility that new alarm has been added to the tag
                     lock (_lock)
                     {
-                        alarms = activeAnalogInputs[address].Alarms.ToList();
+                        alarms = activeAnalogInputs[id].Alarms.ToList();
                     }
                     currentAlarm = null;
-                    foreach (Alarm alarm in activeAnalogInputs[address].Alarms.ToList())
+                    foreach (Alarm alarm in activeAnalogInputs[id].Alarms.ToList())
                     {
                         if (alarm.Type == AlarmType.HIGHER && currentValue >= alarm.Value)
                         {
@@ -180,7 +197,7 @@ namespace snus_back.Services
                     {
                         try
                         {
-                            activeAnalogInputs[address].Value = currentValue;
+                            activeAnalogInputs[id].Value = currentValue;
                         }
                         catch (Exception e)
                         {
@@ -192,16 +209,22 @@ namespace snus_back.Services
                     {
                         if (currentAlarm.Type == AlarmType.HIGHER)
                         {
-                            currentValue = activeAnalogInputs[address].HighLimit;
+                            currentValue = activeAnalogInputs[id].HighLimit;
                         } else
                         {
-                            currentValue = activeAnalogInputs[address].LowLimit;
+                            currentValue = activeAnalogInputs[id].LowLimit;
                         }
-                        lock(_lock)
+
+                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = id };
+                        AlarmRecordDTO arDTO = new AlarmRecordDTO { TagId = id, Priority = currentAlarm.Priority, Type = currentAlarm.Type, Value = currentAlarm.Value };
+
+                        lock (_lock)
                         {
-                            udateAlarmHandler.SendDataToClient("alarm", currentAlarm);
+                            alarmHub.Clients.All.SendAsync("alarm", arDTO);
+                            //udateAlarmHandler.SendDataToClient("alarm", currentAlarm);
                         }
-                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
+
+                        
                         lock (_lock)
                         {
                             alarmRecords.Add(alarmRecord);
@@ -209,38 +232,44 @@ namespace snus_back.Services
                     }
 
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Tag = activeAnalogInputs[address], Value = currentValue, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id };
                     lock(_lock)
                     {
                         tagRecords.Add(tagRecord);
                     }
                     lock (_lock)
                     {
-                        updateInputHandler.SendDataToClient("input", tagRecord);
+                        inputHub.Clients.All.SendAsync("input", tagRecord);
+                        //updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }
                 Thread.Sleep(scanTime);
             }
         }
 
-        public void DeleteDigitalInput(string ioAddress)
+        public void DeleteDigitalInput(int id)
         {
-            Console.WriteLine(this.activeDigitalInputs.Remove(ioAddress));
+            Console.WriteLine(activeDigitalInputs.Remove(id));
         }
 
-        public void DeleteAnaloglInput(string ioAddress)
+        public void DeleteAnaloglInput(int id)
         {
-            this.activeAnalogInputs.Remove(ioAddress);
+            activeAnalogInputs.Remove(id);
         }
 
         public void ScanSimulationAnalog(object param)
         {
-            string address = (string)param;
+            int id = (int)param;
             double currentValue = -10000;
-            int scanTime = activeAnalogInputs[address].ScanTime;
+            int scanTime = activeAnalogInputs[id].ScanTime;
+            string address = activeAnalogInputs[id].IOAddress;
             while (true)
             {
-                if (activeAnalogInputs[address].IsScanOn)
+                if (!activeAnalogInputs.Keys.Contains(id))
+                {
+                    break;
+                }
+                if (activeAnalogInputs[id].IsScanOn)
                 {
                     // read new scanned value from dictionary and update AnalogInput's value in db
                     currentValue = SimulationDriver.ReturnValue(address);
@@ -248,7 +277,7 @@ namespace snus_back.Services
                     {
                         try
                         {
-                            activeAnalogInputs[address].Value = currentValue;
+                            activeAnalogInputs[id].Value = currentValue;
                         }
                         catch (Exception e)
                         {
@@ -257,13 +286,14 @@ namespace snus_back.Services
                     }
 
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Tag = activeAnalogInputs[address], Value = currentValue, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id };
                     lock (_lock)
                     {
                         tagRecords.Add(tagRecord);
                     }
                     lock (_lock)
                     {
+                        inputHub.Clients.All.SendAsync("input", tagRecord);
                         updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }
@@ -273,12 +303,17 @@ namespace snus_back.Services
 
         public void ScanRTUDigital(object param)
         { 
-            string address = (string)param;
+            int id = (int)param;
             double currentValue = 0;
-            int scanTime = activeDigitalInputs[address].ScanTime;
+            int scanTime = activeDigitalInputs[id].ScanTime;
+            string address = activeDigitalInputs[id].IOAddress;
             while (true)
             {
-                if (activeDigitalInputs[address].IsScanOn)
+                if (!activeDigitalInputs.Keys.Contains(id))
+                {
+                    break;
+                }
+                if (activeDigitalInputs[id].IsScanOn)
                 {
                     // read new scanned value from dictionary and update AnalogInput's value in db
                     currentValue = IOEntryRepository.entries[address];
@@ -286,7 +321,7 @@ namespace snus_back.Services
                     {
                         try
                         {
-                            activeDigitalInputs[address].Value = currentValue;
+                            activeDigitalInputs[id].Value = currentValue;
                         }
                         catch (Exception e)
                         {
@@ -295,13 +330,14 @@ namespace snus_back.Services
                     }
 
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Tag = activeDigitalInputs[address], Value = currentValue, Timestamp = DateTime.Now, TagId = activeDigitalInputs[address].Id };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id };
                     lock (_lock)
                     {
                         tagRecords.Add(tagRecord);
                     }
                     lock (_lock)
                     {
+                        inputHub.Clients.All.SendAsync("input", tagRecord);
                         updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }
@@ -311,12 +347,17 @@ namespace snus_back.Services
 
         public void ScanSimulationDigital(object param)
         {
-            string address = (string)param;
+            int id = (int)param;
             double currentValue = 0;
-            int scanTime = activeDigitalInputs[address].ScanTime;
+            int scanTime = activeDigitalInputs[id].ScanTime;
+            string address = activeDigitalInputs[id].IOAddress;
             while (true)
             {
-                if (activeDigitalInputs[address].IsScanOn)
+                if (!activeDigitalInputs.Keys.Contains(id))
+                {
+                    break;
+                }
+                if (activeDigitalInputs[id].IsScanOn)
                 {
                     // read new scanned value from dictionary and update AnalogInput's value in db
                     currentValue = SimulationDriver.ReturnValue(address);
@@ -324,7 +365,7 @@ namespace snus_back.Services
                     {
                         try
                         {
-                            activeDigitalInputs[address].Value = currentValue;
+                            activeDigitalInputs[id].Value = currentValue;
                         }
                         catch (Exception e)
                         {
@@ -333,13 +374,14 @@ namespace snus_back.Services
                     }
 
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Tag = activeDigitalInputs[address], Value = currentValue, Timestamp = DateTime.Now, TagId = activeDigitalInputs[address].Id };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id };
                     lock (_lock)
                     {
                         tagRecords.Add(tagRecord);
                     }
                     lock (_lock)
                     {
+                        inputHub.Clients.All.SendAsync("input", tagRecord);
                         updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }
