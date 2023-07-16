@@ -27,10 +27,11 @@ namespace snus_back.Services
         private UpdateAlarmHandler udateAlarmHandler;
         private UpdateInputHandler updateInputHandler;
         private readonly IHubContext<UpdateInputHub> inputHub;
+        private readonly IHubContext<UpdateAlarmHub> alarmHub;
         private readonly object _lock = new object();
 
         public ScanService(TagRepository tagRepository, IOEntryRepository iOEntryRepository, AlarmRepository alarmRepository, UpdateAlarmHandler updateAlarmHandler, UpdateInputHandler updateInputHandler,
-            IHubContext<UpdateInputHub> inputHub)
+            IHubContext<UpdateInputHub> inputHub, IHubContext<UpdateAlarmHub> alarmHub)
         {
             this.tagRepository = tagRepository;
             this.alarmRepository = alarmRepository;
@@ -38,6 +39,7 @@ namespace snus_back.Services
             this.udateAlarmHandler = updateAlarmHandler;
             this.updateInputHandler = updateInputHandler;
             this.inputHub = inputHub;
+            this.alarmHub = alarmHub;
         }
 
         public void AddNewTagThread(AnalogInput tag)
@@ -184,6 +186,7 @@ namespace snus_back.Services
                         }
                         lock(_lock)
                         {
+                            alarmHub.Clients.All.SendAsync("alarm", currentAlarm);
                             udateAlarmHandler.SendDataToClient("alarm", currentAlarm);
                         }
                         AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
