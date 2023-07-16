@@ -270,12 +270,25 @@ namespace snus_back.Services
 
         public void DeleteDigitalInput(int id)
         {
-            Console.WriteLine(activeDigitalInputs.Remove(id));
+            lock (_lock)
+            {
+                Console.WriteLine(activeDigitalInputs.Remove(id));
+                List<TagRecord> referencedRecords = tagRecords.Where(tag => tag.TagId == id).ToList();
+                referencedRecords.ForEach(rr => tagRecords.Remove(rr));
+            }
         }
 
         public void DeleteAnaloglInput(int id)
         {
-            activeAnalogInputs.Remove(id);
+            lock (_lock)
+            {
+                activeAnalogInputs.Remove(id);
+                List<TagRecord> referencedRecords = tagRecords.Where(tag => tag.TagId == id).ToList();
+                referencedRecords.ForEach(rr => tagRecords.Remove(rr));
+                List<AlarmRecord> larmRecords = alarmRecords.Where(alarm => alarm.TagId == id).ToList();
+                larmRecords.ForEach(rr => alarmRecords.Remove(rr));
+                analogInputAlarms.Remove(id);
+            }
         }
 
         public void ScanSimulationAnalog(object param)
@@ -412,7 +425,7 @@ namespace snus_back.Services
                     }
 
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id, HighLimit = activeAnalogInputs[id].HighLimit, LowLimit = activeAnalogInputs[id].LowLimit };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id, HighLimit = null, LowLimit = null};
                     lock (_lock)
                     {
                         tagRecords.Add(tagRecord);
@@ -456,7 +469,7 @@ namespace snus_back.Services
                     }
 
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id, HighLimit = activeAnalogInputs[id].HighLimit, LowLimit = activeAnalogInputs[id].LowLimit };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id, HighLimit = null, LowLimit = null };
                     lock (_lock)
                     {
                         tagRecords.Add(tagRecord);

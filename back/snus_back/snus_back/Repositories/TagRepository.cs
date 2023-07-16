@@ -290,7 +290,7 @@ namespace snus_back.Repositories
             alarmRecords.ForEach(alarmRecord => dbContext.AlarmRecords.Remove(alarmRecord));
             List<TagRecord> tagRecords = dbContext.TagRecords.Where(tag => tag.TagId == id).ToList();
             tagRecords.ForEach(tagRecord => dbContext.TagRecords.Remove(tagRecord));
-
+            dbContext.SaveChanges();
         }
 
         public void DeleteDigitalInput(int id)

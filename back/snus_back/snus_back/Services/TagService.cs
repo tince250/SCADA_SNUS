@@ -173,14 +173,14 @@ namespace snus_back.Services
 
         public void DeleteDigitalInput(int id)
         {
-            allTags.DeleteDigitalInput(id);
             this.scanService.DeleteDigitalInput(id);
+            allTags.DeleteDigitalInput(id);
         }
 
         public void DeleteAnalogInput(int id)
         {
-            allTags.DeleteAnalogInput(id);
             this.scanService.DeleteAnaloglInput(id);
+            allTags.DeleteAnalogInput(id);
         }
     }
 }
