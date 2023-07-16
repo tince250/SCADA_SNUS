@@ -11,5 +11,8 @@ namespace snus_back.Models
 
         public int TagId { get; set; }
         public virtual Tag Tag { get; set; }
+
+        public double? LowLimit { get; set; }
+        public double? HighLimit { get; set; }
     }
 }

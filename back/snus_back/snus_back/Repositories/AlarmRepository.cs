@@ -45,7 +45,9 @@ namespace snus_back.Repositories
         {
             foreach (AlarmRecord alarmRecord in alarmRecords)
             {
-                dbContext.AlarmRecords.Add(alarmRecord);
+                Alarm alarm = dbContext.Alarms.FirstOrDefault(alarm => alarm.Id == alarmRecord.AlarmId);
+                if (alarm != null)
+                    dbContext.AlarmRecords.Add(alarmRecord);
             }
             dbContext.SaveChanges();
         }

@@ -11,7 +11,8 @@ namespace snus_back.Services
 {
     public class ScanService
     {
-        public static Dictionary<int, AnalogInput> activeAnalogInputs= new Dictionary<int, AnalogInput>();
+        public static Dictionary<int, AnalogInput> activeAnalogInputs = new Dictionary<int, AnalogInput>();
+        public static Dictionary<int, List<Alarm>> analogInputAlarms = new Dictionary<int, List<Alarm>>();
         public static Dictionary<int, DigitalInput> activeDigitalInputs = new Dictionary<int, DigitalInput>();
         private static ICollection<TagRecord> tagRecords = new List<TagRecord>();
         private static ICollection<AlarmRecord> alarmRecords = new List<AlarmRecord>();
@@ -44,12 +45,31 @@ namespace snus_back.Services
 
         public void AddNewAlarm(Alarm ret, int id)
         {
-            activeAnalogInputs[id].Alarms.Add(ret);
+            /*            activeAnalogInputs[id].Alarms.Add(ret);
+             *            
+            */
+            //activeAnalogInputs[id] = tagRepository.GetAnalogInputById(id);
+            analogInputAlarms[id].Add(ret);
         }
+    
 
         public void DeleteAlarm(Alarm ret, int id)
         {
-            activeAnalogInputs[id].Alarms.Remove(ret);
+            foreach (Alarm a in activeAnalogInputs[id].Alarms)
+            {
+                if (a.Id == ret.Id)
+                {
+                    activeAnalogInputs[id].Alarms.Remove(a);
+                }
+            }
+            foreach (Alarm a in analogInputAlarms[id])
+            {
+                if (a.Id == ret.Id)
+                {
+                    analogInputAlarms[id].Remove(a);
+                    break;
+                }
+            }
         }
 
         public void AddNewTagThread(AnalogInput tag)
@@ -133,6 +153,7 @@ namespace snus_back.Services
             foreach (AnalogInput input in tagRepository.getAllAnalogInputs())
             {
                 activeAnalogInputs.Add(input.Id, input);
+                analogInputAlarms.Add(input.Id, input.Alarms.ToList());
             }
             foreach (DigitalInput input in tagRepository.getAllDigitalInputs())
             {
@@ -146,7 +167,7 @@ namespace snus_back.Services
             double currentValue = -10000;
             int scanTime = activeAnalogInputs[id].ScanTime;
             string address = activeAnalogInputs[id].IOAddress;
-            List<Alarm> alarms;
+            List<Alarm> alarms = analogInputAlarms[id];
             Alarm currentAlarm;
             while (true)
             {
@@ -161,12 +182,12 @@ namespace snus_back.Services
 
                     // check for alarms and alarm update if one is raised
                     // alarms are loaded every time because of posibility that new alarm has been added to the tag
-                    lock (_lock)
+                    /*lock (_lock)
                     {
                         alarms = activeAnalogInputs[id].Alarms.ToList();
-                    }
+                    }*/
                     currentAlarm = null;
-                    foreach (Alarm alarm in activeAnalogInputs[id].Alarms.ToList())
+                    foreach (Alarm alarm in analogInputAlarms[id])
                     {
                         if (alarm.Type == AlarmType.HIGHER && currentValue >= alarm.Value)
                         {
@@ -232,7 +253,7 @@ namespace snus_back.Services
                     }
 
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id, HighLimit = activeAnalogInputs[id].HighLimit, LowLimit = activeAnalogInputs[id].LowLimit };
                     lock(_lock)
                     {
                         tagRecords.Add(tagRecord);
@@ -263,6 +284,8 @@ namespace snus_back.Services
             double currentValue = -10000;
             int scanTime = activeAnalogInputs[id].ScanTime;
             string address = activeAnalogInputs[id].IOAddress;
+            List<Alarm> alarms = analogInputAlarms[id];
+            Alarm currentAlarm;
             while (true)
             {
                 if (!activeAnalogInputs.Keys.Contains(id))
@@ -273,6 +296,38 @@ namespace snus_back.Services
                 {
                     // read new scanned value from dictionary and update AnalogInput's value in db
                     currentValue = SimulationDriver.ReturnValue(address);
+                    /*lock (_lock)
+                    {
+                        alarms = activeAnalogInputs[id].Alarms.ToList();
+                        alarms = activeAnalogInputs[id].Alarms.Include(ai => ai.Alarms) // Include the Alarms collection
+    .ToList();
+                    }*/
+                    currentAlarm = null;
+                    foreach (Alarm alarm in analogInputAlarms[id])
+                    {
+                        if (alarm.Type == AlarmType.HIGHER && currentValue >= alarm.Value)
+                        {
+                            if (currentAlarm == null)
+                            {
+                                currentAlarm = alarm;
+                            }
+                            if (currentAlarm != null && currentAlarm.Priority < alarm.Priority)
+                            {
+                                currentAlarm = alarm;
+                            }
+                        }
+                        if (alarm.Type == AlarmType.LOWER && currentValue <= alarm.Value)
+                        {
+                            if (currentAlarm == null)
+                            {
+                                currentAlarm = alarm;
+                            }
+                            if (currentAlarm != null && currentAlarm.Priority < alarm.Priority)
+                            {
+                                currentAlarm = alarm;
+                            }
+                        }
+                    }
                     lock (_lock)
                     {
                         try
@@ -285,8 +340,35 @@ namespace snus_back.Services
                         }
                     }
 
+                    if (currentAlarm != null)
+                    {
+                        if (currentAlarm.Type == AlarmType.HIGHER)
+                        {
+                            currentValue = activeAnalogInputs[id].HighLimit;
+                        }
+                        else
+                        {
+                            currentValue = activeAnalogInputs[id].LowLimit;
+                        }
+
+                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = id };
+                        AlarmRecordDTO arDTO = new AlarmRecordDTO { TagId = id, Priority = currentAlarm.Priority, Type = currentAlarm.Type, Value = currentAlarm.Value };
+
+                        lock (_lock)
+                        {
+                            alarmHub.Clients.All.SendAsync("alarm", arDTO);
+                            //udateAlarmHandler.SendDataToClient("alarm", currentAlarm);
+                        }
+
+
+                        lock (_lock)
+                        {
+                            alarmRecords.Add(alarmRecord);
+                        }
+                    }
+
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id, HighLimit = activeAnalogInputs[id].HighLimit, LowLimit = activeAnalogInputs[id].LowLimit };
                     lock (_lock)
                     {
                         tagRecords.Add(tagRecord);
@@ -330,7 +412,7 @@ namespace snus_back.Services
                     }
 
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id, HighLimit = activeAnalogInputs[id].HighLimit, LowLimit = activeAnalogInputs[id].LowLimit };
                     lock (_lock)
                     {
                         tagRecords.Add(tagRecord);
@@ -374,7 +456,7 @@ namespace snus_back.Services
                     }
 
                     // add new tagRecord every time AnalogInput is updated 
-                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id };
+                    TagRecord tagRecord = new TagRecord { Value = currentValue, Timestamp = DateTime.Now, TagId = id, HighLimit = activeAnalogInputs[id].HighLimit, LowLimit = activeAnalogInputs[id].LowLimit };
                     lock (_lock)
                     {
                         tagRecords.Add(tagRecord);

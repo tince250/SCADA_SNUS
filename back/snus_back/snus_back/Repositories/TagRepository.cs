@@ -226,7 +226,8 @@ namespace snus_back.Repositories
                     digitalInput.Value = ScanService.activeDigitalInputs[id].Value;
                 }
             }
-            dbContext.SaveChanges();
+            if (ScanService.activeDigitalInputs.Keys.Count != 0)
+                dbContext.SaveChanges();
         }
 
         public void AddTagRecords(ICollection<TagRecord> tagRecords)
@@ -274,6 +275,7 @@ namespace snus_back.Repositories
 
         public string DeleteAnalogInput(int id)
         {
+            DeleteAnalogInputCascadeByTagId(id);
             AnalogInput analogInput = dbContext.AnalogInputs.Find(id);
             string ioAddress = analogInput.IOAddress;
             dbContext.AnalogInputs.Remove(analogInput);
@@ -282,8 +284,18 @@ namespace snus_back.Repositories
             return ioAddress;
         }
 
+        public void DeleteAnalogInputCascadeByTagId(int id)
+        {
+            List<AlarmRecord> alarmRecords = dbContext.AlarmRecords.Where(alarm => alarm.TagId == id).ToList();
+            alarmRecords.ForEach(alarmRecord => dbContext.AlarmRecords.Remove(alarmRecord));
+            List<TagRecord> tagRecords = dbContext.TagRecords.Where(tag => tag.TagId == id).ToList();
+            tagRecords.ForEach(tagRecord => dbContext.TagRecords.Remove(tagRecord));
+
+        }
+
         public void DeleteDigitalInput(int id)
         {
+            DeleteAnalogInputCascadeByTagId(id);
             DigitalInput digitalInput = dbContext.DigitalInputs.Find(id);
             dbContext.DigitalInputs.Remove(digitalInput);
             dbContext.SaveChanges();

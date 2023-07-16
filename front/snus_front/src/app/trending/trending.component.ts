@@ -36,7 +36,7 @@ export class TrendingComponent implements OnInit {
     this.tagService.getAllInputTags().subscribe({
       next: (value) => {
         this.inputTags = []
-        console.log("succ\n" + JSON.stringify(value));
+        // console.log("succ\n" + JSON.stringify(value));
         this.inputTags = value;
         let i = 0;
         for (let tag of this.inputTags) {
@@ -52,7 +52,7 @@ export class TrendingComponent implements OnInit {
         this.snackBar.open(err.error, "", {
           duration: 2700, panelClass: ['snack-bar-server-error']
        });
-       console.log(err);
+      //  console.log(err);
       }
     });
   }
@@ -70,18 +70,24 @@ export class TrendingComponent implements OnInit {
       .then(() => console.log('Connection started'))
       .catch(() => console.log('Error while starting connection: '))
     this.inputTagUpdateConnection.on('input', (from: string, body: string) => {
-      console.log(from, body);
+      // console.log(from, body);
       this.handleInputTagUpdateWebSocket(from);
     });
   }
 
     handleInputTagUpdateWebSocket(tagRecord: any){
-      console.log(tagRecord.id);
+      // console.log(tagRecord.id);
+      let i = 0;
       for (let tag of this.inputTags){
         if (tag.id == tagRecord.tagId){
+          
+          if (tag.value != tagRecord.highLimit && tagRecord.value != tag.lowLimit){
+            console.log(tag.value, tagRecord.highLimit, tagRecord.lowLimit);
+            this.alarmColors[i] = -1;}
           tag.value = tagRecord.value;
           break;
         }
+        i += 1;
       }
     }
 
@@ -97,14 +103,15 @@ export class TrendingComponent implements OnInit {
       .start()
       .then(() => console.log('Connection started'))
       .catch(() => console.log('Error while starting connection: '))
-    this.alarmUpdateConnection.on('input', (from: string, body: string) => {
-      console.log(from, body);
+    this.alarmUpdateConnection.on('alarm', (from: string, body: string) => {
+      // console.log(from, body);
       this.handleAlarmUpdateWebSocket(from);
     });
   }
 
     handleAlarmUpdateWebSocket(alarmRecord: any){
       let i = 0;
+      console.log(alarmRecord);
       for (let tag of this.inputTags){
         if (tag.id == alarmRecord.tagId){
           if (alarmRecord.priority == 0)
@@ -121,7 +128,9 @@ export class TrendingComponent implements OnInit {
       }
     }
 
-    getRowColor(alarmColorValue: number): any {
+    getRowColor(rowId: number): any {
+      console.log(rowId);
+      let alarmColorValue = this.alarmColors[rowId];
       if (alarmColorValue === 0) {
         return { background: '#edd2d1' };
       } else if (alarmColorValue === 1) {

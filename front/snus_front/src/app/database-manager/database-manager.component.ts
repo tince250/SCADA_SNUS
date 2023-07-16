@@ -212,6 +212,8 @@ export interface TableOutputTag {
 export interface TableInputTag {
   alarmType?: any;
   alarmValue?: any;
+  lowLimit?: any;
+  highLimit?: any;
   id: number,
   description: string,
   unit: string,
