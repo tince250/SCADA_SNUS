@@ -14,7 +14,7 @@ import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/si
 })
 export class TrendingComponent implements OnInit {
  
-  displayedColumns = ['name', 'type', 'description', 'value', 'isScanOn', 'scanTime'];
+  displayedColumns = ['name', 'type', 'description', 'value', 'isScanOn', 'scanTime', 'alarmInfo'];
   inputTags: TableInputTag[] = [];
   alarmColors: any = [];
   inputTagUpdateConnection: any;
@@ -107,12 +107,14 @@ export class TrendingComponent implements OnInit {
       let i = 0;
       for (let tag of this.inputTags){
         if (tag.id == alarmRecord.tagId){
-          if (alarmRecord.alarm.alarmPriority == 0)
+          if (alarmRecord.priority == 0)
             this.alarmColors[i] = 0
-          else if (alarmRecord.alarm.alarmPriority == 1)
+          else if (alarmRecord.priority == 1)
             this.alarmColors[i] = 1;
           else 
             this.alarmColors[i] = 2;
+          tag.alarmValue = alarmRecord.value;
+          tag.alarmType = alarmRecord.type;
           break;
         }
         i += 1;
@@ -127,7 +129,7 @@ export class TrendingComponent implements OnInit {
       } else if (alarmColorValue === 2) {
         return { background: '#B94C47', color: 'white' };
       } else {
-        return {}; // Return an empty object if none of the conditions match
+        return {}; 
       }
     }
   

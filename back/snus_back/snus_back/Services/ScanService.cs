@@ -189,14 +189,15 @@ namespace snus_back.Services
                         {
                             currentValue = activeAnalogInputs[address].LowLimit;
                         }
-
-                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
-
+                        AlarmRecordDTO arDTO = new AlarmRecordDTO { TagId = activeAnalogInputs[address].Id, Priority = currentAlarm.Priority, Type = currentAlarm.Type, Value = currentAlarm.Value}
                         lock (_lock)
                         {
-                            alarmHub.Clients.All.SendAsync("alarm", alarmRecord);
+                            alarmHub.Clients.All.SendAsync("alarm", arDTO);
                             udateAlarmHandler.SendDataToClient("alarm", currentAlarm);
                         }
+                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
+
+                        
                         lock (_lock)
                         {
                             alarmRecords.Add(alarmRecord);

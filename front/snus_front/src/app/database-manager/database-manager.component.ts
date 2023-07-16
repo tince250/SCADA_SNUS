@@ -149,6 +149,8 @@ export interface TableOutputTag {
 }
 
 export interface TableInputTag {
+  alarmType?: any;
+  alarmValue?: any;
   id: number,
   description: string,
   unit: string,
