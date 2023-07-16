@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ReportService } from '../services/report.service';
+import { ALarmDTO, AnalogInputDTO, DigitalInputDTO, ReportService, TagRecordDTO } from '../services/report.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -9,6 +9,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./report-manager.component.css']
 })
 export class ReportManagerComponent {
+
+  allTags : TagRecordDTO[] = [];
+  allTagsDisplayedColumns = ['timestamp, value, ioAddress']
+
+  allAITags: AnalogInputDTO[] = [];
+  allAITagsDisplayedColumns = ['timestamp, value, ioAddress']
+
+  allDITags: DigitalInputDTO[] = [];
+  allDITagsDisplayedColumns = ['timestamp, value, ioAddress']
+  alarmDisplayedColumns = ['timestamp, value, priority']
+
+  allTagsByAddress: TagRecordDTO[] = [];
+  allAlarmsByPriority: ALarmDTO[] = [];
+  allAlarmsBetweenDates: ALarmDTO[] = [];
+
 
   selectedCriteria: string = 'Select';
   selectedSort: string = 'Select';
@@ -67,6 +82,7 @@ export class ReportManagerComponent {
     this.reportService.getAllTags().subscribe({
       next: (value) => {
         console.log("succ\n" + JSON.stringify(value));
+        this.allTags = value;
       },
       error: (err) => {
         this.snackBar.open(err.error, "", {
@@ -80,6 +96,7 @@ export class ReportManagerComponent {
     this.reportService.getAllAITags().subscribe({
       next: (value) => {
         console.log("succ\n" + JSON.stringify(value));
+        this.allAITags = value;
       },
       error: (err) => {
         this.snackBar.open(err.error, "", {
@@ -93,6 +110,7 @@ export class ReportManagerComponent {
     this.reportService.getAllDITags().subscribe({
       next: (value) => {
         console.log("succ\n" + JSON.stringify(value));
+        this.allDITags = value;
       },
       error: (err) => {
         this.snackBar.open(err.error, "", {
@@ -108,6 +126,7 @@ export class ReportManagerComponent {
       this.reportService.getAllTagsByAddress(this.selectedTagAddress).subscribe({
         next: (value) => {
           console.log("succ\n" + JSON.stringify(value));
+          this.allTagsByAddress = value;
         },
         error: (err) => {
           this.snackBar.open(err.error, "", {
@@ -129,6 +148,7 @@ export class ReportManagerComponent {
       this.reportService.getAlarmsBetweenDates(this.dateForm.value.start, this.dateForm.value.end).subscribe({
         next: (value) => {
           console.log("succ\n" + JSON.stringify(value));
+          this.allAlarmsBetweenDates = value;
         },
         error: (err) => {
           this.snackBar.open(err.error, "", {
@@ -148,6 +168,7 @@ export class ReportManagerComponent {
       this.reportService.getAlarmsByPriority(this.selectedAlarmPriority).subscribe({
         next: (value) => {
           console.log("succ\n" + JSON.stringify(value));
+          this.allAlarmsByPriority = value;
         },
         error: (err) => {
           this.snackBar.open(err.error, "", {
@@ -162,4 +183,5 @@ export class ReportManagerComponent {
     }
   }
 
+  
 }

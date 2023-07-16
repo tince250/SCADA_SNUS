@@ -78,7 +78,7 @@ import { environment } from "src/environments/environment";
     Id: number,
     Timestamp: string,
     Value: number,
-    Description: string,
+    Priority: string,
     IOAddress: string
   }
 
