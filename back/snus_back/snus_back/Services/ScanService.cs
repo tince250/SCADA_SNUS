@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.SignalR;
+using snus_back.DTOs;
+using snus_back.Hubs;
 using snus_back.Models;
 using snus_back.Repositories;
 using snus_back.WebSockets;
@@ -24,15 +26,18 @@ namespace snus_back.Services
         private IOEntryRepository ioEntryRepository;
         private UpdateAlarmHandler udateAlarmHandler;
         private UpdateInputHandler updateInputHandler;
+        private readonly IHubContext<UpdateInputHub> inputHub;
         private readonly object _lock = new object();
 
-        public ScanService(TagRepository tagRepository, IOEntryRepository iOEntryRepository, AlarmRepository alarmRepository, UpdateAlarmHandler updateAlarmHandler, UpdateInputHandler updateInputHandler)
+        public ScanService(TagRepository tagRepository, IOEntryRepository iOEntryRepository, AlarmRepository alarmRepository, UpdateAlarmHandler updateAlarmHandler, UpdateInputHandler updateInputHandler,
+            IHubContext<UpdateInputHub> inputHub)
         {
             this.tagRepository = tagRepository;
             this.alarmRepository = alarmRepository;
             this.ioEntryRepository = iOEntryRepository;
             this.udateAlarmHandler = updateAlarmHandler;
             this.updateInputHandler = updateInputHandler;
+            this.inputHub = inputHub;
         }
 
         public void AddNewTagThread(AnalogInput tag)
@@ -196,6 +201,7 @@ namespace snus_back.Services
                     }
                     lock (_lock)
                     {
+                        inputHub.Clients.All.SendAsync("input", tagRecord);
                         updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }
@@ -234,6 +240,7 @@ namespace snus_back.Services
                     }
                     lock (_lock)
                     {
+                        inputHub.Clients.All.SendAsync("input", tagRecord);
                         updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }
@@ -272,6 +279,7 @@ namespace snus_back.Services
                     }
                     lock (_lock)
                     {
+                        inputHub.Clients.All.SendAsync("input", tagRecord);
                         updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }
@@ -310,6 +318,7 @@ namespace snus_back.Services
                     }
                     lock (_lock)
                     {
+                        inputHub.Clients.All.SendAsync("input", tagRecord);
                         updateInputHandler.SendDataToClient("input", tagRecord);
                     }
                 }

@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: "reports", component: ReportManagerComponent},
   {path: "database", component: DatabaseManagerComponent},
   {path: "add-tag", component: AddTagComponent},
+  {path: "abc", component: DatabaseManagerComponent},
 ];
 
 @NgModule({

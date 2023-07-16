@@ -18,6 +18,7 @@ import { DatabaseManagerComponent } from './database-manager/database-manager.co
 import { ChangeTagValueComponent } from './change-tag-value/change-tag-value.component';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { TrendingComponent } from './trending/trending.component';
+import { InputTagValueSocketService } from './services/trending-input-value-ws.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { TrendingComponent } from './trending/trending.component';
     HttpClientModule,
   ],
   providers: [
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline', hideRequiredMarker: 'true' }},
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline', hideRequiredMarker: 'true' }}, InputTagValueSocketService 
   ],
   bootstrap: [AppComponent]
 })

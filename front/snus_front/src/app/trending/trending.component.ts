@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TableInputTag, TableOutputTag } from '../database-manager/database-manager.component';
 import { TagService } from '../services/tag.service';
+import { InputTagValueSocketService } from '../services/trending-input-value-ws.service';
+import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 
 @Component({
   selector: 'app-trending',
@@ -18,10 +20,14 @@ export class TrendingComponent implements OnInit {
   constructor(private dialog: MatDialog,
     private tagService: TagService,
     private snackBar: MatSnackBar,
-    private router: Router){}
+    private router: Router,
+    private inputTagValueSocketService: InputTagValueSocketService){}
 
   ngOnInit(): void {
     this.getAllInputTags();
+    //this.inputTagValueSocketService.connect();
+    //this.inputTagValueSocketService.openWebSocketConnection();
+    this.initWebSocket();
   }
 
   getAllInputTags() {
@@ -45,4 +51,36 @@ export class TrendingComponent implements OnInit {
       }
     });
   }
+
+  connection: any;
+  
+
+  initWebSocket() {
+    this.connection = new HubConnectionBuilder()
+      .configureLogging(LogLevel.Debug)
+      .withUrl('https://localhost:7012/hub/updateInput', {
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets
+      })
+      .build();
+    this.connection
+      .start()
+      .then(() => console.log('Connection started'))
+      .catch(() => console.log('Error while starting connection: '))
+    this.connection.on('input', (from: string, body: string) => {
+      console.log(from, body);
+      this.handleInputTagUpdateWebSocket(from);
+    });
+  }
+
+    handleInputTagUpdateWebSocket(tagRecord: any){
+      console.log(tagRecord.id);
+      for (let tag of this.inputTags){
+        if (tag.id-1 == tagRecord.tagId){
+          tag.value = tagRecord.value;
+          break;
+        }
+      }
+    }
+  
 }
