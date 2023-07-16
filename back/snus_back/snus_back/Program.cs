@@ -85,7 +85,7 @@ app.UseEndpoints(endpoints =>
 });
 
 app.MapHub<UpdateInputHub>("/hub/updateInput");
-
+app.MapHub<UpdateAlarmHub>("/hub/updateAlarm");
 app.UseWebSockets(new WebSocketOptions
 {
     KeepAliveInterval = TimeSpan.FromSeconds(120),
@@ -93,8 +93,8 @@ app.UseWebSockets(new WebSocketOptions
 
 app.MapRazorPages();
 
-/*using var scope = app.Services.CreateScope();
-scope.ServiceProvider.GetRequiredService<ScanService>().Run();*/
+using var scope = app.Services.CreateScope();
+scope.ServiceProvider.GetRequiredService<ScanService>().Run();
 
 app.Run();
 

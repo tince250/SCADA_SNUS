@@ -91,7 +91,12 @@ namespace snus_back.Services
             }
 
 
+            Thread tBatch = new Thread(batchDBUpdate);
+            tBatch.Start();
+        }
 
+        private void batchDBUpdate()
+        {
             while (true)
             {
                 Thread.Sleep(3000);
@@ -184,12 +189,14 @@ namespace snus_back.Services
                         {
                             currentValue = activeAnalogInputs[address].LowLimit;
                         }
-                        lock(_lock)
+
+                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
+
+                        lock (_lock)
                         {
-                            alarmHub.Clients.All.SendAsync("alarm", currentAlarm);
+                            alarmHub.Clients.All.SendAsync("alarm", alarmRecord);
                             udateAlarmHandler.SendDataToClient("alarm", currentAlarm);
                         }
-                        AlarmRecord alarmRecord = new AlarmRecord { AlarmId = currentAlarm.Id, Timestamp = DateTime.Now, TagId = activeAnalogInputs[address].Id };
                         lock (_lock)
                         {
                             alarmRecords.Add(alarmRecord);
