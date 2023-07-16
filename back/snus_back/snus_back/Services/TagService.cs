@@ -21,6 +21,16 @@ namespace snus_back.Services
             this.updateInputHandler = updateInputHandler;
         }
 
+        public ICollection<AnalogInputDTO> getAllAITags()
+        {
+            return allTags.getAllAITags();
+        }
+
+        public ICollection<DigitalInputDTO> getAllDITags()
+        {
+            return allTags.getAllDITags();
+        }
+
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address)
         {
             return allTags.getAllTagByIOAddress(address);

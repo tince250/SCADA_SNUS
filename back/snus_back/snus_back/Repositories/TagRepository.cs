@@ -51,12 +51,12 @@ namespace snus_back.Repositories
 
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address)
         {
-            var  tagRecrods = dbContext.TagRecords
+            var  tagRecords = dbContext.TagRecords
                 .Where(tr => tr.Tag.IOAddress == address)
                 .ToList();
 
             ICollection<TagRecordDTO> ret = new List<TagRecordDTO>();
-            foreach (var tagRecord in dbContext.TagRecords)
+            foreach (var tagRecord in tagRecords)
             {
                 ret.Add(new TagRecordDTO(tagRecord));
             }
@@ -78,6 +78,16 @@ namespace snus_back.Repositories
             foreach (var analogInput in analogInputs)
             {
                 ret.Add(new InputTagDBManagerDTO(analogInput));
+            }
+
+            return ret;
+        }
+        public ICollection<AnalogInputDTO> getAllAITags()
+        {
+            ICollection<AnalogInputDTO> ret = new List<AnalogInputDTO>();
+            foreach (var analogInput in dbContext.AnalogInputs)
+            {
+                ret.Add(new AnalogInputDTO(analogInput));
             }
 
             return ret;
@@ -106,6 +116,16 @@ namespace snus_back.Repositories
             foreach (var analogOutput in analogOutputs)
             {
                 ret.Add(new OutputTagDBManagerDTO(analogOutput));
+            }
+
+            return ret;
+        }
+        public ICollection<DigitalInputDTO> getAllDITags()
+        {
+            ICollection<DigitalInputDTO> ret = new List<DigitalInputDTO>();
+            foreach (var digitalInput in dbContext.DigitalInputs)
+            {
+                ret.Add(new DigitalInputDTO(digitalInput));
             }
 
             return ret;

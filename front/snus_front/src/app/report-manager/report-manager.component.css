@@ -13,22 +13,22 @@ h1 {
 }
 
 #filter-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 15px !important;
-    padding-bottom: 15px !important;
-    padding: 15px 0 15px 0 !important;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 !important;
+  font-size: 1.1em;
 }
 
 #filter-container > div {
-    display: flex;
-    flex-direction: row;
-    margin-left: 15px;
+  display: flex;
+  flex-direction: row;
+  margin-left: 25px;
+  cursor: pointer;  
+  box-sizing: border-box;
 }
-
 
 /* DROPDOWN */
 
@@ -39,16 +39,16 @@ h1 {
 .dropbtn {
     background-color: white;
     color: gray;
-    padding: 15px 35px;
-    font-size: 1em;
+    /* padding: 15px 35px; */
+    font-size: 1.2em;
     border: 2px solid gray;
     cursor: pointer;
     margin: auto;
     border-radius: 10px;
     width: 220px;
     height: 50px;
-    align-self: center;
-  }
+    margin-left: 15px;
+}
   
   /* The container <div> - needed to position the dropdown content */
   .dropdown {
@@ -59,7 +59,9 @@ h1 {
   /* Dropdown Content (Hidden by Default) */
   .dropdown-content {
     display: none;
+    margin-left: 15px;
     position: absolute;
+    width: 220px;
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -72,6 +74,7 @@ h1 {
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    cursor: pointer;
   }
   
   /* Change color of dropdown links on hover */
@@ -85,6 +88,9 @@ h1 {
   /* Change the background color of the dropdown button when the dropdown content is shown */
   .dropdown:hover .dropbtn {
     background-color: #1e84a9;
+    color: white;
+    border-color: #1e84a9;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
 
@@ -97,3 +103,60 @@ h1 {
   #additional-filters {
     margin-top: 20px;
   }
+
+form {
+  display: flex;
+  justify-content: center;
+}
+
+form>mat-form-field {
+  margin-right: 10px;
+  height: 100px;
+  width: 80%;
+  justify-content: space-between;
+  width: 250px;
+  margin: 10px 10px 10px 10px;
+}
+
+.outline-btnn {
+  cursor: pointer !important;
+    font-size: 1em;
+    padding: 5px 35px;
+    background-color: white;
+    color: #1E4A5A;
+    font-size: 1.2em;
+    border: 2px solid #1E4A5A;
+    cursor: pointer;
+    margin: auto;
+    border-radius: 10px;
+    width: 250px;
+    float: right;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.outline-btnn:hover{
+  background-color: #F9F9F9;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+table {
+  margin-top: 20px;
+}
+
+.mat-header-cell {
+font-size: 24px; 
+color: #1E4A5A;
+/* font-weight: 600;Adjust the desired font size */
+}
+
+th.mat-header-cell, .mat-cell {
+  text-align: center;
+}
+
+.mat-cell{
+  font-size: 20px;
+  color: #b9b9b9;
+  font-weight: bold;
+  height: 60px;
+}

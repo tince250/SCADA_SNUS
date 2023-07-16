@@ -23,7 +23,8 @@ namespace snus_back.Controllers
         {
             try
             {
-                ICollection<TagRecordDTO> ret = this.tagService.getAllTagByIOAddress(address);
+                System.Diagnostics.Debug.WriteLine(address);
+                ICollection <TagRecordDTO> ret = this.tagService.getAllTagByIOAddress(address);
                 return Ok(ret);
             }
             catch (Exception e)
@@ -62,6 +63,20 @@ namespace snus_back.Controllers
                 return BadRequest(new { Message = e.Message });
             }
         }
+        [HttpGet]
+        [Route("AI")]
+        public ActionResult GetAllAITags()
+        {
+            try
+            {
+                ICollection<AnalogInputDTO> ret = this.tagService.getAllAITags();
+                return Ok(ret);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
 
 
         [HttpGet]
@@ -71,6 +86,20 @@ namespace snus_back.Controllers
             try
             {
                 ICollection<OutputTagDBManagerDTO> ret = this.tagService.GetAllOutputTagsDBManager();
+                return Ok(ret);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+        [HttpGet]
+        [Route("DI")]
+        public ActionResult GetAllDITags()
+        {
+            try
+            {
+                ICollection<DigitalInputDTO> ret = this.tagService.getAllDITags();
                 return Ok(ret);
             }
             catch (Exception e)
