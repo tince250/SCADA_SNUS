@@ -40,6 +40,14 @@ namespace snus_back.Repositories
             return ret;
         }
 
+        public void AddAlarmToTag(Alarm ret, int id)
+        {
+            AnalogInput analogInput = dbContext.AnalogInputs.Find(id);
+            analogInput.Alarms.Add(ret);
+            dbContext.SaveChanges();
+
+        }
+
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address)
         {
             var  tagRecrods = dbContext.TagRecords
@@ -270,6 +278,11 @@ namespace snus_back.Repositories
             dbContext.SaveChanges();
 
             return ioAddress;
+        }
+
+        public AnalogInput GetAnalogInputById(int id)
+        {
+            return dbContext.AnalogInputs.Find(id);
         }
 
     }

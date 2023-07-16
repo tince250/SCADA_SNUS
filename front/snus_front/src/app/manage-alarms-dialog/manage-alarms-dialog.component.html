@@ -1,0 +1,36 @@
+<div class="add-alarm-container border">
+    <h3 id="share-title" class="dark-blue">Add a new alarm</h3>
+    <div id="add-alarm-form">
+        <form [formGroup]="addAlarmForm" (submit)="addNewAlarm()">
+            <div class="horizontal-form-elem">
+                <p>Type:</p>
+                <mat-radio-group
+                    formControlName="type"
+                    class="driver-radio-group">
+                    <mat-radio-button class="type-rb" value="LOWER">LOWER</mat-radio-button>
+                    <mat-radio-button class="type-rb" value="HIGHER">HIGHER</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="horizontal-form-elem">
+                <p>Critical value:</p>
+                <mat-form-field>
+                    <input matInput type="number" name="value" formControlName="value" />
+                </mat-form-field>
+            </div>
+            <div class="horizontal-form-elem">
+                <p>Priority:</p>
+                <mat-radio-group
+                    formControlName="priority"
+                    class="driver-radio-group">
+                    <mat-radio-button class="type-rb" value="LOW">LOW</mat-radio-button>
+                    <mat-radio-button class="type-rb" value="MEDIUM">MEDIUM</mat-radio-button>
+                    <mat-radio-button class="type-rb" value="HIGH">HIGH</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="btn-div">
+                <button type="submit" class="conf-button back-blue" mat-raised-button>Add alarm</button>
+
+            </div>
+        </form>
+    </div>
+</div>

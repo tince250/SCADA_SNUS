@@ -99,7 +99,7 @@
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let tag">
-                      <button mat-mini-fab matTooltip="Manage alarms" class="back-orange" (click)="openManageAlarms(tag)" aria-label="Example icon button with a hhs icon">
+                      <button *ngIf="tag.type == 'ANALOG'" mat-mini-fab matTooltip="Manage alarms" class="back-orange" (click)="openManageAlarms(tag)" aria-label="Example icon button with a hhs icon">
                         <mat-icon>alarm</mat-icon>
                       </button>
                       <button mat-mini-fab class="back-red" (click)="deleteInputTag(tag)" aria-label="Example icon button with a hhs icon">

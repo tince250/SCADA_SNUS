@@ -18,6 +18,7 @@ import { DatabaseManagerComponent } from './database-manager/database-manager.co
 import { ChangeTagValueComponent } from './change-tag-value/change-tag-value.component';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { TrendingComponent } from './trending/trending.component';
+import { ManageAlarmsDialogComponent } from './manage-alarms-dialog/manage-alarms-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { TrendingComponent } from './trending/trending.component';
     DatabaseManagerComponent,
     ChangeTagValueComponent,
     AddTagComponent,
-    TrendingComponent
+    TrendingComponent,
+    ManageAlarmsDialogComponent
   ],
   imports: [
     BrowserModule,

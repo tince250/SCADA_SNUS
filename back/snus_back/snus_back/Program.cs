@@ -24,6 +24,7 @@ builder.Services.AddCors();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IIOEntryService, IOEntryService>();
+builder.Services.AddTransient<IAlarmService, AlarmService>();
 builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<SimulationDriver>();
 builder.Services.AddTransient<ScanService>();

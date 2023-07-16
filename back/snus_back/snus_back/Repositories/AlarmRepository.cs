@@ -49,5 +49,12 @@ namespace snus_back.Repositories
             }
             dbContext.SaveChanges();
         }
+
+        public Alarm AddAlarm(Alarm alarm)
+        {
+            this.dbContext.Alarms.Add(alarm);
+            this.dbContext.SaveChanges();
+            return alarm;
+        }
     }
 }

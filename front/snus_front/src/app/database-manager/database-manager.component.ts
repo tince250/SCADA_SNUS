@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChangeTagValueComponent } from '../change-tag-value/change-tag-value.component';
 import { TagService } from '../services/tag.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ManageAlarmsDialogComponent } from '../manage-alarms-dialog/manage-alarms-dialog.component';
 
 @Component({
   selector: 'app-database-manager',
@@ -168,8 +169,10 @@ export class DatabaseManagerComponent implements OnInit {
     this.router.navigate(["add-tag"]);
   }
 
-  openManageAlarms(tag: any) {
-
+  openManageAlarms(tag: TableInputTag) {
+    this.dialog.open(ManageAlarmsDialogComponent, {
+      data: {tagId: tag.id}
+    });
   }
 
   onScanToggleChange(tag: TableInputTag) {
