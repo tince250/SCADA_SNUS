@@ -42,7 +42,7 @@
                 <p><span class="dark-gray">type:</span> {{ alarm.type }}</p>
                 <p><span class="dark-gray">value:</span> {{ alarm.value }}</p>
                 <p><span class="dark-gray">priority:</span> {{ alarm.priority }}</p>
-                <mat-icon (click)="removeAlarm(i)" class="exit-btn card-btn">add</mat-icon>
+                <mat-icon (click)="removeAlarm(i)" class="exit-btn card-btn">delete</mat-icon>
                 </div>
         </div>
         <p *ngIf="alarms.length == 0">There are no alarms added for this tag yet.</p>

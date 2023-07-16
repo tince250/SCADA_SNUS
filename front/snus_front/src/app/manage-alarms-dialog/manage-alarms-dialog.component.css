@@ -41,9 +41,10 @@ h3, h4 {
 }
 
 .exit-btn {
-    transform: rotate(45deg);
+    /* transform: rotate(45deg); */
     font-weight: 700;
     cursor: pointer;
+    color: #A8201A !important;
 }
 
 .card-btn {
