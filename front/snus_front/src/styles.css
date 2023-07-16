@@ -267,3 +267,9 @@ input[type=password]::-ms-clear
 {
     display: none;
 }
+
+/* TABLE STYLES */
+.mat-cell {
+    font-weight: 400 !important;
+    color: #7b7b7b !important;
+}

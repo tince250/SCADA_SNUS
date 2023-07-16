@@ -46,6 +46,11 @@ namespace snus_back.Services
             allTags.DeleteAnalogOutput(id);
         }
 
+        public ICollection<InputTagDBManagerDTO> GetAllInputTagsDBManager()
+        {
+            return allTags.GetAllInputTagsDBManager();
+        }
+
         public ICollection<OutputTagDBManagerDTO> GetAllOutputTagsDBManager()
         {
             return allTags.GetAllOutputTagsDBManager();
@@ -135,6 +140,31 @@ namespace snus_back.Services
             Console.WriteLine(addedTag.Id);
             this.scanService.AddNewTagThread(addedTag);
 
+        }
+
+        public void UpdateTagScan(UpdateTagScanDTO dto)
+        {
+            if (dto.Type == "DIGITAL")
+            {
+                DigitalInput tag = this.allTags.UpdateDigitalInputScan(dto.Id, dto.IsScanOn);
+                this.scanService.UpdateScan(tag);
+            } 
+            else if (dto.Type == "ANALOG")
+            {
+                AnalogInput tag = this.allTags.UpdateAnalogInputScan(dto.Id, dto.IsScanOn);
+                this.scanService.UpdateScan(tag);
+            } 
+        }
+
+        public void DeleteDigitalInput(int id)
+        {
+            string ioAddress = allTags.DeleteDigitalInput(id);
+            this.scanService.DeleteDigitalInput(ioAddress);
+        }
+
+        public void DeleteAnalogInput(int id)
+        {
+            allTags.DeleteAnalogInput(id);
         }
     }
 }

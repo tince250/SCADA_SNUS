@@ -40,6 +40,14 @@ namespace snus_back.Repositories
             return ret;
         }
 
+        public void AddAlarmToTag(Alarm ret, int id)
+        {
+            AnalogInput analogInput = dbContext.AnalogInputs.Find(id);
+            analogInput.Alarms.Add(ret);
+            dbContext.SaveChanges();
+
+        }
+
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address)
         {
             var  tagRecrods = dbContext.TagRecords
@@ -50,6 +58,34 @@ namespace snus_back.Repositories
             foreach (var tagRecord in dbContext.TagRecords)
             {
                 ret.Add(new TagRecordDTO(tagRecord));
+            }
+
+            return ret;
+        }
+
+        public ICollection<InputTagDBManagerDTO> GetAllInputTagsDBManager()
+        {
+            /*AnalogOutput ao = new AnalogOutput
+            {
+                Unit = "km",
+                IOAddress = "s",
+                Value = 10,
+                Description = "najlepsi na svijet"
+            };
+            dbContext.AnalogOutputs.Add(ao);
+            dbContext.SaveChanges();*/
+            var digitalInputs = dbContext.DigitalInputs.ToList();
+            var analogInputs = dbContext.AnalogInputs.ToList();
+            ICollection<InputTagDBManagerDTO> ret = new List<InputTagDBManagerDTO>();
+
+            foreach (var digitalInput in digitalInputs)
+            {
+                ret.Add(new InputTagDBManagerDTO(digitalInput));
+            }
+
+            foreach (var analogInput in analogInputs)
+            {
+                ret.Add(new InputTagDBManagerDTO(analogInput));
             }
 
             return ret;
@@ -190,6 +226,64 @@ namespace snus_back.Repositories
             dbContext.SaveChanges();
         }
 
+        public AnalogInput UpdateAnalogInputScan(int id, Boolean value)
+        {
+            AnalogInput analogInput = dbContext.AnalogInputs.Find(id);
+            if (analogInput != null)
+            {
+                analogInput.IsScanOn = value;
+                dbContext.SaveChanges();
+                return analogInput;
+            }
+            else
+            {
+                throw new Exception("No analog input with given id exists.");
+            }
+
+            return null;
+        }
+
+        public DigitalInput UpdateDigitalInputScan(int id, Boolean value)
+        {
+            DigitalInput digitalInput = dbContext.DigitalInputs.Find(id);
+            if (digitalInput != null)
+            {
+                digitalInput.IsScanOn = value;
+                dbContext.SaveChanges();
+                return digitalInput;
+            }
+            else
+            {
+                throw new Exception("No digital input with given id exists.");
+            }
+
+            return null;
+        }
+
+        public string DeleteAnalogInput(int id)
+        {
+            AnalogInput analogInput = dbContext.AnalogInputs.Find(id);
+            string ioAddress = analogInput.IOAddress;
+            dbContext.AnalogInputs.Remove(analogInput);
+            dbContext.SaveChanges();
+
+            return ioAddress;
+        }
+
+        public string DeleteDigitalInput(int id)
+        {
+            DigitalInput digitalInput = dbContext.DigitalInputs.Find(id);
+            string ioAddress = digitalInput.IOAddress;
+            dbContext.DigitalInputs.Remove(digitalInput);
+            dbContext.SaveChanges();
+
+            return ioAddress;
+        }
+
+        public AnalogInput GetAnalogInputById(int id)
+        {
+            return dbContext.AnalogInputs.Find(id);
+        }
 
     }
 }

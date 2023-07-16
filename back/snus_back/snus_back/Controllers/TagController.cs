@@ -47,6 +47,23 @@ namespace snus_back.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("input-dbm")]
+        public ActionResult GetAllInputTagsDBManager()
+        {
+            try
+            {
+                ICollection<InputTagDBManagerDTO> ret = this.tagService.GetAllInputTagsDBManager();
+                return Ok(ret);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+
         [HttpGet]
         [Route("output-dbm")]
         public ActionResult GetAllOutputTagsDBManager()
@@ -136,6 +153,51 @@ namespace snus_back.Controllers
                 Console.WriteLine(JsonSerializer.Serialize(dto));
                 this.tagService.AddTag(dto);
                 return Ok( new {Message = "Tag added successfully" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("scan")]
+        public ActionResult UpdateTagScan(UpdateTagScanDTO dto)
+        {
+            try
+            {
+                this.tagService.UpdateTagScan(dto);
+                return Ok(new { Message = "Tag scan updated successfully" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("digital-input/{id}")]
+        public ActionResult DeleteDigitalInput(int id)
+        {
+            try
+            {
+                this.tagService.DeleteDigitalInput(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("analog-input/{id}")]
+        public ActionResult DeleteAnalogInput(int id)
+        {
+            try
+            {
+                this.tagService.DeleteAnalogInput(id);
+                return Ok();
             }
             catch (Exception e)
             {

@@ -49,5 +49,28 @@ namespace snus_back.Repositories
             }
             dbContext.SaveChanges();
         }
+
+        public Alarm AddAlarm(Alarm alarm)
+        {
+            this.dbContext.Alarms.Add(alarm);
+            this.dbContext.SaveChanges();
+            return alarm;
+        }
+
+        public Alarm GetById(int id)
+        {
+            Alarm alarm = this.dbContext.Alarms.Find(id);
+            if (alarm == null)
+                throw new Exception("Alar with given id doesn't exist.");
+            return alarm;
+        }
+
+        internal void DeleteAlarm(Alarm alarm)
+        {
+            
+            this.dbContext.Alarms.Remove(alarm);
+            this.dbContext.SaveChanges();
+
+        }
     }
 }

@@ -35,6 +35,16 @@ namespace snus_back.Services
             this.updateInputHandler = updateInputHandler;
         }
 
+        public void AddNewAlarm(Alarm ret, string iOAddress)
+        {
+            this.activeAnalogInputs[iOAddress].Alarms.Add(ret);
+        }
+
+        public void DeleteAlarm(Alarm ret, string iOAddress)
+        {
+            this.activeAnalogInputs[iOAddress].Alarms.Remove(ret);
+        }
+
         public void AddNewTagThread(AnalogInput tag)
         {
             activeAnalogInputs.Add(tag.IOAddress, tag);
@@ -55,6 +65,16 @@ namespace snus_back.Services
             else
                 t = new Thread(ScanRTUDigital);
             t.Start(tag.IOAddress);
+        }
+
+        public void UpdateScan(AnalogInput tag)
+        {
+            this.activeAnalogInputs[tag.IOAddress].IsScanOn = tag.IsScanOn;
+        }
+
+        public void UpdateScan(DigitalInput tag)
+        {
+            this.activeDigitalInputs[tag.IOAddress].IsScanOn = tag.IsScanOn;
         }
 
         public void Run()
@@ -201,6 +221,16 @@ namespace snus_back.Services
                 }
                 Thread.Sleep(scanTime);
             }
+        }
+
+        public void DeleteDigitalInput(string ioAddress)
+        {
+            Console.WriteLine(this.activeDigitalInputs.Remove(ioAddress));
+        }
+
+        public void DeleteAnaloglInput(string ioAddress)
+        {
+            this.activeAnalogInputs.Remove(ioAddress);
         }
 
         public void ScanSimulationAnalog(object param)

@@ -1,0 +1,50 @@
+<div class="add-alarm-container">
+    <h3 id="share-title" class="dark-blue">Add a new alarm</h3>
+    <div id="add-alarm-form">
+        <form [formGroup]="addAlarmForm" (submit)="addNewAlarm()">
+            <div class="horizontal-form-elem">
+                <p>Type:</p>
+                <mat-radio-group
+                    formControlName="type"
+                    class="driver-radio-group">
+                    <mat-radio-button class="type-rb" value="LOWER">LOWER</mat-radio-button>
+                    <mat-radio-button class="type-rb" value="HIGHER">HIGHER</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="horizontal-form-elem">
+                <p>Critical value:</p>
+                <mat-form-field>
+                    <input matInput type="number" name="value" formControlName="value" />
+                </mat-form-field>
+            </div>
+            <div class="horizontal-form-elem">
+                <p>Priority:</p>
+                <mat-radio-group
+                    formControlName="priority"
+                    class="driver-radio-group">
+                    <mat-radio-button class="type-rb" value="LOW">LOW</mat-radio-button>
+                    <mat-radio-button class="type-rb" value="MEDIUM">MEDIUM</mat-radio-button>
+                    <mat-radio-button class="type-rb" value="HIGH">HIGH</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="btn-div">
+                <button type="submit" class="conf-button back-blue" mat-raised-button>Add alarm</button>
+
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div id="added-friends">
+        <h4 class="blue">Existing alarms:</h4>
+        <div id="invited-cards-cont" *ngIf="alarms.length > 0">
+            <div class="invited-card border" *ngFor="let alarm of alarms; let i = index;">
+                <!-- <img src="{{ user.profilePicture == null? '../../../../assets/images/profile-placeholder.png': user.profilePicture }}" class="user-photo"> -->
+                <p><span class="dark-gray">type:</span> {{ alarm.type }}</p>
+                <p><span class="dark-gray">value:</span> {{ alarm.value }}</p>
+                <p><span class="dark-gray">priority:</span> {{ alarm.priority }}</p>
+                <mat-icon (click)="removeAlarm(i)" class="exit-btn card-btn">delete</mat-icon>
+                </div>
+        </div>
+        <p *ngIf="alarms.length == 0">There are no alarms added for this tag yet.</p>
+    </div>
+</div>
