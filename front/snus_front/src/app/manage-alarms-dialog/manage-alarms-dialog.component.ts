@@ -1,4 +1,4 @@
-import { AlarmDTO, AlarmService } from './../services/alarm.service';
+import { AlarmDTO, AlarmReturnedDTO, AlarmService } from './../services/alarm.service';
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ export class ManageAlarmsDialogComponent {
   });
 
   tagId: number = -1;
-  alarms: AlarmDTO[] = [];
+  alarms: AlarmReturnedDTO[] = [];
 
   constructor(public dialogRef: MatDialogRef<ManageAlarmsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -26,7 +26,7 @@ export class ManageAlarmsDialogComponent {
 
   ngOnInit(): void {
     this.tagId = this.data.tagId;
-    // this.fetchAlarms();
+    this.fetchAlarms();
   }
 
   fetchAlarms() {
@@ -60,6 +60,7 @@ export class ManageAlarmsDialogComponent {
           this.snackBar.open("Successfully added new alarm for tag.", "", {
             duration: 2700, panelClass: ['snack-bar-success']
           });
+          this.resetForm();
         },
         error: (err) => {
           console.log(err);
@@ -69,5 +70,32 @@ export class ManageAlarmsDialogComponent {
         },
       });
     }
+  }
+
+  removeAlarm(i: number) {
+    this.alarmService.deleteAlarm(this.alarms[i].id, this.tagId).subscribe({
+      next: (value) => {
+        console.log(value);
+        this.snackBar.open(value.message, "", {
+          duration: 2700, panelClass: ['snack-bar-success']
+        });
+        this.alarms = this.alarms.filter(elem => elem.id != this.alarms[i].id);
+      },
+      error: (err) => {
+        console.log(err);
+          this.snackBar.open(err.error, "", {
+            duration: 2700, panelClass: ['snack-bar-server-error']
+         });
+      }
+    });
+  }
+
+  resetForm() {
+    this.addAlarmForm.reset();
+    Object.keys(this.addAlarmForm.controls).forEach(key => {
+      const control = this.addAlarmForm.get(key) as FormControl;
+      control.setErrors(null);
+    });
+    this.addAlarmForm.updateValueAndValidity();
   }
 }

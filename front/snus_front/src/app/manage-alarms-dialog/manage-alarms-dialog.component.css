@@ -35,7 +35,7 @@ h3, h4 {
 }
 
 #share-title {
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 0 3px;
     font-size: 1.7em !important;
 }
@@ -53,7 +53,6 @@ h3, h4 {
 }
 
 #added-friends {
-    display: none;
     text-align: left;
     padding: 0px 20px;
 }
@@ -121,7 +120,7 @@ form {
     margin-left: auto;
     margin-right: auto;
     font-size: 1.1em;
-    padding: 10px 12px;
+    padding: 10px 12px 0px 12px;
     justify-content: left;
     margin-top: 10px;
 }
@@ -130,11 +129,16 @@ mat-radio-button {
     margin-left: 15px;
 }
 
+hr {
+    border-top: 1px solid rgb(190, 190, 190);
+}
+
 button {
     font-size: 1.1em;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 30px;
     align-self: center;
+    margin-bottom: -10px;
 }
 
 .mat-form-field {
@@ -142,6 +146,7 @@ button {
 }
 
 #add-alarm-form {
+    width: auto;
     text-align: left;
 }
 

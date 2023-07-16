@@ -50,6 +50,20 @@ namespace snus_back.Services
             };
         }
 
+        public void DeleteAlarm(int id, int tagId)
+        {
+            AnalogInput tag = this.allTags.GetAnalogInputById(tagId);
+            if (tag == null)
+            {
+                throw new Exception("There is no tag with given id");
+            }
+            Alarm alarm = this.allAlarms.GetById(id);
+            this.allAlarms.DeleteAlarm(alarm);
+
+            //TODO: oktomentarisi kad spojis
+            //this.scanService.DeleteAlarm(alarm, tag.IOAddress);
+        }
+
         public ICollection<AlarmDTO> GetAlarmsBetweenDates(DateTime startDate, DateTime endDate)
         {
             return allAlarms.GetAlarmsBetweenDates(startDate, endDate);
@@ -60,5 +74,28 @@ namespace snus_back.Services
             return allAlarms.GetAlarmsByPriority(priority);
         }
 
+        public List<AlarmReturnedDTO> GetAlarmsForTag(int tagId)
+        {
+            AnalogInput tag = this.allTags.GetAnalogInputById(tagId);
+            if (tag == null)
+            {
+                throw new Exception("There is no tag with given id");
+            }
+
+            List<AlarmReturnedDTO> dtos = new List<AlarmReturnedDTO>();
+            foreach (Alarm alarm in tag.Alarms)
+            {
+                dtos.Add(new AlarmReturnedDTO
+                {
+                    Id = alarm.Id,
+                    Priority = alarm.Priority.ToString(),
+                    Type = alarm.Type.ToString(),
+                    Value = alarm.Value,
+                    TagId = tag.Id
+                });
+            }
+
+            return dtos;
+        }
     }
 }

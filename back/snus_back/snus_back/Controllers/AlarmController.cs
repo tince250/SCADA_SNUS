@@ -63,5 +63,35 @@ namespace snus_back.Controllers
                 return BadRequest(new { Message = e.Message });
             }
         }
+
+        [HttpGet]
+        public ActionResult GetAlarmsForTag([FromQuery] int tagId)
+        {
+            try
+            {
+                Console.WriteLine(tagId);
+                List<AlarmReturnedDTO> ret = this.alarmService.GetAlarmsForTag(tagId);
+                return Ok(ret);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public ActionResult DeleteAlarm(int id, [FromQuery] int tagId)
+        {
+            try
+            {
+                this.alarmService.DeleteAlarm(id, tagId);
+                return Ok(new { Message = "Alarm deleted successfully." });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
     }
 }

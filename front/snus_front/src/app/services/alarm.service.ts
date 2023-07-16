@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AlarmService {
+  
 
   constructor(private http: HttpClient) { }
 
@@ -25,9 +26,25 @@ export class AlarmService {
         })
     });
   }
+
+  deleteAlarm(id: number, tagId: number): Observable<any> {
+    return this.http.delete<any>(environment.apiHost + "/alarm/" + id + "?tagId=" + tagId, {
+      headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+      })
+  });
+  }
 }
 
 export interface AlarmDTO {
+  tagId: number,
+  type: string,
+  value: number,
+  priority: string
+}
+
+export interface AlarmReturnedDTO {
+  id: number,
   tagId: number,
   type: string,
   value: number,

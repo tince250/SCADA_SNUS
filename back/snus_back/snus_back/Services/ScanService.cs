@@ -35,9 +35,14 @@ namespace snus_back.Services
             this.updateInputHandler = updateInputHandler;
         }
 
-        internal void AddNewAlarm(Alarm ret, string iOAddress)
+        public void AddNewAlarm(Alarm ret, string iOAddress)
         {
             this.activeAnalogInputs[iOAddress].Alarms.Add(ret);
+        }
+
+        public void DeleteAlarm(Alarm ret, string iOAddress)
+        {
+            this.activeAnalogInputs[iOAddress].Alarms.Remove(ret);
         }
 
         public void AddNewTagThread(AnalogInput tag)
