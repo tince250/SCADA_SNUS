@@ -178,35 +178,35 @@ namespace snus_back.Repositories
             return dbContext.DigitalInputs.ToList();
         }
 
-        public void UpdateAnalogInputs(Dictionary<string, AnalogInput> activeAnalogInputs)
+        public void UpdateAnalogInputs(Dictionary<int, AnalogInput> activeAnalogInputs)
         {
-            foreach (string address in activeAnalogInputs.Keys)
+            foreach (int id in activeAnalogInputs.Keys)
             {
-                AnalogInput analogInput = dbContext.AnalogInputs.FirstOrDefault(input => input.IOAddress == address);
+                AnalogInput analogInput = dbContext.AnalogInputs.FirstOrDefault(input => input.Id == id);
                 if (analogInput == null)
                 {
                     throw new Exception("AnalogInput not found.");
                 }
                 else
                 {
-                    analogInput.Value = activeAnalogInputs[address].Value;
+                    analogInput.Value = activeAnalogInputs[id].Value;
                 }
             }
             dbContext.SaveChanges();
         }
 
-        public void UpdateDigitalInputs(Dictionary<string, DigitalInput> activeDigitalInputs)
+        public void UpdateDigitalInputs(Dictionary<int, DigitalInput> activeDigitalInputs)
         {
-            foreach (string address in activeDigitalInputs.Keys) { 
+            foreach (int id in activeDigitalInputs.Keys) { 
 
-                DigitalInput digitalInput = dbContext.DigitalInputs.FirstOrDefault(input => input.IOAddress == address);
+                DigitalInput digitalInput = dbContext.DigitalInputs.FirstOrDefault(input => input.Id == id);
                 if (digitalInput == null)
                 {
                     throw new Exception("DigitalInput not found.");
                 }
                 else
                 {
-                    digitalInput.Value = activeDigitalInputs[address].Value;
+                    digitalInput.Value = activeDigitalInputs[id].Value;
                 }
             }
             dbContext.SaveChanges();
