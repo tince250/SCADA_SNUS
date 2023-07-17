@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AuthService } from './../services/auth.service';
 import { Component } from '@angular/core';
 
@@ -9,11 +10,12 @@ import { Component } from '@angular/core';
 export class NavbarComponent {
   role: string|null = ''
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.role = this.authService.getRole();
   }
 
   logout() {
     this.authService.logout();
+    this.router.navigate(["login"]);
   }
 }

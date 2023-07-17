@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using snus_back.data_access;
 
@@ -10,9 +11,11 @@ using snus_back.data_access;
 namespace snus_back.Migrations
 {
     [DbContext(typeof(SNUSDbContext))]
-    partial class SNUSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230716163356_ssssssss")]
+    partial class ssssssss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,12 +130,6 @@ namespace snus_back.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<double?>("HighLimit")
-                        .HasColumnType("REAL");
-
-                    b.Property<double?>("LowLimit")
-                        .HasColumnType("REAL");
 
                     b.Property<int>("TagId")
                         .HasColumnType("INTEGER");

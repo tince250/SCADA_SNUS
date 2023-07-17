@@ -39,7 +39,7 @@ namespace snus_back.Controllers
         {
             try
             {
-                AlarmPriority priority = (AlarmPriority)Enum.Parse(typeof(AlarmPriority), priorityStr);
+                AlarmPriority priority = (AlarmPriority)Enum.Parse(typeof(AlarmPriority), priorityStr.ToUpper());
                 ICollection<AlarmDTO> ret = this.alarmService.GetAlarmsByPriority(priority);
                 return Ok(ret);
             }

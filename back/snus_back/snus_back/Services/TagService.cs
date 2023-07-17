@@ -2,6 +2,7 @@
 using snus_back.Models;
 using snus_back.Repositories;
 using snus_back.Services.ServiceInterfaces;
+using snus_back.WebSockets;
 
 namespace snus_back.Services
 {
@@ -9,11 +10,23 @@ namespace snus_back.Services
     {
         private TagRepository allTags;
         private ScanService scanService;
+        private UpdateInputHandler updateInputHandler;
 
-        public TagService(TagRepository allTags, ScanService scanService) 
+        public TagService(TagRepository allTags, ScanService scanService, UpdateInputHandler updateInputHandler) 
         {
             this.allTags = allTags;
             this.scanService = scanService;
+            this.updateInputHandler = updateInputHandler;
+        }
+
+        public ICollection<AnalogInputDTO> getAllAITags()
+        {
+            return allTags.getAllAITags();
+        }
+
+        public ICollection<DigitalInputDTO> getAllDITags()
+        {
+            return allTags.getAllDITags();
         }
 
         public ICollection<TagRecordDTO> getAllTagByIOAddress(string address)
@@ -48,6 +61,8 @@ namespace snus_back.Services
 
         public ICollection<InputTagDBManagerDTO> GetAllInputTagsDBManager()
         {
+            TagRecord tagRecord = new TagRecord();
+            updateInputHandler.SendDataToClient("input", tagRecord);
             return allTags.GetAllInputTagsDBManager();
         }
 
@@ -158,12 +173,13 @@ namespace snus_back.Services
 
         public void DeleteDigitalInput(int id)
         {
-            string ioAddress = allTags.DeleteDigitalInput(id);
-            this.scanService.DeleteDigitalInput(ioAddress);
+            this.scanService.DeleteDigitalInput(id);
+            allTags.DeleteDigitalInput(id);
         }
 
         public void DeleteAnalogInput(int id)
         {
+            this.scanService.DeleteAnaloglInput(id);
             allTags.DeleteAnalogInput(id);
         }
     }

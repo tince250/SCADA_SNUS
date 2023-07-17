@@ -10,9 +10,9 @@
         </div>  
       <div class="navbar-menu" id="open-navbar1">
         <div class="navbar-nav">
-            <a id="navbar-option" [routerLink]="['']">Trending</a>
-            <a id="navbar-option"  *ngIf="role === 'ADMIN'" [routerLink]="['']">Database Manager</a>  
-            <a id="navbar-option" *ngIf="role === 'ADMIN'" [routerLink]="['']">Report Manager</a>  
+            <a id="navbar-option" [routerLink]="['trending']">Trending</a>
+            <a id="navbar-option"  *ngIf="role === 'ADMIN'" [routerLink]="['database']">Database Manager</a>  
+            <a id="navbar-option" *ngIf="role === 'ADMIN'" [routerLink]="['reports']">Report Manager</a>  
             <div  class="logout-option" (click)="logout()"><a>Log out</a> </div> 
         </div>
       </div>

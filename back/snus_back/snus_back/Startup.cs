@@ -1,4 +1,5 @@
-﻿using snus_back.Services;
+﻿using snus_back.Hubs;
+using snus_back.Services;
 using snus_back.WebSockets;
 
 namespace snus_back
@@ -7,8 +8,16 @@ namespace snus_back
     {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ScanService scanService)
         {
+
             app.UseRouting();
-            app.UseWebSockets();
+            app.UseWebSockets(new WebSocketOptions
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120),
+            });
+
+            
+
+            //app.UseWebSockets();
 
             app.Use(async (context, next) =>
             {

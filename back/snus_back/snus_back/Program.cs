@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using snus_back;
 using snus_back.data_access;
+using snus_back.Hubs;
 using snus_back.Models;
 using snus_back.Repositories;
 using snus_back.Services;
@@ -39,13 +40,28 @@ builder.Services.AddSingleton<UpdateInputHandler>();
 builder.Services.AddSingleton<UpdateAlarmHandler>();
 builder.Services.AddSingleton<WebSocketConnectionManager>();
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
+
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "mmm", policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+    });
+});*/
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder
+        .WithOrigins("http://localhost:4200")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials());
+});
 
 var app = builder.Build();
 
-app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+app.UseCors("CorsPolicy");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -69,13 +85,17 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-
-
+app.MapHub<UpdateInputHub>("/hub/updateInput");
+app.MapHub<UpdateAlarmHub>("/hub/updateAlarm");
+app.UseWebSockets(new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromSeconds(120),
+});
 
 app.MapRazorPages();
 
-//using var scope = app.Services.CreateScope();
-//scope.ServiceProvider.GetRequiredService<ScanService>().Run();
+using var scope = app.Services.CreateScope();
+scope.ServiceProvider.GetRequiredService<ScanService>().Run();
 
 app.Run();
 
