@@ -1,0 +1,220 @@
+<div id="main-container">    
+    <h1>Report Manager</h1>
+    <div id="filter-container" class="basic-container">
+        <div>
+            <h2>Criteria</h2>
+            <div class="dropdown">
+                <button class="dropbtn">{{selectedCriteria}}</button>
+                <div class="dropdown-content">
+                  <a (click)="changeCritera('Alarms')">Alarms</a>
+                  <a (click)="changeCritera('Alarms by priority')">Alarms by priority</a>
+                  <a (click)="changeCritera('Tags')">Tags</a>
+                  <a (click)="changeCritera('AI Tags')">AI Tags</a>
+                  <a (click)="changeCritera('DI Tags')">DI Tags</a>
+                  <a (click)="changeCritera('Tag by I/O address')">Tag by I/O address</a>
+                </div>
+            </div>
+        </div>
+        <button class="outline-btnn" (click)="generate()">Generate report</button>
+    </div>
+
+    <div id="additional-filters" class="basic-container" style="display: flex; align-items: center; justify-content: space-around;" *ngIf="selectedCriteria!='Select' && selectedCriteria!='Tags' && selectedCriteria!='AI Tags' && selectedCriteria!='DI Tags'">
+        <div>
+
+        <h2 *ngIf="selectedCriteria=='Alarms by priority'" style="display: inline-block;">Priority</h2>
+        <div class="dropdown" *ngIf="selectedCriteria=='Alarms by priority'" style="display: inline-block;">
+            <button class="dropbtn">{{selectedAlarmPriority}}</button>
+            <div class="dropdown-content">
+              <a (click)="changeSelectedAlarmPriority('Low')">Low</a>
+              <a (click)="changeSelectedAlarmPriority('Medium')">Medium</a>
+              <a (click)="changeSelectedAlarmPriority('High')">High</a>
+            </div>
+        </div>
+      </div>
+
+      <div>
+        <h2 *ngIf="selectedCriteria=='Tag by I/O address'" style="display: inline-block;">I/O address</h2>
+        <div class="dropdown" *ngIf="selectedCriteria=='Tag by I/O address'" style="display: inline-block;">
+            <button class="dropbtn">{{selectedTagAddress}}</button>
+            <div class="dropdown-content">
+              <a (click)="changeSelectedTagAddress('1')">1</a>
+              <a (click)="changeSelectedTagAddress('2')">2</a>
+              <a (click)="changeSelectedTagAddress('3')">3</a>
+              <a (click)="changeSelectedTagAddress('4')">4</a>
+              <a (click)="changeSelectedTagAddress('5')">5</a>
+              <a (click)="changeSelectedTagAddress('6')">6</a>
+              <a (click)="changeSelectedTagAddress('7')">7</a>
+              <a (click)="changeSelectedTagAddress('8')">8</a>
+              <a (click)="changeSelectedTagAddress('9')">9</a>
+              <a (click)="changeSelectedTagAddress('10')">10</a>
+              <a (click)="changeSelectedTagAddress('11')">11</a>
+              <a (click)="changeSelectedTagAddress('12')">12</a>
+              <a (click)="changeSelectedTagAddress('13')">13</a>
+              <a (click)="changeSelectedTagAddress('14')">14</a>
+              <a (click)="changeSelectedTagAddress('15')">15</a>
+              <a (click)="changeSelectedTagAddress('16')">16</a>
+              <a (click)="changeSelectedTagAddress('17')">17</a>
+              <a (click)="changeSelectedTagAddress('18')">18</a>
+              <a (click)="changeSelectedTagAddress('19')">19</a>
+              <a (click)="changeSelectedTagAddress('20')">20</a>
+            </div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center;">
+        <h2 style="display: inline-block; margin-right: 10px;">Date range</h2>
+        <form fxLayout="row" [formGroup]="dateForm">
+            <mat-form-field appearance="fill">
+                <mat-label>Start</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="start" >
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>End</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="end" >
+                <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                
+              </mat-form-field>
+        </form>
+      </div>
+    </div>
+    <table [dataSource]="allTagss" mat-table matSort class="mat-elevation-z8" [hidden]="this.selectedCriteria != 'Tags'">
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef> Current value </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="ioAddress">
+        <th mat-header-cell *matHeaderCellDef> I/O Address </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.ioAddress}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.timestamp}} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="allTagsDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: allTagsDisplayedColumns;"></tr>
+    </table>
+
+    <table [dataSource]="allAITags" mat-table matSort class="mat-elevation-z8" [hidden]="this.selectedCriteria != 'AI Tags'">
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef> Current value </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="ioAddress">
+        <th mat-header-cell *matHeaderCellDef> I/O Address </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.ioAddress}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>>
+        <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="allAITagsDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: allAITagsDisplayedColumns;"></tr>
+    </table>
+
+    <table [dataSource]="allDITags" mat-table matSort  class="mat-elevation-z8" [hidden]="this.selectedCriteria != 'DI Tags'">
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef> Current value </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="ioAddress">
+        <th mat-header-cell *matHeaderCellDef> I/O Address </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.ioAddress}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="allDITagsDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: allDITagsDisplayedColumns;"></tr>
+    </table>
+
+    <table [dataSource]="allTagsByAddresses" mat-table matSort class="mat-elevation-z8" [hidden]="this.selectedCriteria != 'Tag by I/O address'">
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Current value </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="ioAddress">
+        <th mat-header-cell *matHeaderCellDef> I/O Address </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.ioAddress}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef> Timestamp </th>
+        <td mat-cell *matCellDef="let tag"> {{tag.timestamp.split('T')[1].split('.')[0] + '|' + tag.timestamp.split('T')[0]}} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="allTagsDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: allTagsDisplayedColumns;"></tr>
+    </table>
+
+    <table [dataSource]="allAlarmsBetweenDatess" mat-table matSort class="mat-elevation-z8" [hidden]="this.selectedCriteria != 'Alarms'">
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Current value </th>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.value}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="priority">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority </th>
+        <td mat-cell *matCellDef="let alarm"> {{ alarm.priority == 0 ? 'LOW' : alarm.priority == 1 ? 'MEDIUM' : alarm.priority == 2 ? 'HIGH' : '?' }} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.timestamp.split('T')[1].split('.')[0] + ' ' + alarm.timestamp.split('T')[0]}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ioAddress">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> IOAddress </th>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.ioAddress}} </td>
+      </ng-container>
+
+      
+    
+      <tr mat-header-row *matHeaderRowDef="alarmDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: alarmDisplayedColumns;"></tr>
+    </table>
+
+    <table [dataSource]="allAlarmsByPriorities" mat-table matSort class="mat-elevation-z8" [hidden]="this.selectedCriteria != 'Alarms by priority'">
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef> Current value </th>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.value}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="priority">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority </th>
+        <td mat-cell *matCellDef="let alarm"> {{ alarm.priority == 0 ? 'LOW' : alarm.priority == 1 ? 'MEDIUM' : alarm.priority == 2 ? 'HIGH' : '?' }} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.timestamp.split('T')[1].split('.')[0] + ' ' + alarm.timestamp.split('T')[0]}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ioAddress">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> IOAddress </th>
+        <td mat-cell *matCellDef="let alarm"> {{alarm.ioAddress}} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="alarmDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: alarmDisplayedColumns;"></tr>
+    </table>
+</div>

@@ -1,0 +1,17 @@
+<div class="share-with-others-container border">
+    <h3 id="share-title" class="dark-blue">Type in the new value of tag</h3>
+    <div id="enter-email">
+        <form [formGroup]="tagValueForm">
+            <div class="email-input-cont">
+                <mat-form-field>
+                    <mat-label>Enter new value</mat-label>
+                    <input matInput type="text" name="value" formControlName="value"/>
+                    <mat-error *ngIf="tagValueForm.get('value')?.errors?.['required']">entering new value is required</mat-error>
+                    <mat-error *ngIf="tagValueForm.get('value')?.errors?.['tagValueRegexError']">invalid format</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <button class="share-btns back-dark-blue" mat-raised-button type="button" (click)="changeTagValue()">change value</button>
+    <!-- <button class="share-btns back-light-blue" mat-raised-button type="button" (click)="populateRide('invites')" >add user</button> -->
+</div>

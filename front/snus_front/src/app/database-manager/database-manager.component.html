@@ -1,0 +1,147 @@
+<div id="main-container">    
+    <h1>Database manager</h1>
+    <div id="filter-container" class="basic-container">
+        <div class="input-tag-header-div" (click)="onInputTagsClicked()">
+            <h2 [ngClass]="{'dark-blue': isInputTagsClicked}">Input tags</h2>
+            
+        </div>
+        <div class="output-tag-header-div" (click)="onOutputTagsClicked()">
+            <h2 [ngClass]="{'dark-blue': isOutputTagsClicked}">Output tags</h2>
+        </div>
+        <!-- <div class="add-tag-div" *ngIf="isOutputTagsClicked || isInputTagsClicked"> -->
+        <div class="add-tag-div">
+            <mat-icon class="add-button dark-blue" >add_circle_outline</mat-icon>
+            <!-- (click)="navigateToAddTag()" -->
+            <h2 style="scale: 0.9;" class="dark-blue" (click)="navigateToAddTag()">Add new tag</h2>
+        </div>
+    </div>
+        <table [dataSource]="outputTags" mat-table class="mat-elevation-z8" *ngIf="isOutputTagsClicked">
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let tag"> Tag no. {{tag.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef> Tag type </th>
+                <td mat-cell *matCellDef="let tag"> {{tag.type}} </td>
+              </ng-container>
+          
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef> Description </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="value">
+              <th mat-header-cell *matHeaderCellDef> Current value </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.value}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="unit">
+              <th mat-header-cell *matHeaderCellDef> Unit </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.unit}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let tag">
+                      <button mat-mini-fab class="back-dark-blue" (click)="changeTagValue(tag)" aria-label="Example icon button with a hhs icon">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-mini-fab class="back-red" (click)="deleteTag(tag)" aria-label="Example icon button with a hhs icon">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                </td>
+                
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsOutput"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsOutput;"></tr>
+          </table>
+          <table [dataSource]="inputTags" mat-table class="mat-elevation-z8" *ngIf="isInputTagsClicked">
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let tag"> Tag no. {{tag.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef> Tag type </th>
+                <td mat-cell *matCellDef="let tag"> {{tag.type}} </td>
+              </ng-container>
+          
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef> Description </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="scan">
+              <th mat-header-cell *matHeaderCellDef> Scan </th>
+              <td mat-cell *matCellDef="let tag">
+                <mat-slide-toggle [(ngModel)]="tag.isScanOn" (change)="onScanToggleChange(tag)"></mat-slide-toggle>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="scanTime">
+              <th mat-header-cell *matHeaderCellDef> Scan time </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.scanTime}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="unit">
+              <th mat-header-cell *matHeaderCellDef> Unit </th>
+              <td mat-cell *matCellDef="let tag"> {{tag.unit}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let tag">
+                      <button *ngIf="tag.type == 'ANALOG'" mat-mini-fab matTooltip="Manage alarms" class="back-orange" (click)="openManageAlarms(tag)" aria-label="Example icon button with a hhs icon">
+                        <mat-icon>alarm</mat-icon>
+                      </button>
+                      <button mat-mini-fab class="back-red" (click)="deleteInputTag(tag)" aria-label="Example icon button with a hhs icon">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                </td>
+                
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsInput"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsInput;"></tr>
+          </table>
+          
+        <!-- <div class="dropdown" *ngIf="selectedCriteria=='Alarms by priority'">
+            <button class="dropbtn">{{selectedAlarmPriority}}</button>
+            <div class="dropdown-content">
+              <a (click)="changeSelectedAlarmPriority('Low')">Low</a>
+              <a (click)="changeSelectedAlarmPriority('Medium')">Medium</a>
+              <a (click)="changeSelectedAlarmPriority('Height')">High</a>
+            </div>
+        </div> -->
+
+        <!-- <div class="dropdown" *ngIf="selectedCriteria=='Tag by I/O address'">
+            <button class="dropbtn">{{selectedTagAddress}}</button>
+            <div class="dropdown-content">
+              <a (click)="changeSelectedTagAddress('1')">1</a>
+              <a (click)="changeSelectedTagAddress('2')">2</a>
+              <a (click)="changeSelectedTagAddress('3')">3</a>
+            </div>
+        </div> -->
+        <!-- <form fxLayout="row">
+            <mat-form-field appearance="fill">
+                <mat-label>Start</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="start" >
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>End</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="end" >
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                
+              </mat-form-field>
+        </form> -->
+</div>
