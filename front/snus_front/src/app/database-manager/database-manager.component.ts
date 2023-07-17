@@ -81,7 +81,7 @@ export class DatabaseManagerComponent implements OnInit {
     this.dialog.open(ChangeTagValueComponent, {
       data: {tag: tag}
     });
-    window.location.reload();
+    // window.location.reload();
   }
 
   deleteTag(tag: TableOutputTag){

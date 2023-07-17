@@ -1,7 +1,7 @@
 <div id="main-container">    
     <h1>Trending</h1>
           
-    <table [dataSource]="inputTags" mat-table class="mat-elevation-z8">
+    <table [dataSource]="inputTagss" matSort mat-table class="mat-elevation-z8">
 
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -14,7 +14,7 @@
           </ng-container>
       
         <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
           <td mat-cell *matCellDef="let tag"> {{tag.description}} </td>
         </ng-container>
 
@@ -41,7 +41,7 @@
         <ng-container matColumnDef="alarmInfo">
           <th mat-header-cell *matHeaderCellDef> Alarm info </th>
           <td mat-cell *matCellDef="let tag; let rowIndex = index">
-            {{ this.alarmColors[rowIndex] === -1 ? 'EMPTY' : this.alarmColors[rowIndex] === 0 ? 'LOW' : this.alarmColors[rowIndex] === 1 ? 'MEDIUM' : this.alarmColors[rowIndex] === 2 ? 'HIGH' : '?' }}
+            {{ this.alarmColors[rowIndex] === -1 ? 'EMPTY' : typeNumberToEnum(tag.alarmType) + ' than '  + tag.alarmValue }}
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

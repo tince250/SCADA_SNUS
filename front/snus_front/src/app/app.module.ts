@@ -20,6 +20,7 @@ import { AddTagComponent } from './add-tag/add-tag.component';
 import { TrendingComponent } from './trending/trending.component';
 import { ManageAlarmsDialogComponent } from './manage-alarms-dialog/manage-alarms-dialog.component';
 import { InputTagValueSocketService } from './services/trending-input-value-ws.service';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { InputTagValueSocketService } from './services/trending-input-value-ws.s
     RouterModule,
     CommonModule,
     HttpClientModule,
+    MatSortModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline', hideRequiredMarker: 'true' }}, InputTagValueSocketService 

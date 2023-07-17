@@ -51,8 +51,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatStepperModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
-    MatNativeDateModule
-
+    MatNativeDateModule,
+    MatSortModule
   ],
   exports: [
     MatButtonModule,

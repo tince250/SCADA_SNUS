@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -6,6 +6,8 @@ import { TableInputTag, TableOutputTag } from '../database-manager/database-mana
 import { TagService } from '../services/tag.service';
 import { InputTagValueSocketService } from '../services/trending-input-value-ws.service';
 import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-trending',
@@ -19,6 +21,7 @@ export class TrendingComponent implements OnInit {
   alarmColors: any = [];
   inputTagUpdateConnection: any;
   alarmUpdateConnection: any;
+  inputTagss: any;
 
   constructor(private dialog: MatDialog,
     private tagService: TagService,
@@ -30,7 +33,11 @@ export class TrendingComponent implements OnInit {
     this.getAllInputTags();
     this.initInputTagUpdateWebSocket();
     this.initAlarmUpdateWebSocket();
+    
   }
+
+  @ViewChild(MatSort) sort: any;
+
 
   getAllInputTags() {
     this.tagService.getAllInputTags().subscribe({
@@ -47,6 +54,8 @@ export class TrendingComponent implements OnInit {
           else 
             tag.type = "ANALOG"
         }
+        this.inputTagss = new MatTableDataSource<TableInputTag>(this.inputTags);
+        this.inputTagss.sort = this.sort;
       },
       error: (err) => {
         this.snackBar.open(err.error, "", {
@@ -80,9 +89,11 @@ export class TrendingComponent implements OnInit {
       let i = 0;
       for (let tag of this.inputTags){
         if (tag.id == tagRecord.tagId){
-          
-          if (tag.value != tagRecord.highLimit && tagRecord.value != tag.lowLimit){
-            console.log(tag.value, tagRecord.highLimit, tagRecord.lowLimit);
+          // if (tag.id == 6)
+          //       console.log(tag.value, tagRecord.highLimit, tagRecord.lowLimit);
+          if (tag.value != tagRecord.highLimit && tag.value != tagRecord.lowLimit){
+            // if (tag.id == 6)
+            //     console.log("SADA");
             this.alarmColors[i] = -1;}
           tag.value = tagRecord.value;
           break;
@@ -111,7 +122,7 @@ export class TrendingComponent implements OnInit {
 
     handleAlarmUpdateWebSocket(alarmRecord: any){
       let i = 0;
-      console.log(alarmRecord);
+      //console.log(alarmRecord);
       for (let tag of this.inputTags){
         if (tag.id == alarmRecord.tagId){
           if (alarmRecord.priority == 0)
@@ -129,17 +140,23 @@ export class TrendingComponent implements OnInit {
     }
 
     getRowColor(rowId: number): any {
-      console.log(rowId);
+      //console.log(rowId);
       let alarmColorValue = this.alarmColors[rowId];
       if (alarmColorValue === 0) {
-        return { background: '#edd2d1' };
+        return { background: '#edd2d1', color: 'black' };
       } else if (alarmColorValue === 1) {
-        return { background: '#d38f8c' };
+        return { background: '#d38f8c', color: 'white' };
       } else if (alarmColorValue === 2) {
-        return { background: '#B94C47', color: 'white' };
+        return { background: '#B94C47', color: '#999999' };
       } else {
         return {}; 
       }
+    }
+
+    typeNumberToEnum(num: number){
+      if (num == 0)
+        return "LOWER"
+      return "HIGHER"
     }
   
 }

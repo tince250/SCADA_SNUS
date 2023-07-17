@@ -2,6 +2,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreateTagDTO, TagService } from './../services/tag.service';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-tag',
@@ -34,7 +35,8 @@ export class AddTagComponent {
   });
 
   constructor(private tagService: TagService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private router: Router) {
 
   }
 
@@ -106,6 +108,7 @@ export class AddTagComponent {
           });
           this.fetchFreeAddresses(this.chosenTagType);
           this.resetForm();
+          this.router.navigate(['database'])
         },
         error: (err) => {
           console.log(err);
